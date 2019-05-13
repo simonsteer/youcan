@@ -38,11 +38,10 @@ class Box extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.props)
     const { children } = this.props
 
     const renderProps = {
-      RequestActions: this.fetchResources,
+      fetchResources: this.fetchResources,
       fetching: true,
     }
 

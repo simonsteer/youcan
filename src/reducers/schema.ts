@@ -4,10 +4,8 @@ const user = new schema.Entity('user', {}, { idAttribute: '_id' })
 
 const shape: { [key: string]: schema.Entity | schema.Array } = { user }
 
-const resources = Object.keys(shape)
-
 const normalizeSchema: typeof shape = {}
-
+const resources = Object.keys(shape)
 resources.forEach(resourceKey => {
   const resource = shape[resourceKey]
   normalizeSchema[resourceKey] = resource
