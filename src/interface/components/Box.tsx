@@ -1,14 +1,39 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { request } from '../../actions/request'
+import { getIsResourceFetching } from '../../selectors/fetching'
 import { ReduxState } from '../../reducers'
+import {
+  RESOURCES,
+  cleanResourceString,
+  Resource,
+} from '../../reducers/fetching'
+
+type FetchingMap = { [key: string]: boolean; some: boolean; every: boolean }
 
 type OwnProps = {
   resources?: string[]
   shouldFetch?: boolean
+  children: Element | ((fetchingMap: FetchingMap) => Element)
 }
 
-const mapStateToProps = (state: ReduxState) => state
+const mapStateToProps = (state: ReduxState, { resources = [] }: OwnProps) => ({
+  fetching: resources.reduce(
+    (acc, res, index) => {
+      const cleanedString = cleanResourceString(res)
+      if (cleanedString in RESOURCES) {
+        acc[res] = getIsResourceFetching(state, cleanedString as Resource)
+      }
+      if (index === resources.length - 1) {
+        const values = Object.values(acc)
+        acc.some = values.some(Boolean)
+        acc.every = values.every(Boolean)
+      }
+      return acc
+    },
+    {} as FetchingMap
+  ),
+})
 
 const mapDispatchToProps = { request }
 
@@ -16,15 +41,7 @@ type Props = OwnProps &
   ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps
 
-interface State {
-  fetching: boolean
-}
-
-class Box extends Component<Props, State> {
-  state = {
-    fetching: false,
-  }
-
+class Box extends Component<Props> {
   componentDidMount() {
     if (this.props.shouldFetch) {
       this.fetchResources()
@@ -32,26 +49,19 @@ class Box extends Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (!this.props.shouldFetch && nextProps.shouldFetch && !this.hasFetched) {
+    if (!this.props.shouldFetch && nextProps.shouldFetch) {
       this.fetchResources()
     }
   }
 
   render() {
-    const { children } = this.props
-
-    const renderProps = {
-      fetchResources: this.fetchResources,
-      fetching: true,
-    }
+    const { children, fetching } = this.props
 
     const renderedChildren =
-      typeof children === 'function' ? children(renderProps) : children
+      typeof children === 'function' ? children(fetching) : children
 
     return <div>{renderedChildren}</div>
   }
-
-  hasFetched = false
 
   fetchResources = () => {
     const { resources } = this.props

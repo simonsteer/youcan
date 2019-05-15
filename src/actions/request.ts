@@ -15,6 +15,7 @@ const requestTypes = {
 } as const
 
 type RequestMethod = ValueInObject<typeof requestTypes>
+
 export type RequestAction = (config: {
   resource: string
   method: RequestMethod
@@ -31,11 +32,11 @@ export type RequestAction = (config: {
 export type RequestResultAction =
   | {
       type: typeof actionTypes['REQUEST_SUCCESS']
-      payload: { data: any }
+      payload: { data: any; resource: string }
     }
   | {
       type: typeof actionTypes['REQUEST_FAILURE']
-      payload: { error: Error }
+      payload: { error: Error; resource: string }
     }
 
 export const request: RequestAction = ({ resource, method, data }) => ({
@@ -43,12 +44,18 @@ export const request: RequestAction = ({ resource, method, data }) => ({
   payload: { resource, method, data },
 })
 
-export const requestSuccess = (data: any): RequestResultAction => ({
+export const requestSuccess = (
+  resource: string,
+  data: any
+): RequestResultAction => ({
   type: actionTypes.REQUEST_SUCCESS,
-  payload: data,
+  payload: { resource, data },
 })
 
-export const requestFailure = (error: Error): RequestResultAction => ({
+export const requestFailure = (
+  resource: string,
+  error: Error
+): RequestResultAction => ({
   type: actionTypes.REQUEST_FAILURE,
-  payload: { error },
+  payload: { resource, error },
 })

@@ -12,3 +12,10 @@ router.use('/login', login)
 router.use('/users', users)
 
 export default router
+
+export const RESOURCES = {
+  healthcheck,
+  signup,
+  login,
+  users,
+}

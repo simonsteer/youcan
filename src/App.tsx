@@ -5,7 +5,11 @@ import Box from './interface/components/Box'
 
 const App = () => (
   <Provider store={store}>
-    <Box shouldFetch resources={['users']} />
+    <Box shouldFetch resources={['users', 'healthcheck']}>
+      {fetching => {
+        return <div>{`${fetching.users}`}</div>
+      }}
+    </Box>
   </Provider>
 )
 

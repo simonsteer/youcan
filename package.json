@@ -25,10 +25,16 @@
   },
   "proxy": "http://localhost:5000",
   "scripts": {
-    "start": "react-scripts start",
+    "client": "react-scripts start",
+    "build-server": "cd lib && tsc",
+    "server": "nodemon lib/build/lib/server.js --ignore src/",
     "build": "react-scripts build",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm run client\"",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "cd src && npm install --only=dev && npm install && npm run build",
+    "deploy": "npm run build-server && FINISH THIS SCRIPT PLS"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -59,6 +65,8 @@
     "@types/redux-logger": "^3.0.7",
     "@types/redux-saga": "^0.10.5",
     "@types/reselect": "^2.2.0",
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.19.0",
     "typescript": "^3.4.5"
   }
 }

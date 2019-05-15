@@ -20,6 +20,7 @@ const requestSaga = function*() {
       } = action
 
       let resultAction: RequestResultAction = requestFailure(
+        resource,
         new Error('An unknown error occurred')
       )
 
@@ -32,9 +33,9 @@ const requestSaga = function*() {
           data,
         } as AxiosRequestConfig)
 
-        resultAction = requestSuccess(response.data)
+        resultAction = requestSuccess(resource, response.data)
       } catch (error) {
-        resultAction = requestFailure(error)
+        resultAction = requestFailure(resource, error)
       }
 
       yield put(resultAction)
@@ -45,7 +46,7 @@ const requestSaga = function*() {
       ) {
         const normalized = yield call(
           normalize,
-          resultAction.payload,
+          resultAction.payload.data,
           normalizeSchema
         )
         yield put(entitiesSet(normalized))
