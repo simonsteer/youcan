@@ -1,22 +1,17 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from './reducers/store'
-import { Getter } from './interface/components/Requester'
-import ColorPicker from './interface/components/ColorPicker'
+import EditingInterface from './components/EditingInterface'
+import Draggable from './components/EditingInterface/Draggable'
+import ColorPicker from './components/ColorPicker'
 
 const App = () => (
   <Provider store={store}>
-    <Getter
-      shouldDoRequestOnMount
-      resources={['users', 'healthcheck', 'users/5cd66019cd8bc16d19891897']}
-    >
-      {({ fetching }) => (
-        <div>
-          {`${fetching.some}`}
-          <ColorPicker />
-        </div>
-      )}
-    </Getter>
+    <EditingInterface>
+      <Draggable>
+        <ColorPicker onChange={console.log} />
+      </Draggable>
+    </EditingInterface>
   </Provider>
 )
 

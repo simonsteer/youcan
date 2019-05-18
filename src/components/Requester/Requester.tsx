@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { request } from '../../../actions/request'
-import { getFetchingMap } from '../../../selectors/fetching'
-import { ReduxState } from '../../../reducers'
+import { request } from '../../actions/request'
+import { getFetchingMap } from '../../selectors/fetching'
+import { ReduxState } from '../../reducers'
 
 type FetchingMap = { [key: string]: boolean; some: boolean; every: boolean }
 
@@ -17,7 +17,7 @@ type Resource =
     }
 
 export interface RequesterProps {
-  method: Method
+  method?: Method
   resources?: Resource[]
   shouldDoRequestOnMount?: boolean
   children:
@@ -63,7 +63,7 @@ class Requester extends Component<Props> {
   }
 
   doRequest = () => {
-    const { resources, method, request } = this.props
+    const { resources, method = 'get', request } = this.props
     if (!resources) {
       return
     }
