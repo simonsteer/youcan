@@ -12,47 +12,48 @@ import { normalize } from 'normalizr'
 import normalizeSchema from '../reducers/schema'
 
 const requestSaga = function*() {
-  return yield takeEvery(
-    'REQUEST' as ReturnType<RequestAction>['type'],
-    function*(action: ReturnType<RequestAction>) {
-      const {
-        payload: { resource, data, method },
-      } = action
+  return yield takeEvery('REQUEST', function*(
+    action: ReturnType<RequestAction>
+  ) {
+    const {
+      payload: { resource, data, method },
+    } = action
 
-      let resultAction: RequestResultAction = requestFailure(
-        resource,
-        new Error('An unknown error occurred')
-      )
+    let resultAction: RequestResultAction = requestFailure(
+      resource,
+      new Error('An unknown error occurred')
+    )
 
-      const token = yield select(getSessionToken)
-      try {
-        const response = yield axios.request({
-          headers: { Authorization: `Bearer ${token}` },
-          url: `/${resource}`,
-          method,
-          data,
-        } as AxiosRequestConfig)
+    const token = yield select(getSessionToken)
+    try {
+      const response = yield axios.request({
+        headers: { Authorization: `Bearer ${token}` },
+        url: `/${resource}`,
+        method,
+        data,
+      } as AxiosRequestConfig)
 
-        resultAction = requestSuccess(resource, response.data)
-      } catch (error) {
-        resultAction = requestFailure(resource, error)
-      }
-
-      yield put(resultAction)
-
-      if (
-        resultAction.type === 'REQUEST_SUCCESS' &&
-        typeof resultAction.payload === 'object'
-      ) {
-        const normalized = yield call(
-          normalize,
-          resultAction.payload.data,
-          normalizeSchema
-        )
-        yield put(entitiesSet(normalized))
-      }
+      resultAction = requestSuccess(resource, response.data)
+    } catch (error) {
+      resultAction = requestFailure(resource, error)
     }
-  )
+
+    yield put(resultAction)
+
+    if (
+      resultAction.type === 'REQUEST_SUCCESS' &&
+      typeof resultAction.payload === 'object'
+    ) {
+      const normalized = yield call(
+        normalize,
+        resultAction.payload.data,
+        normalizeSchema
+      )
+      yield put(entitiesSet(normalized))
+    }
+
+    return resultAction.payload
+  })
 }
 
 export default requestSaga

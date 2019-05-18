@@ -2,14 +2,22 @@ import { schema } from 'normalizr'
 
 const user = new schema.Entity('user', {}, { idAttribute: '_id' })
 
-const shape: { [key: string]: schema.Entity | schema.Array } = { user }
+const entityShape: { [key: string]: schema.Entity } = { user }
+const entityMap = Object.keys(entityShape) as (keyof typeof entityShape)[]
 
-const normalizeSchema: typeof shape = {}
-const resources = Object.keys(shape)
-resources.forEach(resourceKey => {
-  const resource = shape[resourceKey]
-  normalizeSchema[resourceKey] = resource
-  normalizeSchema[`${resourceKey}s`] = new schema.Array(resource)
-})
+type Pluralized = { [key: string]: schema.Array }
+
+const pluralizedShape: Pluralized = entityMap.reduce(
+  (pluralized: Pluralized, entity) => {
+    pluralized[`${entity}s`] = new schema.Array(entityShape[entity])
+    return pluralized
+  },
+  {}
+)
+
+const normalizeSchema = {
+  ...entityShape,
+  ...pluralizedShape,
+}
 
 export default normalizeSchema

@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import session, { Session } from './session'
-import entities, { Entities } from './entities'
+import entities, { Entity } from './entities'
 import fetching, { Fetching } from './fetching'
 
 export interface ReduxState {
   session: Session
-  entities: Entities
+  entities: Entity
   fetching: Fetching
 }
 
