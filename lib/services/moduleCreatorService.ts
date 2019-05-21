@@ -1,5 +1,6 @@
 import Module, { ModuleSchema, IModule } from '../models/module'
 import Moduleable, { ModuleableSchema } from '../models/moduleable'
+import { ValueInObject } from '../../global.types'
 
 export const MODULEABLE_TYPES = {
   phone: Number,
@@ -14,16 +15,10 @@ export const MODULEABLE_TYPES = {
 } as const
 
 export type ModuleableConfigs = typeof MODULEABLE_TYPES
-
 export type Moduleable = keyof typeof MODULEABLE_TYPES
+export type ModuleableConstructor = ValueInObject<typeof MODULEABLE_TYPES>
 
-interface ModuleServiceCreatorClass {
-  verifyModuleData: () => boolean | Error
-  createModuleData: () => ModuleSchema['data']
-  createModule: () => IModule | null
-}
-
-export default class ModuleCreatorService implements ModuleServiceCreatorClass {
+export default class ModuleCreatorService {
   moduleable: ModuleableSchema
   data: ModuleSchema['data']
 
@@ -33,15 +28,16 @@ export default class ModuleCreatorService implements ModuleServiceCreatorClass {
   }
 
   public create() {
-    const verification = this.verifyModuleData()
+    const verification = this.verifyProvidedData()
     return verification instanceof Error ? verification : this.createModule()
   }
 
-  private verifyModuleData() {
+  private verifyProvidedData() {
     const { fields, name } = this.moduleable
+
     const requiredFields = fields.filter(({ required }) => required)
     const missingRequiredFields = requiredFields.filter(
-      ({ name }) => !this.data[name]
+      ({ name }) => this.data[name] === null || this.data[name] === undefined
     )
 
     if (missingRequiredFields.length > 0) {
@@ -60,7 +56,7 @@ export default class ModuleCreatorService implements ModuleServiceCreatorClass {
         }
 
         const requiredContructor = MODULEABLE_TYPES[type]
-        return requiredContructor.name === providedData.constructor.name
+        return requiredContructor.name !== providedData.constructor.name
       }
     )
 
@@ -76,7 +72,7 @@ export default class ModuleCreatorService implements ModuleServiceCreatorClass {
   }
 
   private createModuleData = () =>
-    this.moduleable.fields.reduce((data, { name, type, multi }) => {
+    this.moduleable.fields.reduce((data, { name }) => {
       data[name] = this.data[name]
       return data
     }, {})
