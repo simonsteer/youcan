@@ -1,5 +1,4 @@
 import u from 'updeep'
-import omit from 'lodash/omit'
 import * as actions from '../actions/request'
 import { ValueInObject } from '../../global.types'
 
@@ -30,7 +29,12 @@ const fetching = (state = initialState, action: EntityAction) => {
       const {
         payload: { resource },
       } = action
-      return u({ resource: u.omitBy((value: boolean, key: string) => key === resource) }, state)
+      return u(
+        {
+          resource: u.omitBy((value: boolean, key: string) => key === resource),
+        },
+        state
+      )
     }
     default:
       return state

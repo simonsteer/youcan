@@ -28,7 +28,7 @@
   "proxy": "http://localhost:5000",
   "scripts": {
     "client": "react-scripts start",
-    "build-server": "cd lib && tsc",
+    "prestart": "cd lib && tsc",
     "server": "nodemon lib/build/lib/server.js --ignore src/",
     "build": "react-scripts build",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",

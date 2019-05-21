@@ -1,8 +1,6 @@
 import { Router } from 'express'
 import User from '../models/user'
-import authentication, {
-  AuthenticationRequest,
-} from '../middleware/authentication'
+import { authentication, AuthenticationRequest } from '../middleware/'
 
 const router = Router()
 
@@ -16,8 +14,8 @@ router.get(
 
     try {
       const id = req.token.user.id
-      const doc = await User.findById(id)
-      res.status(200).json(doc)
+      const user = await User.findById(id)
+      res.status(200).json({ user })
     } catch (e) {
       next(e)
     }
@@ -40,17 +38,14 @@ router.get('/:id', async (req, res, next) => {
 
   try {
     const { id } = req.params as Params
-    const doc = await User.findById(id)
+    const user = await User.findById(id)
 
-    if (!doc) {
+    if (!user) {
       next(new Error('User not found'))
       return
     }
 
-    res.status(200).json({
-      message: 'success',
-      payload: doc,
-    })
+    res.status(200).json({ user })
   } catch (e) {
     next(e)
   }

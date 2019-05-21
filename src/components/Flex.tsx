@@ -1,10 +1,10 @@
 import React from 'react'
 import View, { ViewProps } from './View'
-import merge from 'lodash/merge'
 
 export interface FlexProps extends ViewProps {
   flex?: number | string
   column?: boolean
+  inline?: boolean
   reverse?: boolean
   wrap?: boolean
   justify?:
@@ -20,6 +20,7 @@ export interface FlexProps extends ViewProps {
 const Flex = ({
   flex = '0 1 auto',
   column = false,
+  inline = false,
   reverse = false,
   wrap = false,
   justify = 'flex-start',
@@ -33,6 +34,7 @@ const Flex = ({
 
   const flexStyle = {
     ...style,
+    display: inline ? 'inline-flex' : 'flex',
     flex,
     flexDirection: flexFlow,
     flexWrap: wrap ? 'wrap' : 'nowrap',

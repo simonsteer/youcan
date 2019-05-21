@@ -6,7 +6,7 @@ export interface AuthenticationRequest extends Request {
   token?: ReturnType<typeof token['verify']>
 }
 
-const authentication: Middleware<AuthenticationRequest> = async (
+export const authentication: Middleware<AuthenticationRequest> = async (
   req,
   _,
   next
@@ -28,5 +28,3 @@ const authentication: Middleware<AuthenticationRequest> = async (
     next(new Error('unauthorized'))
   }
 }
-
-export default authentication

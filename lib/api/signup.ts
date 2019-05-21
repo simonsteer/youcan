@@ -9,13 +9,12 @@ router.post('/', async (req, res, next) => {
     username?: UserSchema['username']
     password?: UserSchema['password']
   }
-
   const { email, username, password } = req.body as Body
 
-  const user = new User({ email, username, password })
+  const IUser = new User({ email, username, password })
   try {
-    const doc = await user.save()
-    res.status(201).send(doc)
+    const user = await IUser.save()
+    res.status(201).json({ user })
   } catch (e) {
     next(e)
   }

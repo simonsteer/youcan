@@ -7,6 +7,12 @@ export interface UserSchema {
   password: string
 }
 
+const schema: Schema = new Schema({
+  email: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+})
+
 export interface UserDocument extends Document, UserSchema {
   name: string
 }
@@ -14,12 +20,6 @@ export interface UserDocument extends Document, UserSchema {
 export interface IUser extends UserDocument {
   comparePassword(password: string): boolean
 }
-
-const schema: Schema = new Schema({
-  email: { type: String, required: true, unique: true },
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-})
 
 schema.virtual('name').get(function(this: UserDocument) {
   return this.username
@@ -47,6 +47,7 @@ schema.pre('save', async function(this: UserDocument, next) {
 })
 
 export interface UserModel extends Model<IUser> {}
+
 const User: UserModel = model<IUser, UserModel>('User', schema)
 
 export default User

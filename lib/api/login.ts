@@ -24,17 +24,13 @@ router.post('/', async (req, res, next) => {
       return next(new Error(`Couldn't find a user with the email ${email}`))
 
     if (!password)
-      return next(
-        new Error(
-          `No password was provided for the account associated with ${email}`
-        )
-      )
+      return next(new Error(`No password was provided for the email ${email}`))
 
     const match = await user.comparePassword(password)
 
     if (match) {
       const token = tokenService.create(user)
-      res.status(200).send({ data: [token] })
+      res.status(200).json({ token })
     } else {
       next(new Error('Incorrect password provided'))
     }

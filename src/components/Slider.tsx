@@ -29,7 +29,7 @@ const Slider = ({
       <View as="label" style={styles.label}>
         {label}
       </View>
-      <Flex
+      <View
         style={{
           width: '100%',
           opacity: 0.5,
@@ -52,7 +52,7 @@ const Slider = ({
           style={styles.slider}
         />
         <View style={styles.box}>{value}</View>
-      </Flex>
+      </View>
     </View>
   )
 }
@@ -60,7 +60,12 @@ const Slider = ({
 export default Slider
 
 const styles = {
-  container: { fontSize: '9px', fontFamily: 'sans-serif', lineHeight: 1 },
+  container: {
+    fontSize: '11px',
+    fontFamily: 'sans-serif',
+    lineHeight: 1,
+    height: '32px',
+  },
   label: {
     position: 'relative',
     top: '2px',
@@ -77,14 +82,14 @@ const styles = {
       width: '12px',
       height: '12px',
       borderRadius: '6px',
-      background: 'black',
+      background: 'rgb(44,44,44)',
     },
   },
   box: {
     border: '1px solid #d3d3d3',
     display: 'inline-block',
     padding: '4px',
-    width: '16px',
+    width: '20px',
     marginLeft: '16px',
   },
 }
