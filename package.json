@@ -29,10 +29,11 @@
   "scripts": {
     "client": "react-scripts start",
     "prestart": "cd lib && tsc",
-    "server": "nodemon lib/build/lib/server.js --ignore src/",
     "build": "react-scripts build",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev-server": "cd lib && npm run dev",
     "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm run client\"",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "server": "node lib/build/lib/server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "heroku-postbuild": "cd src && npm install --only=dev && npm install && npm run build",

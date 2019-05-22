@@ -1,6 +1,5 @@
 import u from 'updeep'
-import * as actions from '../actions/entities'
-import { ValueInObject } from '../../global.types'
+import { EntitiesAction } from '../actions/types'
 
 export type Entity = {
   [id: string]: any
@@ -12,10 +11,7 @@ export interface Entities {
 
 const initialState: Entities = {}
 
-const { actionTypes, ...entityActions } = actions
-type EntityAction = ReturnType<ValueInObject<typeof entityActions>>
-
-const session = (state = initialState, action: EntityAction) => {
+const session = (state = initialState, action: EntitiesAction) => {
   switch (action.type) {
     case 'ENTITIES_SET': {
       const { entities } = action.payload

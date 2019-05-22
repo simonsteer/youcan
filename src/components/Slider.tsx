@@ -1,7 +1,6 @@
 import React, { useState, SyntheticEvent } from 'react'
 import get from 'lodash/get'
 import View, { Style } from './View'
-import Flex from './Flex'
 
 interface SliderProps {
   label: string

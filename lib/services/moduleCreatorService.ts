@@ -27,7 +27,7 @@ export default class ModuleCreatorService {
     this.data = data
   }
 
-  public create() {
+  public process() {
     const verification = this.verifyProvidedData()
     return verification instanceof Error ? verification : this.createModule()
   }

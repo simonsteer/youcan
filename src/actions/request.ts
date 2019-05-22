@@ -16,17 +16,19 @@ const requestTypes = {
 
 type RequestMethod = ValueInObject<typeof requestTypes>
 
-export type RequestAction = (config: {
+export interface RequestActionOpts {
   resource: string
   method: RequestMethod
   data?: any
-}) => {
+}
+
+export type RequestAction = ({
+  resource,
+  method,
+  data,
+}: RequestActionOpts) => {
   type: typeof actionTypes['REQUEST']
-  payload: {
-    resource: string
-    method: RequestMethod
-    data: any
-  }
+  payload: RequestActionOpts
 }
 
 export type RequestResultAction =

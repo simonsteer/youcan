@@ -1,7 +1,5 @@
 import u from 'updeep'
-import * as actions from '../actions/session'
-import { ValueInObject } from '../../global.types'
-const { actionTypes, ...sessionActions } = actions
+import { SessionAction } from '../actions/types'
 
 const initialState = {
   token: null,
@@ -10,8 +8,6 @@ const initialState = {
 export interface Session {
   token: null | string
 }
-
-type SessionAction = ReturnType<ValueInObject<typeof sessionActions>>
 
 const session = (state = initialState, action: SessionAction) => {
   switch (action.type) {

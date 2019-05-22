@@ -1,4 +1,4 @@
-import { Router, Request } from 'express'
+import { Router } from 'express'
 import Application from '../models/application'
 import Moduleable, { ModuleableSchema } from '../models/moduleable'
 import Module, { ModuleSchema } from '../models/module'
@@ -8,9 +8,9 @@ import { ExtendedRequest } from './types'
 
 const router = Router()
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req: ExtendedRequest<{ id: string }>, res, next) => {
   try {
-    const id = req.params.id
+    const { id } = req.params
     const application = await Application.findById(id)
     res.status(200).json({ application })
   } catch (e) {
@@ -18,26 +18,32 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.get('/:id/moduleables', authentication, async (req, res, next) => {
-  try {
-    const moduleables = await Moduleable.find({ application_id: req.params.id })
-    if (!moduleables) {
-      next(new Error("Couldn't get moduleables"))
-      return
-    }
+router.get(
+  '/:application_id/moduleables',
+  authentication,
+  async (req: ExtendedRequest<{ application_id: string }>, res, next) => {
+    const { application_id } = req.params
 
-    res.status(200).json({ moduleables })
-  } catch (e) {
-    next(e)
+    try {
+      const moduleables = await Moduleable.find({ application_id })
+      if (!moduleables) {
+        next(new Error("Couldn't get application modules"))
+        return
+      }
+
+      res.status(200).json({ moduleables })
+    } catch (e) {
+      next(e)
+    }
   }
-})
+)
 
 router.post(
-  '/:id/moduleables',
+  '/:application_id/moduleables',
   authentication,
   async (
     req: ExtendedRequest<
-      any,
+      { application_id: string },
       {
         name: ModuleableSchema['name']
         fields: ModuleableSchema['fields']
@@ -46,14 +52,16 @@ router.post(
     res,
     next
   ) => {
+    const { application_id } = req.params
     const { name, fields } = req.body
 
     // TODO: ADD moduleableCreatorService which validates fields
     const IModuleable = new Moduleable({
-      application_id: req.params.id,
+      application_id,
       name,
       fields,
     })
+
     try {
       const moduleable = await IModuleable.save()
       res.status(201).json({ moduleable })
@@ -64,25 +72,21 @@ router.post(
 )
 
 router.get(
-  '/:id/modules/:moduleable_id',
+  '/:application_id/modules/:name',
   authentication,
   async (
     req: ExtendedRequest<{
-      id: string
-      moduleable_id: string
+      application_id: string
+      name: string
     }>,
     res,
     next
   ) => {
-    const { moduleable_id } = req.params
-    try {
-      const modules = await Module.find({ moduleable_id })
-      if (!modules) {
-        next(new Error("Couldn't get Modules"))
-        return
-      }
+    const { application_id, name } = req.params
 
-      res.status(200).json({ modules })
+    try {
+      const modules = await Module.find({ application_id, name })
+      res.status(200).json({ [`${name}s`]: modules })
     } catch (e) {
       next(e)
     }
@@ -90,13 +94,13 @@ router.get(
 )
 
 router.post(
-  '/:id/modules/:moduleable_id',
+  '/:id/modules/:name',
   authentication,
   async (
     req: ExtendedRequest<
       {
         id: string
-        moduleable_id: string
+        name: string
       },
       { data: ModuleSchema['data'] }
     >,
@@ -104,18 +108,14 @@ router.post(
     next
   ) => {
     const {
-      params: { moduleable_id },
+      params: { id, name },
       body: { data },
     } = req
 
     try {
-      const moduleable = await Moduleable.findById(moduleable_id)
+      const moduleable = await Moduleable.findOne({ application_id: id, name })
       if (!moduleable) {
-        next(
-          new Error(
-            `Unable to find module with  moduleable_id: ${moduleable_id}.`
-          )
-        )
+        next(new Error(`Unable to find ${name} Module`))
         return
       }
 

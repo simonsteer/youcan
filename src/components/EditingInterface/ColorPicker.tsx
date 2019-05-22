@@ -1,5 +1,4 @@
 import React, { useState, Dispatch, SetStateAction } from 'react'
-import omitBy from 'lodash/omitBy'
 import View from '../View'
 import Slider from '../Slider'
 import MenuItem from './MenuItem'

@@ -1,6 +1,6 @@
 import u from 'updeep'
 import * as actions from '../actions/request'
-import { ValueInObject } from '../../global.types'
+import { RequestAction } from '../actions/types'
 
 export type Resource = string
 type ResourceMap = { [key: string]: boolean }
@@ -13,10 +13,7 @@ const initialState: Fetching = {
   resource: {},
 }
 
-const { actionTypes, ...fetchingActions } = actions
-type EntityAction = ReturnType<ValueInObject<typeof fetchingActions>>
-
-const fetching = (state = initialState, action: EntityAction) => {
+const fetching = (state = initialState, action: RequestAction) => {
   switch (action.type) {
     case 'REQUEST': {
       const {

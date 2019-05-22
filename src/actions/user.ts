@@ -3,7 +3,7 @@ import { request } from './request'
 
 export const userLogin = ({ email, password }: UserSchema) =>
   request({
-    resource: 'users/login',
+    resource: 'login',
     method: 'post',
     data: { email, password },
   })
