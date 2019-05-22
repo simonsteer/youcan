@@ -1,8 +1,14 @@
 import { schema } from 'normalizr'
 
-const user = new schema.Entity('user', {}, { idAttribute: '_id' })
+export const entityShape = {
+  user: new schema.Entity('user', {}, { idAttribute: '_id' }),
+  application: new schema.Entity('application', {}, { idAttribute: '_id' }),
+  moduleable: new schema.Entity('moduleable', {}, { idAttribute: '_id' }),
+  module: new schema.Entity('module', {}, { idAttribute: '_id' }),
+} as const
 
-const entityShape: { [key: string]: schema.Entity } = { user }
+export type Entity = keyof typeof entityShape
+
 const entityMap = Object.keys(entityShape) as (keyof typeof entityShape)[]
 
 type Pluralized = { [key: string]: schema.Array }

@@ -72,10 +72,13 @@ export default class ModuleCreatorService {
   }
 
   private createModuleData = () =>
-    this.moduleable.fields.reduce((data, { name }) => {
-      data[name] = this.data[name]
-      return data
-    }, {})
+    this.moduleable.fields.reduce(
+      (data, { name }) => {
+        data[name] = this.data[name]
+        return data
+      },
+      {} as ModuleSchema['data']
+    )
 
   private createModule = () =>
     new Module({

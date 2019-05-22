@@ -1,15 +1,19 @@
 import u from 'updeep'
 import { EntitiesAction } from '../actions/types'
+import { entityShape } from './schema'
 
-export type Entity = {
+interface EntityShape {
   [id: string]: any
 }
 
-export interface Entities {
-  [key: string]: Entity
-}
+export type Entities = { [key in keyof typeof entityShape]: EntityShape }
 
-const initialState: Entities = {}
+const initialState: Entities = {
+  user: {},
+  application: {},
+  moduleable: {},
+  module: {},
+}
 
 const session = (state = initialState, action: EntitiesAction) => {
   switch (action.type) {

@@ -55,7 +55,7 @@ export const request = function*(action: ReturnType<RequestAction>) {
       yield put(sessionSetToken(token))
     }
   }
-
+  console.log(resultAction)
   return resultAction
 }
 

@@ -17,11 +17,11 @@ const ModuleableFieldSchema = new Schema({
 export interface ModuleableSchema {
   name: string
   fields: ModuleableFieldSchema[]
-  application_id: typeof Schema.Types.ObjectId
+  application_id: string
 }
 
 const schema: Schema = new Schema({
-  application_id: { type: Schema.Types.ObjectId },
+  application_id: { type: String, required: true },
   name: { type: String, required: true },
   fields: [ModuleableFieldSchema],
 })
@@ -49,3 +49,12 @@ const Moduleable: ModuleableModel = model<IModuleable, ModuleableModel>(
 )
 
 export default Moduleable
+
+// const mockModuleable: ModuleableSchema = {
+//   name: 'User',
+//   application_id: '5ce4d65b7eb8583ed9563658',
+//   fields: [
+//     { name: 'Name', type: 'text', multi: false, required: true },
+//     { name: 'Phone number', type: 'phone', multi: false, required: false },
+//   ],
+// }
