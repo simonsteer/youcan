@@ -18,7 +18,8 @@ const MenuItem = ({
   return (
     <View
       style={[
-        isOpen ? { flex: 1 } : { height: '27px' },
+        { border: '1px solid #a3a3a3' },
+        isOpen ? { flex: 1, borderBottom: '0px' } : { height: '27px' },
         styles.container,
         style,
       ]}
@@ -39,7 +40,6 @@ export default MenuItem
 
 const styles = {
   container: {
-    border: '1px solid #a3a3a3',
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
@@ -47,7 +47,7 @@ const styles = {
   title: {
     cursor: 'pointer',
     background: 'rgb(244, 244, 244)',
-    height: '11px',
+    height: '27px',
     padding: '8px',
     fontSize: '11px',
     fontFamily: 'sans-serif',

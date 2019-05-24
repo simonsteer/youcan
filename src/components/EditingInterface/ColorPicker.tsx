@@ -8,8 +8,7 @@ export interface ColorPickerProps {
   [key: string]: any
 }
 
-type GetColor = (values: number[]) => string
-const getColor: GetColor = values =>
+const getColor: (values: number[]) => string = values =>
   `hsla(${values[0]},${values[1]}%,${values[2]}%,${values[3]})`
 
 const createSliders = (
@@ -73,12 +72,12 @@ const ColorPicker = ({
   const cutOff = color.lastIndexOf('%') + 1
   const borderColor = color.slice(0, cutOff) + ',1)'
 
-  const sliders = createSliders(values, setValues, setColor, onChange)
+  const slidersConfigs = createSliders(values, setValues, setColor, onChange)
 
   return (
-    <MenuItem as="aside" title="Color" style={style} {...restProps}>
-      {sliders.map((slider, index) => (
-        <Slider key={`slider-${index}`} {...slider} />
+    <View style={{ padding: '16px' }}>
+      {slidersConfigs.map((config, index) => (
+        <Slider key={`slider-${index}`} {...config} />
       ))}
       <View
         style={styles.colorBlock}
@@ -87,7 +86,7 @@ const ColorPicker = ({
           border: `1px solid ${borderColor}`,
         }}
       />
-    </MenuItem>
+    </View>
   )
 }
 
@@ -96,7 +95,7 @@ export default ColorPicker
 const styles = {
   colorBlock: {
     width: '100%',
-    height: '100px',
+    height: '75px',
     marginTop: '16px',
   },
 }

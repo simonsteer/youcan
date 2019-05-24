@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import View from '../View'
 import Flex from '../Flex'
 import ColorPicker from './ColorPicker'
+import FontStyler from './FontStyler'
+import { ReduxState } from '../../reducers'
+import { getSelectedComponent } from '../../selectors/interaction'
 
-const MENU_ITEMS = [ColorPicker] as const
+const MENU_ITEMS = [ColorPicker, FontStyler] as const
 
-class EditingInterface extends Component {
+const mapStateToProps = (state: ReduxState) => ({
+  selectedComponent: getSelectedComponent(state),
+})
+
+type Props = ReturnType<typeof mapStateToProps>
+
+class EditingInterface extends Component<Props> {
   state = { isMenuOpen: true }
 
   render() {
@@ -26,33 +36,22 @@ class EditingInterface extends Component {
   }
 
   timeout: any = 0
-  playToggle = () => {
-    this.toggleMenu()
-    this.timeout = setTimeout(this.playToggle, 2000)
-  }
 
   toggleMenu = () => this.setState({ isMenuOpen: !this.state.isMenuOpen })
 
   renderMenuItems = () =>
     MENU_ITEMS.map((Item, index) => (
-      <Item
-        key={`menu-item-${index}`}
-        onChange={console.log}
-        style={{
-          borderTopWidth: '0px',
-          borderRightWidth: '0px',
-          borderLeftWidth: '0px',
-        }}
-      />
+      <Item key={`menu-item-${index}`} onChange={console.log} />
     ))
 
   renderButton = () => <View onClick={this.toggleMenu} style={styles.button} />
 }
 
-export default EditingInterface
+export default connect(mapStateToProps)(EditingInterface)
 
 const styles = {
   root: {
+    zIndex: 9999,
     pointerEvents: 'none',
     position: 'absolute',
     top: 0,
@@ -61,6 +60,7 @@ const styles = {
     bottom: 0,
   },
   menu: {
+    background: 'white',
     pointerEvents: 'all',
     borderLeft: '1px solid #a3a3a3',
     width: '240px',
@@ -71,6 +71,7 @@ const styles = {
     cursor: 'pointer',
     background: 'rgb(244, 244, 244)',
     border: '1px solid #a3a3a3',
+    borderRightWidth: '0px',
     borderTopWidth: '0px',
     position: 'absolute',
     right: '240px',

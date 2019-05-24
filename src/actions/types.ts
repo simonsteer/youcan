@@ -1,13 +1,15 @@
-import * as requestExports from './request'
-import * as sessionExports from './session'
-import * as entitiesExports from './entities'
+import * as requestActions from './request'
+import * as sessionActions from './session'
+import * as entitiesActions from './entities'
+import * as interactionActions from './interaction'
 import { ValueInObject } from '../../global.types'
 
-const { actionTypes: requestActionTypes, ...requestActions } = requestExports
-export type RequestAction = ReturnType<ValueInObject<typeof requestActions>>
-
-const { actionTypes: sessionActionTypes, ...sessionActions } = sessionExports
 export type SessionAction = ReturnType<ValueInObject<typeof sessionActions>>
 
-const { actionTypes: entitiesActionTypes, ...entitiesActions } = entitiesExports
 export type EntitiesAction = ReturnType<ValueInObject<typeof entitiesActions>>
+
+export type InteractionAction = ReturnType<
+  ValueInObject<typeof interactionActions>
+>
+
+export type RequestAction = ReturnType<ValueInObject<typeof requestActions>>

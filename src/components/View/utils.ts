@@ -11,6 +11,17 @@ const flattenArray = (arr: any[]): any[] =>
 
 const isNested = (key: string) => /^_/.test(key)
 const isWebkit = (key: string) => /webkit/.test(key)
+const isPseudo = (key: string) => /^_before|_after/.test(key)
+
+const getNestedStylePrefix = (styleProp: string) => {
+  if (isWebkit(styleProp)) {
+    return '&::-'
+  } else if (isPseudo(styleProp)) {
+    return '::'
+  } else {
+    return '&:'
+  }
+}
 
 const reduceWithNestedStyles = (styleMap: { [key: string]: any }) => {
   let styles = ''
@@ -19,7 +30,7 @@ const reduceWithNestedStyles = (styleMap: { [key: string]: any }) => {
     if (!isNested(styleProp)) {
       styles = styles.concat(`${cleanedKey}:${styleMap[styleProp]};\n`)
     } else {
-      const nestedStylePrefix = isWebkit(styleProp) ? '&::-' : '&:'
+      const nestedStylePrefix = getNestedStylePrefix(styleProp)
       const nestedStyleKey = `${nestedStylePrefix}${cleanedKey}`
       styles = styles.concat(`${nestedStyleKey} {
         ${reduceWithNestedStyles(styleMap[styleProp])}

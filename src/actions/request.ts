@@ -1,11 +1,5 @@
 import { ValueInObject } from '../../global.types'
 
-export const actionTypes = {
-  REQUEST: 'REQUEST',
-  REQUEST_SUCCESS: 'REQUEST_SUCCESS',
-  REQUEST_FAILURE: 'REQUEST_FAILURE',
-} as const
-
 const requestTypes = {
   get: 'get',
   post: 'post',
@@ -16,48 +10,26 @@ const requestTypes = {
 
 type RequestMethod = ValueInObject<typeof requestTypes>
 
-export interface RequestActionOpts {
+export interface RequestConfig {
   resource: string
   method: RequestMethod
   data?: any
 }
 
-export type RequestAction = ({
-  resource,
-  method,
-  data,
-}: RequestActionOpts) => {
-  type: typeof actionTypes['REQUEST']
-  payload: RequestActionOpts
-}
+export const request = ({ resource, method, data }: RequestConfig) =>
+  ({
+    type: 'REQUEST',
+    payload: { resource, method, data },
+  } as const)
 
-export type RequestResultAction =
-  | {
-      type: typeof actionTypes['REQUEST_SUCCESS']
-      payload: { data: any; resource: string }
-    }
-  | {
-      type: typeof actionTypes['REQUEST_FAILURE']
-      payload: { error: Error; resource: string }
-    }
+export const requestSuccess = (resource: string, data: any) =>
+  ({
+    type: 'REQUEST_SUCCESS',
+    payload: { resource, data },
+  } as const)
 
-export const request: RequestAction = ({ resource, method, data }) => ({
-  type: actionTypes.REQUEST,
-  payload: { resource, method, data },
-})
-
-export const requestSuccess = (
-  resource: string,
-  data: any
-): RequestResultAction => ({
-  type: actionTypes.REQUEST_SUCCESS,
-  payload: { resource, data },
-})
-
-export const requestFailure = (
-  resource: string,
-  error: Error
-): RequestResultAction => ({
-  type: actionTypes.REQUEST_FAILURE,
-  payload: { resource, error },
-})
+export const requestFailure = (resource: string, error: Error) =>
+  ({
+    type: 'REQUEST_FAILURE',
+    payload: { resource, error },
+  } as const)

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { request, RequestActionOpts } from '../actions/request'
+import { request, RequestConfig } from '../actions/request'
 import { getFetchingMap } from '../selectors/fetching'
 import { ReduxState } from '../reducers'
 
 type FetchingMap = { [key: string]: boolean; some: boolean; every: boolean }
 
 export interface RequesterProps {
-  requests: { [key: string]: RequestActionOpts }
+  requests: { [key: string]: RequestConfig }
   shouldDoRequestsOnMount?: boolean
   children:
     | Element

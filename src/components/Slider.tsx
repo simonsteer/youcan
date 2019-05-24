@@ -2,7 +2,7 @@ import React, { useState, SyntheticEvent } from 'react'
 import get from 'lodash/get'
 import View, { Style } from './View'
 
-interface SliderProps {
+export interface SliderProps {
   label: string
   min: number
   max: number
@@ -22,6 +22,13 @@ const Slider = ({
   style = {},
 }: SliderProps) => {
   const [value, setValue] = useState(start)
+  const [text, setText] = useState(start)
+
+  const handleChange = (nextValue: number) => {
+    setText(nextValue)
+    setValue(nextValue)
+    onChange(nextValue)
+  }
 
   return (
     <View style={[styles.container, style]}>
@@ -44,13 +51,22 @@ const Slider = ({
           value={value}
           step={step}
           onChange={(event: SyntheticEvent) => {
-            const value = Number(get(event, 'target.value'))
-            setValue(value)
-            onChange(value)
+            const nextValue = Number(get(event, 'target.value'))
+            handleChange(nextValue)
           }}
           style={styles.slider}
         />
-        <View style={styles.box}>{value}</View>
+        <View
+          as="input"
+          type="text"
+          onChange={(event: SyntheticEvent) => {
+            const value = Number(get(event, 'target.value') || '0')
+            const nextValue = Math.min(value, max)
+            handleChange(nextValue)
+          }}
+          style={styles.box}
+          value={text}
+        />
       </View>
     </View>
   )
@@ -88,7 +104,7 @@ const styles = {
     border: '1px solid #d3d3d3',
     display: 'inline-block',
     padding: '4px',
-    width: '20px',
+    width: '31px',
     marginLeft: '16px',
   },
 }
