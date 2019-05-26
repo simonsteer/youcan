@@ -41,7 +41,6 @@ class Requester extends Component<Props> {
   }
 
   render() {
-    console.log(this.props.state)
     const { children, fetching } = this.props
 
     const renderProps = {

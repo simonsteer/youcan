@@ -4,7 +4,8 @@ import Slider from '../Slider'
 import MenuItem from './MenuItem'
 
 export interface ColorPickerProps {
-  onChange: (color: string) => void
+  name: string
+  onChange?: (color?: string) => void
   [key: string]: any
 }
 
@@ -15,7 +16,7 @@ const createSliders = (
   values: number[],
   setValues: Dispatch<SetStateAction<number[]>>,
   setColor: Dispatch<SetStateAction<string>>,
-  onChange: (color: string) => void
+  onChange = (color: string) => {}
 ) => {
   const handleChange = ({
     hue,
@@ -55,7 +56,8 @@ const createSliders = (
     step,
     start,
     style: { marginBottom: '8px' },
-    onChange: (value: number) => handleChange({ [label.toLowerCase()]: value }),
+    onChange: (value?: string) =>
+      handleChange({ [label.toLowerCase()]: value }),
   }))
 
   return sliderProps
@@ -63,6 +65,7 @@ const createSliders = (
 
 const ColorPicker = ({
   onChange,
+  name,
   style = {},
   ...restProps
 }: ColorPickerProps) => {
@@ -77,7 +80,7 @@ const ColorPicker = ({
   return (
     <View style={{ padding: '16px' }}>
       {slidersConfigs.map((config, index) => (
-        <Slider key={`slider-${index}`} {...config} />
+        <Slider name={name} key={`slider-${index}`} {...config} />
       ))}
       <View
         style={styles.colorBlock}

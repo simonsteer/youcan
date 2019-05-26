@@ -3,23 +3,27 @@ import get from 'lodash/get'
 import View, { Style } from './View'
 
 export interface SliderProps {
+  name: string
   label: string
   min: number
   max: number
   start: number
   step?: number
   style?: Style
-  onChange: (value: number) => any
+  onChange?: (value?: string) => any
+  transformValue?: (value: number) => string
 }
 
 const Slider = ({
+  name,
   label,
   min,
   max,
   start,
-  onChange,
   step,
   style = {},
+  onChange = () => {},
+  transformValue = n => `${n}`,
 }: SliderProps) => {
   const [value, setValue] = useState(start)
   const [text, setText] = useState(start)
@@ -27,12 +31,12 @@ const Slider = ({
   const handleChange = (nextValue: number) => {
     setText(nextValue)
     setValue(nextValue)
-    onChange(nextValue)
+    onChange(transformValue(nextValue))
   }
 
   return (
     <View style={[styles.container, style]}>
-      <View as="label" style={styles.label}>
+      <View as="label" name={name} style={styles.label}>
         {label}
       </View>
       <View

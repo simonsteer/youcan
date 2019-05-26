@@ -53,7 +53,6 @@ const requestSaga = function*() {
         yield put(sessionSetToken(token))
       }
     }
-    console.log(resultAction)
     return resultAction
   })
 }

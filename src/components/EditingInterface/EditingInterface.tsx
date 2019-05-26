@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import View from '../View'
 import Flex from '../Flex'
 import ColorPicker from './ColorPicker'
-import FontStyler from './FontStyler'
 import { ReduxState } from '../../reducers'
 import { getSelectedComponent } from '../../selectors/interaction'
 
-const MENU_ITEMS = [ColorPicker, FontStyler] as const
+const MENU_ITEMS = [ColorPicker] as const
 
 const mapStateToProps = (state: ReduxState) => ({
   selectedComponent: getSelectedComponent(state),
@@ -41,7 +40,7 @@ class EditingInterface extends Component<Props> {
 
   renderMenuItems = () =>
     MENU_ITEMS.map((Item, index) => (
-      <Item key={`menu-item-${index}`} onChange={console.log} />
+      <Item key={`menu-item-${index}`} name={`item-${index}`} />
     ))
 
   renderButton = () => <View onClick={this.toggleMenu} style={styles.button} />

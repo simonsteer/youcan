@@ -1,89 +1,137 @@
+import kebabCase from 'lodash/kebabCase'
 import { CustomComponent } from './types'
 import Text from '../Text'
-import View, { StyleObject } from '../View'
+import View from '../View'
 
 export const COMPONENT_TYPES: { [key: string]: (props: any) => JSX.Element } = {
   text: Text,
   box: View,
 } as const
 
-export const DIMENSIONS = {
+type Selector = 'dropdown' | 'numeric' | 'range'
+
+export interface Property {
+  [property: string]: {
+    defaultValue: string | number
+    selector: Selector
+    selectorProps?: any
+  }
+}
+
+export interface PropertySet {
+  title: string
+  properties: Property
+  advanced?: Property
+}
+
+const createNumeric = (transformValue: (n: string) => string) =>
+  ({
+    defaultValue: '0',
+    selector: 'numeric',
+    selectorProps: { transformValue },
+  } as const)
+
+const createDropdown = (
+  options: string[],
+  transformValue = (value: string) => value
+) =>
+  ({
+    defaultValue: options[0],
+    selector: 'dropdown',
+    selectorProps: { options, transformValue },
+  } as const)
+
+const numericPixel = createNumeric(n => `${n}px`)
+const color = createDropdown(['transparent', 'red', 'black', 'white'])
+const dimension = createNumeric(n => (n === '0' ? 'auto' : `${n}px`))
+
+export const DIMENSIONS: PropertySet = {
   title: 'Dimensions',
   properties: {
-    width: 'auto',
-    maxWidth: 'auto',
-    height: 'auto',
-    maxHeight: 'auto',
+    width: dimension,
+    maxWidth: dimension,
+    height: dimension,
+    maxHeight: dimension,
   },
 } as const
 
-export const BORDER = {
+const borderStyle = createDropdown(['solid', 'dotted', 'dashed'])
+export const BORDER: PropertySet = {
   title: 'Border',
   properties: {
-    borderColor: 'transparent',
-    borderWidth: '0px',
-    borderStyle: 'solid',
-    borderRadius: '0px',
+    borderColor: color,
+    borderStyle,
+    borderWidth: numericPixel,
+    borderRadius: numericPixel,
   },
   advanced: {
-    borderTopColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderTopWidth: '0px',
-    borderRightWidth: '0px',
-    borderBottomWidth: '0px',
-    borderLeftWidth: '0px',
-    borderTopStyle: 'solid',
-    borderRightStyle: 'solid',
-    borderBottomStyle: 'solid',
-    borderLeftStyle: 'solid',
-    borderTopLeftRadius: '0px',
-    borderTopRightRadius: '0px',
-    borderBottomRightRadius: '0px',
-    borderBottomLeftRadius: '0px',
+    borderTopColor: color,
+    borderRightColor: color,
+    borderBottomColor: color,
+    borderLeftColor: color,
+    borderTopWidth: numericPixel,
+    borderRightWidth: numericPixel,
+    borderBottomWidth: numericPixel,
+    borderLeftWidth: numericPixel,
+    borderTopStyle: borderStyle,
+    borderRightStyle: borderStyle,
+    borderBottomStyle: borderStyle,
+    borderLeftStyle: borderStyle,
+    borderTopLeftRadius: numericPixel,
+    borderTopRightRadius: numericPixel,
+    borderBottomRightRadius: numericPixel,
+    borderBottomLeftRadius: numericPixel,
   },
 } as const
 
-export const BACKGROUND = {
+export const BACKGROUND: PropertySet = {
   title: 'Background',
   properties: {
-    backgroundColor: 'transparent',
-    backgroundImage: 'none',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'unset',
+    backgroundColor: color,
+    backgroundImage: createDropdown(['none']),
+    backgroundRepeat: createDropdown(
+      ['no repeat', 'repeat', 'repeat x', 'repeat y'],
+      kebabCase
+    ),
+    backgroundSize: createDropdown(['cover', 'contain']),
   },
 } as const
 
-export const FONT = {
+export const FONT: PropertySet = {
   title: 'Font',
   properties: {
-    fontSize: '12px',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontFamily: 'sans-serif',
-    color: '#000000',
-    letterSpacing: 'normal',
+    fontSize: {
+      defaultValue: 12,
+      selector: 'numeric',
+      selectorProps: { transformValue: (n: number) => `${n}px` },
+    },
+    fontStyle: createDropdown(['normal', 'italic']),
+    fontWeight: createDropdown(['normal', 'bold']),
+    fontFamily: createDropdown(['serif', 'sans serif', 'monospace'], kebabCase),
+    color,
+    letterSpacing: createNumeric((n: string) =>
+      n === '0' ? 'normal' : `${n}px`
+    ),
   },
 } as const
 
-export const MARGIN = {
+export const MARGIN: PropertySet = {
   title: 'Margins',
   properties: {
-    marginTop: '0px',
-    marginRight: '0px',
-    marginBottom: '0px',
-    marginLeft: '0px',
+    marginTop: numericPixel,
+    marginRight: numericPixel,
+    marginBottom: numericPixel,
+    marginLeft: numericPixel,
   },
 } as const
 
-export const PADDING = {
+export const PADDING: PropertySet = {
   title: 'Padding',
   properties: {
-    paddingTop: '0px',
-    paddingRight: '0px',
-    paddingBottom: '0px',
-    paddingLeft: '0px',
+    paddingTop: numericPixel,
+    paddingRight: numericPixel,
+    paddingBottom: numericPixel,
+    paddingLeft: numericPixel,
   },
 } as const
 
@@ -97,15 +145,38 @@ export const CUSTOM_COMPONENT_PROPERTIES = [
 ] as const
 
 export const DEFAULT_CUSTOM_COMPONENT_STYLE = CUSTOM_COMPONENT_PROPERTIES.reduce(
-  (defaultStyles, propertyConfig) => {
-    const { properties } = propertyConfig
+  (style, { properties }) => {
+    const nextStyle = Object.keys(properties).reduce(
+      (propertyMap, property) => {
+        const { defaultValue, selectorProps = {} } = properties[property]
+        const { transformValue } = selectorProps
+
+        return {
+          ...propertyMap,
+          [property]: transformValue
+            ? transformValue(defaultValue)
+            : defaultValue,
+        }
+      },
+      {}
+    )
+
     return {
-      ...defaultStyles,
-      ...properties,
+      ...style,
+      ...nextStyle,
     }
   },
   { position: 'relative' }
 )
+
+export const FULL_PROPERTY_SET = {
+  ...DIMENSIONS.properties,
+  ...BACKGROUND.properties,
+  ...BORDER.properties,
+  ...FONT.properties,
+  ...MARGIN.properties,
+  ...PADDING.properties,
+}
 
 export const MOCK_CUSTOM_COMPONENT: CustomComponent = {
   type: 'text',
@@ -126,7 +197,6 @@ export const NESTED: CustomComponent = {
     style: {
       ...DEFAULT_CUSTOM_COMPONENT_STYLE,
       color: 'red',
-      fontSize: '12pt',
       padding: '10px',
       border: '1px solid blue',
     },

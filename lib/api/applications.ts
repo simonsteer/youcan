@@ -154,8 +154,6 @@ router.post(
       body: { data },
     } = req
 
-    console.log(data, name)
-
     try {
       const moduleable = await Moduleable.findOne({ application_id, name })
       if (!moduleable) {

@@ -1,18 +1,30 @@
 import React from 'react'
 import { Provider } from 'react-redux'
+import flatten from 'lodash/flatten'
 import store from './reducers/store'
-import EditingInterface from './components/EditingInterface'
 import ComponentRenderer from './components/ComponentRenderer'
 import {
-  MOCK_CUSTOM_COMPONENT,
   NESTED,
+  CUSTOM_COMPONENT_PROPERTIES,
 } from './components/ComponentRenderer/constants'
+import StyleEditor from './components/StyleEditor/StyleEditor'
 
-const App = () => (
-  <Provider store={store}>
-    <ComponentRenderer isEditMode component={NESTED} />
-    <EditingInterface />
-  </Provider>
-)
+const App = () => {
+  const editors = flatten(
+    CUSTOM_COMPONENT_PROPERTIES.map(({ properties }) =>
+      Object.keys(properties).map(key => ({
+        key,
+        value: properties[key],
+      }))
+    )
+  )
+
+  return (
+    <Provider store={store}>
+      <ComponentRenderer isEditMode component={NESTED} />
+      <StyleEditor onChange={console.log} />
+    </Provider>
+  )
+}
 
 export default App
