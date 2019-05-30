@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import get from 'lodash/get'
 import { COLORS } from '../constants'
 import Flex from '../Flex'
+import { Arrow } from './components'
 
 export interface NumericInputProps<T extends (n: number) => any> {
   min?: number
@@ -22,6 +23,7 @@ export const NumericInput = <D extends (n: number) => any>({
   transformValue,
 }: NumericInputProps<D>) => {
   const [value, setValue] = useState(start)
+  const [isFocused, setIsFocused] = useState(false)
 
   const handleChange = (param: SyntheticEvent | number) => {
     const val: number = Number(
@@ -38,8 +40,13 @@ export const NumericInput = <D extends (n: number) => any>({
     onChange(nextValue)
   }
 
+  const focusHandlers = {
+    onFocus: () => setIsFocused(true),
+    onBlur: () => setIsFocused(false),
+  }
+
   return (
-    <Container>
+    <Container isFocused={isFocused}>
       <Input
         type="number"
         value={value}
@@ -47,20 +54,44 @@ export const NumericInput = <D extends (n: number) => any>({
         min={min}
         max={max}
         step={step}
+        {...focusHandlers}
       />
       <Flex center column>
-        <Arrow onClick={() => handleChange(Number(value + 1))} rotate={45} />
-        <Arrow onClick={() => handleChange(Number(value - 1))} rotate={225} />
+        <Arrow
+          {...focusHandlers}
+          onClick={() => handleChange(Number(value + 1))}
+          rotate={45}
+        />
+        <Arrow
+          {...focusHandlers}
+          onClick={() => handleChange(Number(value - 1))}
+          rotate={225}
+        />
       </Flex>
     </Container>
   )
 }
 
-const Container = styled(Flex)`
+const Container = styled(Flex)<{ isFocused: boolean }>`
   width: 75px;
   height: 20px;
-  background: ${COLORS.black};
   font-size: 12px;
+  background: ${({ isFocused }) => (isFocused ? COLORS.grey : COLORS.black)};
+  transition: background 0.2s;
+  button {
+    transition: border-color 0.2s;
+    border-bottom-color: ${({ isFocused }) =>
+      isFocused ? COLORS.grey : COLORS.black};
+    border-right-color: ${({ isFocused }) =>
+      isFocused ? COLORS.grey : COLORS.black};
+  }
+  &:hover {
+    background: ${COLORS.grey};
+    button {
+      border-bottom-color: ${COLORS.grey};
+      border-right-color: ${COLORS.grey};
+    }
+  }
 `
 
 const Input = styled.input`
@@ -74,19 +105,4 @@ const Input = styled.input`
   &::-webkit-outer-spin-button {
     appearance: none;
   }
-`
-
-interface ArrowProps {
-  rotate: number
-}
-const Arrow = styled.button<ArrowProps>`
-  width: 0;
-  height: 0;
-  padding: 0px;
-  margin-right: 5px;
-  border-top: 2px solid ${COLORS.white};
-  border-left: 2px solid ${COLORS.white};
-  border-bottom: 2px solid ${COLORS.black};
-  border-right: 2px solid ${COLORS.black};
-  transform: rotate(${({ rotate }) => `${rotate}deg`});
 `
