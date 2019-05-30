@@ -6,6 +6,7 @@ interface DropdownMenuProps {
   options: string[]
   transformValue?: (option: string) => any
   onChange?: (option?: string) => void
+  onFocus?: () => void
   name: string
 }
 
@@ -13,6 +14,7 @@ const DropdownMenu = ({
   options,
   transformValue = o => o,
   onChange = () => {},
+  onFocus = () => {},
   name,
 }: DropdownMenuProps) => {
   const [value, setValue] = useState(options[0])
@@ -31,6 +33,7 @@ const DropdownMenu = ({
         name={name}
         style={{ _webkitAppearance: 'none' }}
         onChange={handleChange}
+        onFocus={onFocus}
         value={value}
       >
         {options.map((option, index) => (

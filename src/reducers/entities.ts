@@ -11,8 +11,8 @@ export type Entities = { [key in keyof typeof entityShape]: EntityShape }
 const initialState: Entities = {
   user: {},
   application: {},
-  moduleable: {},
-  module: {},
+  recordable: {},
+  record: {},
 }
 
 const session = (state = initialState, action: EntitiesAction) => {

@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import Application from '../models/application'
-import Moduleable, { ModuleableSchema } from '../models/moduleable'
-import Module, { ModuleSchema } from '../models/module'
+import Recordable, { RecordableSchema } from '../models/recordable'
+import Record, { RecordSchema } from '../models/record'
 import { authentication, AuthenticationRequest } from '../middleware'
-import ModuleCreatorService from '../services/moduleCreatorService'
+import RecordCreatorService from '../services/recordCreatorService'
 import { ExtendedRequest } from './types'
 
 const router = Router()
@@ -39,6 +39,7 @@ router.post(
 
     try {
       const application = await IApplication.save()
+      console.log({ application })
       res.status(201).json({ application })
     } catch (e) {
       next(e)
@@ -60,19 +61,19 @@ router.get(
 )
 
 router.get(
-  '/:application_id/moduleables',
+  '/:application_id/recordables',
   authentication,
   async (req: ExtendedRequest<{ application_id: string }>, res, next) => {
     const { application_id } = req.params
 
     try {
-      const moduleables = await Moduleable.find({ application_id })
-      if (!moduleables) {
-        next(new Error("Couldn't get application modules"))
+      const recordables = await Recordable.find({ application_id })
+      if (!recordables) {
+        next(new Error("Couldn't get application records"))
         return
       }
 
-      res.status(200).json({ moduleables })
+      res.status(200).json({ recordables })
     } catch (e) {
       next(e)
     }
@@ -80,15 +81,15 @@ router.get(
 )
 
 router.post(
-  '/:application_id/moduleables',
+  '/:application_id/recordables',
   authentication,
   async (
     req: AuthenticationRequest &
       ExtendedRequest<
         { application_id: string },
         {
-          name: ModuleableSchema['name']
-          fields: ModuleableSchema['fields']
+          name: RecordableSchema['name']
+          fields: RecordableSchema['fields']
         }
       >,
     res,
@@ -97,16 +98,16 @@ router.post(
     const { application_id } = req.params
     const { name, fields } = req.body
 
-    // TODO: ADD moduleableCreatorService which validates fields
-    const IModuleable = new Moduleable({
+    // TODO: ADD recordableCreatorService which validates fields
+    const IRecordable = new Recordable({
       application_id,
       name,
       fields,
     })
 
     try {
-      const moduleable = await IModuleable.save()
-      res.status(201).json({ moduleable })
+      const recordable = await IRecordable.save()
+      res.status(201).json({ recordable })
     } catch (e) {
       next(e)
     }
@@ -114,7 +115,7 @@ router.post(
 )
 
 router.get(
-  '/:application_id/modules/:name',
+  '/:application_id/records/:name',
   authentication,
   async (
     req: ExtendedRequest<{
@@ -126,9 +127,11 @@ router.get(
   ) => {
     const { application_id, name } = req.params
 
+    console.log({ application_id, name })
     try {
-      const modules = await Module.find({ application_id, name })
-      res.status(200).json({ modules })
+      const records = await Record.find({ application_id, name })
+      console.log({ records })
+      res.status(200).json({ records })
     } catch (e) {
       next(e)
     }
@@ -136,7 +139,7 @@ router.get(
 )
 
 router.post(
-  '/:application_id/modules/:name',
+  '/:application_id/records/:name',
   authentication,
   async (
     req: ExtendedRequest<
@@ -144,33 +147,34 @@ router.post(
         application_id: string
         name: string
       },
-      { data: ModuleSchema['data'] }
+      { data: RecordSchema['data'] }
     >,
     res,
     next
   ) => {
     const {
       params: { application_id, name },
-      body: { data },
+      body: data,
     } = req
 
     try {
-      const moduleable = await Moduleable.findOne({ application_id, name })
-      if (!moduleable) {
-        next(new Error(`Unable to find ${name} module`))
+      const recordable = await Recordable.findOne({ application_id, name })
+      if (!recordable) {
+        next(new Error(`Unable to find ${name} record`))
         return
       }
 
-      const moduleCreator = new ModuleCreatorService(moduleable, data)
-      const result = moduleCreator.process()
+      const recordCreator = new RecordCreatorService(recordable, data)
+      const result = recordCreator.process()
+      console.log(result)
 
       if (result === null) {
-        next(`An error occurred when creating ${moduleable.name}`)
+        next(`An error occurred when creating ${recordable.name}`)
       } else if (result instanceof Error) {
         next(result)
       } else {
-        const module = await result.save()
-        res.status(201).json({ module })
+        const record = await result.save()
+        res.status(201).json({ record })
       }
     } catch (e) {
       next(e)

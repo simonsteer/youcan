@@ -1,10 +1,13 @@
 import { ReduxState } from '../reducers'
-import { Resource } from '../reducers/fetching'
 import { RequestConfig } from '../actions/request'
 
-type FetchingMap = { [key: string]: boolean; some: boolean; every: boolean }
+export type FetchingMap = {
+  [key: string]: boolean
+  some: boolean
+  every: boolean
+}
 
-export const getIsResourceFetching = (state: ReduxState, resource: Resource) =>
+export const getIsResourceFetching = (state: ReduxState, resource: string) =>
   !!state.fetching.resource[resource]
 
 export const getFetchingMap = (state: ReduxState, requests: RequestConfig[]) =>

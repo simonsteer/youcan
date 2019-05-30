@@ -10,12 +10,14 @@ export const COMPONENT_TYPES: { [key: string]: (props: any) => JSX.Element } = {
 
 type Selector = 'dropdown' | 'numeric' | 'range'
 
+export interface PropertyConfig {
+  defaultValue: string | number
+  selector: Selector
+  selectorProps?: any
+}
+
 export interface Property {
-  [property: string]: {
-    defaultValue: string | number
-    selector: Selector
-    selectorProps?: any
-  }
+  [property: string]: PropertyConfig
 }
 
 export interface PropertySet {

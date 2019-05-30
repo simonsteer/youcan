@@ -2,11 +2,8 @@ import React, { Component, SyntheticEvent } from 'react'
 import { connect } from 'react-redux'
 import omit from 'lodash/omit'
 import { CustomComponent } from './types'
-import { COMPONENT_TYPES, DEFAULT_CUSTOM_COMPONENT_STYLE } from './constants'
-import {
-  interactionSelectComponent,
-  interactionDeselectComponent,
-} from '../../actions/interaction'
+import { COMPONENT_TYPES } from './constants'
+import { selectComponent, deselectComponent } from '../../actions/interaction'
 import { getSelectedComponent } from '../../selectors/interaction'
 import { ReduxState } from '../../reducers'
 
@@ -20,8 +17,8 @@ const mapStateToProps = (state: ReduxState) => ({
 })
 
 const mapDispatchToProps = {
-  interactionSelectComponent,
-  interactionDeselectComponent,
+  selectComponent,
+  deselectComponent,
 }
 
 type Props = ComponentRendererProps &
@@ -34,8 +31,8 @@ class ComponentRenderer extends Component<Props> {
       props: {
         component: { type, children, style },
         isEditMode = false,
-        interactionSelectComponent,
-        interactionDeselectComponent,
+        selectComponent,
+        deselectComponent,
         selectedComponent,
       },
     } = this
@@ -46,8 +43,8 @@ class ComponentRenderer extends Component<Props> {
     }
 
     const reduxDependencies = {
-      interactionSelectComponent,
-      interactionDeselectComponent,
+      selectComponent,
+      deselectComponent,
       selectedComponent,
     }
 
@@ -100,16 +97,16 @@ class ComponentRenderer extends Component<Props> {
   handleClick = (event: SyntheticEvent) => {
     event.stopPropagation()
     const {
-      interactionSelectComponent,
-      interactionDeselectComponent,
+      selectComponent,
+      deselectComponent,
       selectedComponent,
       component,
     } = this.props
 
     if (selectedComponent.key === this.key) {
-      interactionDeselectComponent()
+      deselectComponent()
     } else {
-      interactionSelectComponent(this.key, component)
+      selectComponent(this.key, component)
       const originalStyle = omit(component.style, '_before')
       console.log({ originalStyle })
     }

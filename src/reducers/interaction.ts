@@ -44,6 +44,20 @@ const interaction = (state = initialState, action: InteractionAction) => {
         },
         state
       )
+    case 'INTERACTION_MODIFY_SELECTED_COMPONENT': {
+      if (!state.selectedComponent.component) {
+        return state
+      }
+
+      return u(
+        {
+          selectedComponent: {
+            component: action.payload.updates,
+          },
+        },
+        state
+      )
+    }
     default:
       return state
   }

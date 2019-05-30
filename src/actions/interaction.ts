@@ -1,19 +1,24 @@
 import { CustomComponent } from '../components/ComponentRenderer/types'
+import { StyleObject } from '../components/View'
 
-export const interactionOpenSidebar = () =>
-  ({ type: 'INTERACTION_OPEN_SIDEBAR' } as const)
+export const openSidebar = () => ({ type: 'INTERACTION_OPEN_SIDEBAR' } as const)
 
-export const interactionCloseSidebar = () =>
+export const closeSidebar = () =>
   ({ type: 'INTERACTION_CLOSE_SIDEBAR' } as const)
 
-export const interactionSelectComponent = (
-  key: number,
-  component: CustomComponent
-) =>
+export const selectComponent = (key: number, component: CustomComponent) =>
   ({
     type: 'INTERACTION_SELECT_COMPONENT',
     payload: { key, component },
   } as const)
 
-export const interactionDeselectComponent = () =>
+export const deselectComponent = () =>
   ({ type: 'INTERACTION_DESELECT_COMPONENT' } as const)
+
+export const updateSelectedComponent = (
+  updates: { style?: StyleObject } = {}
+) =>
+  ({
+    type: 'INTERACTION_MODIFY_SELECTED_COMPONENT',
+    payload: { updates },
+  } as const)

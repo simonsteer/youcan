@@ -3,8 +3,8 @@ import { schema } from 'normalizr'
 export const entityShape = {
   user: new schema.Entity('user', {}, { idAttribute: '_id' }),
   application: new schema.Entity('application', {}, { idAttribute: '_id' }),
-  moduleable: new schema.Entity('moduleable', {}, { idAttribute: '_id' }),
-  module: new schema.Entity('module', {}, { idAttribute: '_id' }),
+  recordable: new schema.Entity('recordable', {}, { idAttribute: '_id' }),
+  record: new schema.Entity('record', {}, { idAttribute: '_id' }),
 } as const
 
 export type Entity = keyof typeof entityShape

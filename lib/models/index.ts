@@ -4,8 +4,8 @@ export * from './user'
 export { default as Application } from './application'
 export * from './application'
 
-export { default as Moduleable } from './moduleable'
-export * from './moduleable'
+export { default as Recordable } from './recordable'
+export * from './recordable'
 
-export { default as Module } from './module'
-export * from './module'
+export { default as Record } from './record'
+export * from './record'

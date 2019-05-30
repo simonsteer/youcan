@@ -1,5 +1,5 @@
-import Module, { ModuleSchema, IModule } from '../models/module'
-import Moduleable, { ModuleableSchema } from '../models/moduleable'
+import Record, { RecordSchema, IRecord } from '../models/record'
+import Recordable, { RecordableSchema } from '../models/recordable'
 import { ValueInObject } from '../../global.types'
 
 export const MODULEABLE_TYPES = {
@@ -14,26 +14,26 @@ export const MODULEABLE_TYPES = {
   model: String,
 } as const
 
-export type ModuleableConfigs = typeof MODULEABLE_TYPES
-export type Moduleable = keyof typeof MODULEABLE_TYPES
-export type ModuleableConstructor = ValueInObject<typeof MODULEABLE_TYPES>
+export type RecordableConfigs = typeof MODULEABLE_TYPES
+export type Recordable = keyof typeof MODULEABLE_TYPES
+export type RecordableConstructor = ValueInObject<typeof MODULEABLE_TYPES>
 
-export default class ModuleCreatorService {
-  moduleable: ModuleableSchema
-  data: ModuleSchema['data']
+export default class RecordCreatorService {
+  recordable: RecordableSchema
+  data: RecordSchema['data']
 
-  constructor(moduleable: ModuleableSchema, data: ModuleSchema['data']) {
-    this.moduleable = moduleable
+  constructor(recordable: RecordableSchema, data: RecordSchema['data']) {
+    this.recordable = recordable
     this.data = data
   }
 
   public process() {
     const verification = this.verifyProvidedData()
-    return verification instanceof Error ? verification : this.createModule()
+    return verification instanceof Error ? verification : this.createRecord()
   }
 
   private verifyProvidedData() {
-    const { fields, name } = this.moduleable
+    const { fields, name } = this.recordable
 
     const requiredFields = fields.filter(({ required }) => required)
     const missingRequiredFields = requiredFields.filter(
@@ -71,18 +71,19 @@ export default class ModuleCreatorService {
     return true
   }
 
-  private createModuleData = () =>
-    this.moduleable.fields.reduce(
+  private createRecordData = () =>
+    this.recordable.fields.reduce(
       (data, { name }) => {
         data[name] = this.data[name]
         return data
       },
-      {} as ModuleSchema['data']
+      {} as RecordSchema['data']
     )
 
-  private createModule = () =>
-    new Module({
-      name: this.moduleable.name,
-      data: this.createModuleData(),
+  private createRecord = () =>
+    new Record({
+      name: this.recordable.name,
+      data: this.createRecordData(),
+      application_id: this.recordable.application_id,
     })
 }
