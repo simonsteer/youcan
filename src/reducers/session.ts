@@ -1,5 +1,5 @@
 import u from 'updeep'
-import { SessionAction } from '../actions/types'
+import { Action } from '../actions/types'
 
 const initialState = {
   token: null,
@@ -9,7 +9,7 @@ export interface Session {
   token: null | string
 }
 
-const session = (state = initialState, action: SessionAction) => {
+const session = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'SESSION_SET_TOKEN': {
       const { token } = action.payload

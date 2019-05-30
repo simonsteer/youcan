@@ -9,7 +9,7 @@ export const entityShape = {
 
 export type Entity = keyof typeof entityShape
 
-const entityMap = Object.keys(entityShape) as (keyof typeof entityShape)[]
+const entityMap = Object.keys(entityShape) as Entity[]
 
 type Pluralized = { [key: string]: schema.Array }
 

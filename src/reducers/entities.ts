@@ -1,5 +1,5 @@
 import u from 'updeep'
-import { EntitiesAction } from '../actions/types'
+import { Action } from '../actions/types'
 import { entityShape } from './schema'
 
 interface EntityShape {
@@ -15,7 +15,7 @@ const initialState: Entities = {
   record: {},
 }
 
-const session = (state = initialState, action: EntitiesAction) => {
+const session = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'ENTITIES_SET': {
       const { entities } = action.payload

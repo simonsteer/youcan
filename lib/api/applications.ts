@@ -39,7 +39,6 @@ router.post(
 
     try {
       const application = await IApplication.save()
-      console.log({ application })
       res.status(201).json({ application })
     } catch (e) {
       next(e)
@@ -127,10 +126,8 @@ router.get(
   ) => {
     const { application_id, name } = req.params
 
-    console.log({ application_id, name })
     try {
       const records = await Record.find({ application_id, name })
-      console.log({ records })
       res.status(200).json({ records })
     } catch (e) {
       next(e)
@@ -166,7 +163,6 @@ router.post(
 
       const recordCreator = new RecordCreatorService(recordable, data)
       const result = recordCreator.process()
-      console.log(result)
 
       if (result === null) {
         next(`An error occurred when creating ${recordable.name}`)

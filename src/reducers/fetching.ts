@@ -1,6 +1,5 @@
 import u from 'updeep'
-import * as actions from '../actions/request'
-import { RequestAction } from '../actions/types'
+import { Action } from '../actions/types'
 
 export type Resource = string
 type ResourceMap = { [key: string]: boolean }
@@ -13,7 +12,7 @@ const initialState: Fetching = {
   resource: {},
 }
 
-const fetching = (state = initialState, action: RequestAction) => {
+const fetching = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'REQUEST': {
       const {
