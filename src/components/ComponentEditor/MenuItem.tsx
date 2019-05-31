@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, TransitionEvent } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../constants'
 import Flex from '../Flex'
@@ -26,10 +26,9 @@ const MenuItem = ({ title, children }: MenuItemProps) => {
 export default MenuItem
 
 const Container = styled.div<{ isOpen: boolean }>`
-  transition: max-height 0.3s;
   background: ${COLORS.black};
-  height: auto;
-  overflow: hidden;
+  height: ${({ isOpen }) => (isOpen ? 'auto' : '48px')};
+  overflow: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 `
 // max-height: ${({ isOpen }) => (isOpen ? '500px' : '48px')};
 

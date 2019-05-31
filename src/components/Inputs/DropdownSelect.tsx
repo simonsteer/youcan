@@ -46,25 +46,27 @@ export const DropdownSelect = <F extends (n: string) => any>({
   }
 
   return (
-    <List ref={dropdown} numItems={items.length} isOpen={isOpen}>
-      {items.map(({ value, label }, index) => (
-        <Item
-          key={index}
-          index={index}
-          as="li"
-          align="center"
-          onClick={() => handleChange(value)}
-        >
-          {index === 0 ? (
-            <DropdownArrow
-              onClick={() => setIsOpen(!isOpen)}
-              rotate={isOpen ? -135 : -45}
-            />
-          ) : null}
-          {label}
-        </Item>
-      ))}
-    </List>
+    <Flex height="20px" overflow="visible">
+      <List ref={dropdown} numItems={items.length} isOpen={isOpen}>
+        {items.map(({ value, label }, index) => (
+          <Item
+            key={index}
+            index={index}
+            as="li"
+            align="center"
+            onClick={() => handleChange(value)}
+          >
+            {index === 0 ? (
+              <DropdownArrow
+                onClick={() => setIsOpen(!isOpen)}
+                rotate={isOpen ? -135 : -45}
+              />
+            ) : null}
+            {label}
+          </Item>
+        ))}
+      </List>
+    </Flex>
   )
 }
 
