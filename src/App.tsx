@@ -1,10 +1,11 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from './reducers/store'
-import { NumericInput, DropdownSelect } from './components/Inputs'
+import { Toggle, NumericInput, DropdownSelect } from './components/Inputs'
 
 const App = () => (
   <Provider store={store}>
+    <Toggle onChange={console.log} />
     <NumericInput onChange={console.log} />
     <DropdownSelect
       options={[
