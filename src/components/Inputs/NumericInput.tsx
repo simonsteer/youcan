@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import get from 'lodash/get'
 import { COLORS } from '../constants'
 import Flex from '../Flex'
-import { Arrow } from './components'
+import Arrow from './Arrow'
 
 export interface NumericInputProps<T extends (n: number) => any> {
   min?: number

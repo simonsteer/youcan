@@ -32,6 +32,7 @@ const Switch = styled.div`
 `
 
 const Container = styled(Flex)<{ isToggled: boolean }>`
+  cursor: pointer;
   width: 75px;
   height: 20px;
   border-radius: 10px;

@@ -1,4 +1,4 @@
-import { FlexProps } from './types'
+import { FlexProps } from './Flex'
 
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)

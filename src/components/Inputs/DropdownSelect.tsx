@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import get from 'lodash/get'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
-import { Arrow } from './components'
+import Arrow from './Arrow'
 
 export interface DropdownSelectProps<T extends (n: string) => any> {
   options: { value: string; label: string }[]
