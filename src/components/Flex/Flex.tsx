@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { getFlexStyle } from './utils'
+import { getStyle } from './utils'
 
 export interface FlexProps {
   flex?: number
@@ -9,10 +9,15 @@ export interface FlexProps {
   justify?: 'start' | 'center' | 'end' | 'around' | 'between' | 'even'
   align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
   center?: boolean
+  height?: string
+  width?: string
+  minHeight?: string
+  minWidth?: string
+  overflow?: 'hidden' | 'auto' | 'scroll'
 }
 
 const Flex = styled.div<FlexProps>`
-  ${getFlexStyle}
+  ${getStyle}
 `
 
 export default Flex

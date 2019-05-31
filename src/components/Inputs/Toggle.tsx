@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Flex from '../Flex'
 import { COLORS } from '../constants'
 
 export interface ToggleProps {
@@ -31,7 +30,7 @@ const Switch = styled.div`
   background: ${COLORS.white};
 `
 
-const Container = styled(Flex)<{ isToggled: boolean }>`
+const Container = styled.div<{ isToggled: boolean }>`
   cursor: pointer;
   width: 75px;
   height: 20px;

@@ -1,5 +1,23 @@
 import { FlexProps } from './Flex'
 
+export const getStyle = ({
+  height = 'auto',
+  width = 'auto',
+  minHeight = 'auto',
+  minWidth = 'auto',
+  overflow = 'auto',
+  ...flexProps
+}: FlexProps) => {
+  return `
+    ${getFlexStyle(flexProps)}
+    height: ${height};
+    width: ${width};
+    min-height: ${minHeight};
+    min-width: ${minWidth};
+    overflow: ${overflow};
+  `
+}
+
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)
   const justifyContent = getJustification(props)

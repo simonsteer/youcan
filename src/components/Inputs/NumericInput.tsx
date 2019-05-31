@@ -72,7 +72,7 @@ export const NumericInput = <D extends (n: number) => any>({
   )
 }
 
-const Container = styled(Flex)<{ isFocused: boolean }>`
+const Container = styled.div<{ isFocused: boolean }>`
   width: 75px;
   height: 20px;
   font-size: 12px;
