@@ -4,13 +4,17 @@ import store from './reducers/store'
 import { Toggle, NumericInput, DropdownSelect } from './components/Inputs'
 import MenuItem from './components/ComponentEditor/MenuItem'
 import Flex from './components/Flex'
+import Expandable from './components/Expandable'
 
 const App = () => (
   <Provider store={store}>
     {Array(5)
       .fill(undefined)
       .map(() => (
-        <MenuItem title="Testing">
+        <Expandable closedHeight={48}>
+          {(setIsOpen, isOpen) => 
+          <div>
+            <h3 style={{ height: '48px' }} onClick={() => setIsOpen(!isOpen)}>test</h3>
           <Toggle onChange={console.log} />
           <NumericInput onChange={console.log} />
           <DropdownSelect
@@ -22,8 +26,9 @@ const App = () => (
             ]}
             defaultValue="%"
             onChange={console.log}
-          />
-        </MenuItem>
+            />
+            </div>}
+        </Expandable>
       ))}
   </Provider>
 )

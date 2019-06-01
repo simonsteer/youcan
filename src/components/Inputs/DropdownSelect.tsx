@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import get from 'lodash/get'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
 import Arrow from './Arrow'
+import Expandable from '../Expandable';
 
 export interface DropdownSelectProps<T extends (n: string) => any> {
   options: { value: string; label: string }[]
@@ -19,53 +20,35 @@ export const DropdownSelect = <F extends (n: string) => any>({
   onChange,
   transformValue,
 }: DropdownSelectProps<F>) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const dropdown = useRef(null)
   const [items, setItems] = useState(
     sortBy(options, ({ value }) => value !== defaultValue)
   )
 
-  useEffect(() => {
-    const handler: EventListener = ({ target }) => {
-      const current = (get(dropdown, 'current') as unknown) as Node
-      if (current && !current.isSameNode(get(target, 'parentNode') as Node)) {
-        setIsOpen(false)
-      }
-    }
-    window.addEventListener('click', handler)
-    return () => window.removeEventListener('click', handler)
-  }, [])
-
-  const handleChange = (val: string) => {
+  const handleChange = (isOpen: boolean, val: string) => {
     if (isOpen) {
       const nextValue = transformValue ? transformValue(val) : val
       onChange(nextValue)
-      setItems(sortBy(options, ({ value }) => value !== val))
+      setItems(sortBy(options, ({ value }) => value === val))
     }
-    setIsOpen(!isOpen)
   }
 
   return (
-    <Flex height="20px" overflow="visible">
-      <List ref={dropdown} numItems={items.length} isOpen={isOpen}>
-        {items.map(({ value, label }, index) => (
+    <Flex height="20px" flex={1} overflow="visible">
+      <Expandable closedHeight={20} showArrow>
+        {(setIsOpen, isOpen) => items.map(({ value, label }, index) => (
           <Item
-            key={index}
-            index={index}
-            as="li"
-            align="center"
-            onClick={() => handleChange(value)}
+          key={index}
+          index={index}
+          align="center"
+          onClick={() => {
+            handleChange(isOpen, value)
+            setIsOpen(!isOpen)
+          }}
           >
-            {index === 0 ? (
-              <DropdownArrow
-                onClick={() => setIsOpen(!isOpen)}
-                rotate={isOpen ? -135 : -45}
-              />
-            ) : null}
             {label}
           </Item>
         ))}
-      </List>
+      </Expandable>
     </Flex>
   )
 }
@@ -79,7 +62,7 @@ const DropdownArrow = styled(Arrow)`
 
 const Item = styled(Flex)<{ index: number }>`
   position: relative;
-  font-size: 12px;
+  font-size: 10px;
   height: 20px;
   padding-left: 5px;
   background: ${COLORS.black};
