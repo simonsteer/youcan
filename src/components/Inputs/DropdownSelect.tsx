@@ -28,13 +28,13 @@ export const DropdownSelect = <F extends (n: string) => any>({
     if (isOpen) {
       const nextValue = transformValue ? transformValue(val) : val
       onChange(nextValue)
-      setItems(sortBy(options, ({ value }) => value === val))
+      setItems(sortBy(options, ({ value }) => value !== val))
     }
   }
 
   return (
     <Flex height="20px" flex={1} overflow="visible">
-      <Expandable closedHeight={20} showArrow>
+      <Expandable closedHeight={20} showArrow closeOnBlur>
         {(setIsOpen, isOpen) => items.map(({ value, label }, index) => (
           <Item
           key={index}

@@ -6,6 +6,7 @@ export interface FlexProps {
   column?: boolean
   reverse?: boolean
   wrap?: boolean
+  background?: string
   justify?: 'start' | 'center' | 'end' | 'around' | 'between' | 'even'
   align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
   center?: boolean

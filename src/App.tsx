@@ -4,13 +4,11 @@ import store from './reducers/store'
 import { Toggle, NumericInput, DropdownSelect } from './components/Inputs'
 import MenuItem from './components/ComponentEditor/MenuItem'
 import Flex from './components/Flex'
+import ColorPicker from './components/Inputs/ColorPicker';
 import Expandable from './components/Expandable'
 
 const App = () => (
   <Provider store={store}>
-    {Array(5)
-      .fill(undefined)
-      .map(() => (
         <Expandable closedHeight={48}>
           {(setIsOpen, isOpen) => 
           <div>
@@ -27,9 +25,9 @@ const App = () => (
             defaultValue="%"
             onChange={console.log}
             />
+          <ColorPicker initialValue="#ffffff" onChange={console.log} />
             </div>}
         </Expandable>
-      ))}
   </Provider>
 )
 

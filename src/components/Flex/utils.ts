@@ -6,6 +6,7 @@ export const getStyle = ({
   minHeight = 'auto',
   minWidth = 'auto',
   overflow = 'auto',
+  background = 'transparent',
   ...flexProps
 }: FlexProps) => {
   return `
@@ -15,6 +16,7 @@ export const getStyle = ({
     min-height: ${minHeight};
     min-width: ${minWidth};
     overflow: ${overflow};
+    background: ${background};
   `
 }
 

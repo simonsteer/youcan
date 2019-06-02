@@ -1,7 +1,7 @@
 import u from 'updeep'
 import { Action } from '../actions/types'
 
-const initialState = {
+const initialState: Session = {
   token: null,
 }
 

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, TransitionEvent, Dispatch, SetStateAction } from 'react'
+import React, { useState, useRef, useEffect, useCallback, TransitionEvent, Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
-import get from 'lodash/get'
 import { COLORS } from './constants'
 import Flex from './Flex'
 
@@ -10,25 +9,32 @@ export interface ExpandableProps {
   showArrow?: boolean
   absolute?: boolean
   closeOnBlur?: boolean
+  startOpen?: boolean
 }
 
-const Expandable = ({ children, closedHeight = 0, showArrow = false }: ExpandableProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+const Expandable = ({ children, closedHeight = 0, startOpen = false, showArrow = false, closeOnBlur = false }: ExpandableProps) => {
+  const root = useRef(null)
+  const [isOpen, setIsOpen] = useState(startOpen)
   const [hasOpened, setHasOpened] = useState(false)
   const [height, setHeight] = useState(0)
-  const [node, setNode] = useState(null)
 
   const measuredRef = useCallback(node => {
     if (node !== null) {
-      setNode(node)
       setHeight(node.getBoundingClientRect().height);
     }
   }, [isOpen])
 
   useEffect(() => {
-    const handler: EventListener = ({ target }) => {
-      const _node = ((node as unknown) as Node)
-      if (_node && !_node.isSameNode(get(target, 'parentNode'))) {
+    const handler: EventListener = (e) => {
+      if (!closeOnBlur) {
+        return
+      }
+
+      if (!root || !root.current) {
+        return
+      }
+
+      if (!root.current.contains(e.target)) {
         setIsOpen(false)
       }
     }
@@ -45,7 +51,7 @@ const Expandable = ({ children, closedHeight = 0, showArrow = false }: Expandabl
   }
 
   return (
-    <ExpandableContainer hasOpened={hasOpened} height={height} closedHeight={closedHeight} isOpen={isOpen} onTransitionEnd={handleTransitionEnd}>
+    <ExpandableContainer ref={root} hasOpened={hasOpened} height={height} closedHeight={closedHeight} isOpen={isOpen} onTransitionEnd={handleTransitionEnd}>
         <div ref={measuredRef}>
         {children(setIsOpen, isOpen)}
       </div>
