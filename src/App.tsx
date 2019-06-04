@@ -2,7 +2,6 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import store from './reducers/store'
 import { Toggle, NumericInput, DropdownSelect } from './components/Inputs'
-import MenuItem from './components/ComponentEditor/MenuItem'
 import Flex from './components/Flex'
 import ColorPicker from './components/Inputs/ColorPicker';
 import Expandable from './components/Expandable'

@@ -35,6 +35,7 @@ const Expandable = ({ children, closedHeight = 0, startOpen = false, showArrow =
       }
 
       if (!root.current.contains(e.target)) {
+        console.log({ root: root.current, t: e.target})
         setIsOpen(false)
       }
     }

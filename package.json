@@ -22,6 +22,7 @@
     "redux-saga": "^1.0.2",
     "reselect": "^4.0.0",
     "styled-components": "^4.2.0",
+    "tinycolor2": "^1.4.1",
     "updeep": "^1.1.0",
     "validator": "^10.11.0"
   },
@@ -69,6 +70,8 @@
     "@types/redux-saga": "^0.10.5",
     "@types/reselect": "^2.2.0",
     "@types/styled-components": "^4.1.15",
+    "@types/tinycolor": "^1.1.27",
+    "@types/tinycolor2": "^1.4.2",
     "concurrently": "^4.1.0",
     "nodemon": "^1.19.0",
     "typescript": "^3.4.5"
