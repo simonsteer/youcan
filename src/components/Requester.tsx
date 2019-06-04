@@ -39,9 +39,6 @@ class Requester<D extends RequesterMap> extends Component<
 
   render() {
     const { children } = this.props
-
-    console.log(this.props.state)
-
     return typeof children === 'function'
       ? children(this.renderProps)
       : children

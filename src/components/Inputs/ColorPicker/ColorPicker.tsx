@@ -9,13 +9,13 @@ interface ColorPickerProps {
   initialValue: string
 }
 
-const ColorPicker = ({ initialValue = '#a3a3a3' }: ColorPickerProps) => {
+const ColorPicker = ({ initialValue = '#a3a3a3', onChange }: ColorPickerProps) => {
   const [value, setValue] = useState(initialValue)
   const [displayValue, setDisplayValue] = useState(initialValue)
 
   const handleMouseMove = (e: MouseEvent) => {
     const { offsetX, offsetY } = e.nativeEvent
-    
+
     const hue = Math.round((offsetX / 75) * 360)
     const lightness = Math.round(Math.max((offsetY / 75) * 100, 0))
 
@@ -30,9 +30,10 @@ const ColorPicker = ({ initialValue = '#a3a3a3' }: ColorPickerProps) => {
   return (
     <Flex height="20px" overflow="visible">
       <Expandable closedHeight={20} closeOnBlur>
-        {(setIsOpen, isOpen) => {
+        {({ setIsOpen, isOpen }) => {
           const handleClick = () => {
             setValue(displayValue)
+            onChange(displayValue)
             setIsOpen(false)
           }
 

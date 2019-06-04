@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
-import get from 'lodash/get'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
-import Arrow from './Arrow'
 import Expandable from '../Expandable';
 
 export interface DropdownSelectProps<T extends (n: string) => any> {
@@ -35,7 +33,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
   return (
     <Flex height="20px" flex={1} overflow="visible">
       <Expandable closedHeight={20} showArrow closeOnBlur>
-        {(setIsOpen, isOpen) => items.map(({ value, label }, index) => (
+        {({ setIsOpen, isOpen }) => items.map(({ value, label }, index) => (
           <Item
           key={index}
           index={index}
@@ -52,13 +50,6 @@ export const DropdownSelect = <F extends (n: string) => any>({
     </Flex>
   )
 }
-
-const DropdownArrow = styled(Arrow)`
-  position: absolute;
-  right: 0px;
-  top: 7px;
-  transition: all 0.2s;
-`
 
 const Item = styled(Flex)<{ index: number }>`
   position: relative;
@@ -78,14 +69,4 @@ const Item = styled(Flex)<{ index: number }>`
       border-right-color: ${COLORS.grey};
     }
   }
-`
-
-const List = styled.ul<{ isOpen: boolean; numItems: number }>`
-  background: ${COLORS.black};
-  overflow: hidden;
-  border: none;
-  border-radius: 0px;
-  width: 100%;
-  transition: height 0.2s;
-  height: ${({ isOpen, numItems }) => (isOpen ? `${numItems * 20}px` : '20px')};
 `
