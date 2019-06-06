@@ -73,7 +73,7 @@ export const NumericInput = <D extends (n: number) => any>({
 }
 
 const Container = styled(Flex)<{ isFocused: boolean }>`
-  width: 75px;
+  flex: 1;
   height: 20px;
   font-size: 12px;
   background: ${({ isFocused }) => (isFocused ? COLORS.grey : COLORS.black)};

@@ -15,6 +15,7 @@ export interface FlexProps {
   minHeight?: string
   minWidth?: string
   overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
+  padding?: string
 }
 
 const Flex = styled.div<FlexProps>`

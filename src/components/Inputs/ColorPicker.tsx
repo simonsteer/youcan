@@ -1,15 +1,15 @@
 import React, { useState, MouseEvent } from 'react'
 import styled from 'styled-components'
 import tinycolor from 'tinycolor2'
-import Flex from '../../Flex';
-import Expandable from '../../Expandable';
+import Flex from '../Flex';
+import Expandable from '../Expandable';
 
 interface ColorPickerProps {
   onChange: (color: string) => void
   initialValue: string
 }
 
-const ColorPicker = ({ initialValue = '#a3a3a3', onChange }: ColorPickerProps) => {
+export const ColorPicker = ({ initialValue = '#a3a3a3', onChange }: ColorPickerProps) => {
   const [value, setValue] = useState(initialValue)
   const [displayValue, setDisplayValue] = useState(initialValue)
 
@@ -49,8 +49,6 @@ const ColorPicker = ({ initialValue = '#a3a3a3', onChange }: ColorPickerProps) =
     </Flex>
   )
 }
-
-export default ColorPicker
 
 const ColorPreview = styled(Flex)`
   cursor: pointer;

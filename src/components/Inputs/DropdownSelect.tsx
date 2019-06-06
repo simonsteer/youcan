@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
-import Expandable from '../Expandable';
+import Expandable from '../Expandable'
 
 export interface DropdownSelectProps<T extends (n: string) => any> {
   options: { value: string; label: string }[]
@@ -32,12 +32,14 @@ export const DropdownSelect = <F extends (n: string) => any>({
 
   return (
     <Flex height="20px" flex={1} overflow="visible">
-      <Expandable closedHeight={20} showArrow closeOnBlur>
+      <Expandable closedHeight={20} closeOnBlur>
         {({ setIsOpen, isOpen }) => items.map(({ value, label }, index) => (
           <Item
+          isOpen={isOpen}
           key={index}
           index={index}
           align="center"
+          justify="end"
           onClick={() => {
             handleChange(isOpen, value)
             setIsOpen(!isOpen)
@@ -51,22 +53,19 @@ export const DropdownSelect = <F extends (n: string) => any>({
   )
 }
 
-const Item = styled(Flex)<{ index: number }>`
+const Item = styled(Flex)<{ index: number; isOpen: boolean }>`
   position: relative;
   font-size: 10px;
   height: 20px;
   padding-left: 5px;
-  background: ${COLORS.black};
+  background: ${({ isOpen }) => isOpen ? COLORS.grey : COLORS.black};
   color: ${COLORS.white};
   border: none;
   border-radius: 0px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
   &:hover {
-    background: ${COLORS.grey};
-    button {
-      border-bottom-color: ${COLORS.grey};
-      border-right-color: ${COLORS.grey};
-    }
+    background: ${({ isOpen }) => isOpen ? COLORS.white : COLORS.grey};
+    color: ${({ isOpen }) => isOpen ? COLORS.black : COLORS.white};
   }
 `

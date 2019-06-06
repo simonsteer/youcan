@@ -7,8 +7,11 @@ export const getStyle = ({
   minWidth = 'auto',
   overflow = 'auto',
   background = 'transparent',
+  padding,
   ...flexProps
 }: FlexProps) => {
+  const paddingStyle = padding ? `padding: ${padding};` : '' 
+
   return `
     ${getFlexStyle(flexProps)}
     height: ${height};
@@ -17,7 +20,7 @@ export const getStyle = ({
     min-width: ${minWidth};
     overflow: ${overflow};
     background: ${background};
-  `
+  ` + paddingStyle
 }
 
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
