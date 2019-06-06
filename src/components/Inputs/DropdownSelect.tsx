@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import Flex from '../Flex'
@@ -30,8 +30,8 @@ export const DropdownSelect = <F extends (n: string) => any>({
     }
   }
 
-  return (
-    <Flex height="20px" flex={1} overflow="visible">
+ return (
+    <Flex height="20px" flex={1} overflow="visible" position="relative">
       <Expandable closedHeight={20} closeOnBlur>
         {({ setIsOpen, isOpen }) => items.map(({ value, label }, index) => (
           <Item
@@ -45,6 +45,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
             setIsOpen(!isOpen)
           }}
           >
+            {index === 0 && <Arrow isOpen={isOpen} size={6}/>}
             {label}
           </Item>
         ))}
@@ -53,19 +54,40 @@ export const DropdownSelect = <F extends (n: string) => any>({
   )
 }
 
-const Item = styled(Flex)<{ index: number; isOpen: boolean }>`
-  position: relative;
-  font-size: 10px;
-  height: 20px;
-  padding-left: 5px;
-  background: ${({ isOpen }) => isOpen ? COLORS.grey : COLORS.black};
-  color: ${COLORS.white};
-  border: none;
-  border-radius: 0px;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-  &:hover {
-    background: ${({ isOpen }) => isOpen ? COLORS.white : COLORS.grey};
-    color: ${({ isOpen }) => isOpen ? COLORS.black : COLORS.white};
-  }
-`
+const Arrow = styled.div<{ size: number | string; isOpen: boolean; }>`
+  ${({ size, isOpen }) => {
+    const dimensions = typeof size === 'number' ? `width: ${size}px; height: ${size}px;` : `width: ${size}; height: ${size};`
+
+    return `
+      pointer-events: none;
+      ${dimensions}
+      transform: rotate(${isOpen ? 0 : 90}deg);
+      right: 5px;
+      top: 6px;
+      clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+      position: absolute;
+      transition: transform 0.2s, background-color 0.2s;
+      background: ${COLORS.white};
+      `
+    }}
+    `
+    
+    const Item = styled(Flex)<{ index: number; isOpen: boolean }>`
+    position: relative;
+    font-size: 10px;
+    height: 20px;
+    padding-right: 20px;
+    background: ${({ isOpen }) => isOpen ? COLORS.grey : COLORS.black};
+    color: ${COLORS.white};
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    &:hover {
+      background: ${({ isOpen }) => isOpen ? COLORS.white : COLORS.grey};
+      color: ${({ isOpen }) => isOpen ? COLORS.black : COLORS.white};
+      ${Arrow} {
+        background: ${({ isOpen}) => isOpen ? COLORS.black : COLORS.white};
+      }
+    }
+    `
