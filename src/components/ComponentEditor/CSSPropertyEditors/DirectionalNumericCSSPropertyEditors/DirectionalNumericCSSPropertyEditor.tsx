@@ -4,7 +4,7 @@ import NumericCSSPropertyEditor from "../NumericCSSPropertyEditor"
 import Flex from '../../../Flex';
 import MenuItem from '../../MenuItem';
 
-const DIRECTIONS = [
+export const DIRECTIONS = [
   'left',
   'bottom',
   'right',
@@ -23,7 +23,7 @@ export interface DirectionalNumericCSSPropertyEditorProps {
   title: string
 }
 
-const DirectionEditor = <T extends Direction>({ onChange, type }: DirectionEditorProps<T>) => <NumericCSSPropertyEditor displayName={type} transformValue={(number, unit) => `${number}${unit}`} dropdownProps={{ options: createDropdownOptions(type), defaultValue: 'px' }} onChange={value => onChange({ type, value })} />
+const DirectionEditor = <T extends Direction>({ onChange, type }: DirectionEditorProps<T>) => <NumericCSSPropertyEditor displayName={type} transformValue={(number, unit) => `${number}${unit}`} dropdownProps={createDirectionalDropdownProps(type)} onChange={value => onChange({ type, value })} />
 
 const DirectionalNumericCSSPropertyEditor = ({ title, onChange }: DirectionalNumericCSSPropertyEditorProps) => {
   const [values, setValues] = useState({ top: '0px', right: '0px', bottom: '0px', left: '0px' })
@@ -51,4 +51,4 @@ const DirectionalNumericCSSPropertyEditor = ({ title, onChange }: DirectionalNum
 
 export default DirectionalNumericCSSPropertyEditor
 
-const createDropdownOptions = <T extends Direction>(type: DirectionEditorProps<T>['type']) => [{ value: 'vw', label: '% window width' }, { value: 'vh', label: '% window height' }, { value: 'px', label: 'pixels' }, { value: '%', label: `% container ${type === 'bottom' || type === 'top' ? 'height' : 'width'}` }]
+export const createDirectionalDropdownProps = <T extends Direction>(type: DirectionEditorProps<T>['type']) => ({ options: [{ value: 'vw', label: '% window width' }, { value: 'vh', label: '% window height' }, { value: 'px', label: 'pixels' }, { value: '%', label: `% container ${type === 'bottom' || type === 'top' ? 'height' : 'width'}` }], defaultValue: 'px' })
