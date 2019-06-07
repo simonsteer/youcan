@@ -96,7 +96,6 @@ const ExpandableContainer = styled.div<{
 }>`
   ${({ isOpen, height, hasOpened, closedHeight }) => `
 position: relative;    
-background: ${COLORS.black};
     width: 100%;
     height: ${isOpen ? `${height}px` : `${closedHeight}px`};
     overflow: ${hasOpened && isOpen ? 'visible' : 'hidden'};

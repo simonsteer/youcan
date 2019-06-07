@@ -31,7 +31,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
   }
 
   return (
-    <Flex height="20px" flex={1} overflow="visible" position="relative">
+    <Flex height="20px" flex={1} overflow="visible">
       <Expandable closedHeight={20} closeOnBlur>
         {({ setIsOpen, isOpen }) =>
           items.map(({ value, label }, index) => (

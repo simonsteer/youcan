@@ -1,5 +1,6 @@
 import React, { useState, MouseEvent } from 'react'
 import styled from 'styled-components'
+import get from 'lodash/get'
 import tinycolor from 'tinycolor2'
 import Flex from '../Flex'
 import Expandable from '../Expandable'
@@ -17,10 +18,13 @@ export const ColorPicker = ({
   const [displayValue, setDisplayValue] = useState(initialValue)
 
   const handleMouseMove = (e: MouseEvent) => {
-    const { offsetX, offsetY } = e.nativeEvent
+    const { offsetX, offsetY, target } = e.nativeEvent
 
-    const hue = Math.round((offsetX / 75) * 360)
-    const lightness = Math.round(Math.max((offsetY / 75) * 100, 0))
+    const gradientWidth = get(target, 'clientWidth') || 1
+    const gradientHeight = get(target, 'clientHeight') || 1
+
+    const hue = Math.round((offsetX / gradientWidth) * 360)
+    const lightness = Math.round(Math.max((offsetY / gradientHeight) * 100, 0))
 
     const value = tinycolor(`hsl(${hue},100,${lightness})`)
     setDisplayValue(value.toHexString())
@@ -53,7 +57,7 @@ export const ColorPicker = ({
                 onClick={handleClick}
                 onMouseMove={handleMouseMove}
                 onMouseOut={handleMouseOut}
-                width="75px"
+                width="100%"
                 height="75px"
               >
                 <LightnessMap flex={1} />
