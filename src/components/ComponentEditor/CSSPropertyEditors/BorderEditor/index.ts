@@ -1,1 +1,1 @@
-export { default } from './BorderEditor'
+export { default } from "./BorderEditor";

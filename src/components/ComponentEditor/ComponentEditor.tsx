@@ -2,13 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
-import { PaddingEditor, MarginEditor, BorderEditor } from './CSSPropertyEditors';
+import { PaddingEditor, MarginEditor, BorderEditor } from './CSSPropertyEditors'
 
-const ComponentEditor = () => <Root column reverse justify="end">
-  <PaddingEditor onChange={console.log} />
-  <MarginEditor onChange={console.log} />
-  <BorderEditor onChange={console.log} />
-</Root>
+const ComponentEditor = () => (
+  <Root column reverse justify="end">
+    <PaddingEditor onChange={console.log} />
+    <MarginEditor onChange={console.log} />
+    <BorderEditor onChange={console.log} />
+  </Root>
+)
 
 export default ComponentEditor
 

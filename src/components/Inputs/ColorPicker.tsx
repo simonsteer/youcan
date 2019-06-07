@@ -1,15 +1,18 @@
 import React, { useState, MouseEvent } from 'react'
 import styled from 'styled-components'
 import tinycolor from 'tinycolor2'
-import Flex from '../Flex';
-import Expandable from '../Expandable';
+import Flex from '../Flex'
+import Expandable from '../Expandable'
 
 interface ColorPickerProps {
   onChange: (color: string) => void
   initialValue: string
 }
 
-export const ColorPicker = ({ initialValue = '#a3a3a3', onChange }: ColorPickerProps) => {
+export const ColorPicker = ({
+  initialValue = '#a3a3a3',
+  onChange,
+}: ColorPickerProps) => {
   const [value, setValue] = useState(initialValue)
   const [displayValue, setDisplayValue] = useState(initialValue)
 
@@ -37,13 +40,27 @@ export const ColorPicker = ({ initialValue = '#a3a3a3', onChange }: ColorPickerP
             setIsOpen(false)
           }
 
-          return <div>
-            <ColorPreview width="100%" height="20px" style={{ background: displayValue }} onClick={() => setIsOpen(!isOpen)} />
-            <ColorMap column onClick={handleClick} onMouseMove={handleMouseMove} onMouseOut={handleMouseOut} width="75px" height="75px">
-              <LightnessMap flex={1} />
-              <DarknessMap flex={1} />
-            </ColorMap>
-          </div>
+          return (
+            <div>
+              <ColorPreview
+                width="100%"
+                height="20px"
+                style={{ background: displayValue }}
+                onClick={() => setIsOpen(!isOpen)}
+              />
+              <ColorMap
+                column
+                onClick={handleClick}
+                onMouseMove={handleMouseMove}
+                onMouseOut={handleMouseOut}
+                width="75px"
+                height="75px"
+              >
+                <LightnessMap flex={1} />
+                <DarknessMap flex={1} />
+              </ColorMap>
+            </div>
+          )
         }}
       </Expandable>
     </Flex>
@@ -57,8 +74,17 @@ const ColorPreview = styled(Flex)`
 interface ColorMapProps {
   onMouseMove: (e: any) => void
 }
-const ColorMap = styled(Flex) <ColorMapProps>`
-  background: -webkit-linear-gradient(left, #F00 0%, #FF0 16.66%, #0F0 33.33%, #0FF 50%, #00F 66.66%, #F0F 83.33%, #F00 100%);
+const ColorMap = styled(Flex)<ColorMapProps>`
+  background: -webkit-linear-gradient(
+    left,
+    #f00 0%,
+    #ff0 16.66%,
+    #0f0 33.33%,
+    #0ff 50%,
+    #00f 66.66%,
+    #f0f 83.33%,
+    #f00 100%
+  );
   cursor: crosshair;
 `
 

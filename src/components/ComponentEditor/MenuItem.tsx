@@ -2,7 +2,7 @@ import React, { Fragment, ReactNode } from 'react'
 import styled from 'styled-components'
 import Expandable, { ExpandableProps } from '../Expandable'
 import Flex from '../Flex'
-import { COLORS } from '../constants';
+import { COLORS } from '../constants'
 
 export interface MenuItemProps {
   title: string
@@ -10,13 +10,25 @@ export interface MenuItemProps {
 }
 
 const MenuItem = ({ title, children }: MenuItemProps) => {
-  return <Expandable closedHeight={48}>{expandable => (
-          <Fragment>
-    <Title as="h3" height="48px" flex={1} justify="between" align="center" onClick={expandable.toggleIsOpen}>{title}</Title>
-      {typeof children === 'function' ? children(expandable) : children}
-</Fragment>
-  )}
-  </Expandable>
+  return (
+    <Expandable closedHeight={48}>
+      {expandable => (
+        <Fragment>
+          <Title
+            as="h3"
+            height="48px"
+            flex={1}
+            justify="between"
+            align="center"
+            onClick={expandable.toggleIsOpen}
+          >
+            {title}
+          </Title>
+          {typeof children === 'function' ? children(expandable) : children}
+        </Fragment>
+      )}
+    </Expandable>
+  )
 }
 
 export default MenuItem
@@ -24,5 +36,4 @@ export default MenuItem
 const Title = styled(Flex)`
   cursor: pointer;
   color: ${COLORS.white};
-
 `

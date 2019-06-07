@@ -1,11 +1,15 @@
 import React from 'react'
-import DirectionalNumericCSSPropertyEditor, { DirectionalNumericCSSPropertyEditorProps } from './DirectionalNumericCSSPropertyEditor';
+import DirectionalNumericCSSPropertyEditor from './DirectionalNumericCSSPropertyEditor'
 
 export interface PaddingEditorProps {
-  onChange: DirectionalNumericCSSPropertyEditorProps['onChange']
+  onChange: (value: { padding: string }) => void
 }
 
-const PaddingEditor = ({ onChange }: PaddingEditorProps) => <DirectionalNumericCSSPropertyEditor title="padding" onChange={onChange} />
-
+const PaddingEditor = ({ onChange }: PaddingEditorProps) => (
+  <DirectionalNumericCSSPropertyEditor
+    title="padding"
+    onChange={padding => onChange({ padding })}
+  />
+)
 
 export default PaddingEditor

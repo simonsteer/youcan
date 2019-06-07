@@ -1,11 +1,15 @@
 import React from 'react'
-import DirectionalNumericCSSPropertyEditor, { DirectionalNumericCSSPropertyEditorProps } from './DirectionalNumericCSSPropertyEditor';
+import DirectionalNumericCSSPropertyEditor from './DirectionalNumericCSSPropertyEditor'
 
 export interface MarginEditorProps {
-  onChange: DirectionalNumericCSSPropertyEditorProps['onChange']
+  onChange: (value: { margin: string }) => void
 }
 
-const MarginEditor = ({ onChange }: MarginEditorProps) => <DirectionalNumericCSSPropertyEditor title="margin" onChange={onChange} />
-
+const MarginEditor = ({ onChange }: MarginEditorProps) => (
+  <DirectionalNumericCSSPropertyEditor
+    title="margin"
+    onChange={margin => onChange({ margin })}
+  />
+)
 
 export default MarginEditor

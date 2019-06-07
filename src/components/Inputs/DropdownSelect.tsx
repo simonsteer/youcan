@@ -30,33 +30,38 @@ export const DropdownSelect = <F extends (n: string) => any>({
     }
   }
 
- return (
+  return (
     <Flex height="20px" flex={1} overflow="visible" position="relative">
       <Expandable closedHeight={20} closeOnBlur>
-        {({ setIsOpen, isOpen }) => items.map(({ value, label }, index) => (
-          <Item
-          isOpen={isOpen}
-          key={index}
-          index={index}
-          align="center"
-          justify="end"
-          onClick={() => {
-            handleChange(isOpen, value)
-            setIsOpen(!isOpen)
-          }}
-          >
-            {index === 0 && <Arrow isOpen={isOpen} size={6}/>}
-            {label}
-          </Item>
-        ))}
+        {({ setIsOpen, isOpen }) =>
+          items.map(({ value, label }, index) => (
+            <Item
+              isOpen={isOpen}
+              key={index}
+              index={index}
+              align="center"
+              justify="end"
+              onClick={() => {
+                handleChange(isOpen, value)
+                setIsOpen(!isOpen)
+              }}
+            >
+              {index === 0 && <Arrow isOpen={isOpen} size={6} />}
+              {label}
+            </Item>
+          ))
+        }
       </Expandable>
     </Flex>
   )
 }
 
-const Arrow = styled.div<{ size: number | string; isOpen: boolean; }>`
+const Arrow = styled.div<{ size: number | string; isOpen: boolean }>`
   ${({ size, isOpen }) => {
-    const dimensions = typeof size === 'number' ? `width: ${size}px; height: ${size}px;` : `width: ${size}; height: ${size};`
+    const dimensions =
+      typeof size === 'number'
+        ? `width: ${size}px; height: ${size}px;`
+        : `width: ${size}; height: ${size};`
 
     return `
       pointer-events: none;
@@ -69,25 +74,25 @@ const Arrow = styled.div<{ size: number | string; isOpen: boolean; }>`
       transition: transform 0.2s, background-color 0.2s;
       background: ${COLORS.white};
       `
-    }}
-    `
-    
-    const Item = styled(Flex)<{ index: number; isOpen: boolean }>`
-    position: relative;
-    font-size: 10px;
-    height: 20px;
-    padding-right: 20px;
-    background: ${({ isOpen }) => isOpen ? COLORS.grey : COLORS.black};
-    color: ${COLORS.white};
-    border: none;
-    border-radius: 0px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-    &:hover {
-      background: ${({ isOpen }) => isOpen ? COLORS.white : COLORS.grey};
-      color: ${({ isOpen }) => isOpen ? COLORS.black : COLORS.white};
-      ${Arrow} {
-        background: ${({ isOpen}) => isOpen ? COLORS.black : COLORS.white};
-      }
+  }}
+`
+
+const Item = styled(Flex)<{ index: number; isOpen: boolean }>`
+  position: relative;
+  font-size: 10px;
+  height: 20px;
+  padding-right: 20px;
+  background: ${({ isOpen }) => (isOpen ? COLORS.grey : COLORS.black)};
+  color: ${COLORS.white};
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  &:hover {
+    background: ${({ isOpen }) => (isOpen ? COLORS.white : COLORS.grey)};
+    color: ${({ isOpen }) => (isOpen ? COLORS.black : COLORS.white)};
+    ${Arrow} {
+      background: ${({ isOpen }) => (isOpen ? COLORS.black : COLORS.white)};
     }
-    `
+  }
+`

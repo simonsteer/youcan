@@ -1,22 +1,47 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import get from 'lodash/get'
-import { NumericInput, NumericInputProps } from "../../Inputs/NumericInput"
-import { DropdownSelect, DropdownSelectProps } from "../../Inputs/DropdownSelect"
+import { NumericInput, NumericInputProps } from '../../Inputs/NumericInput'
+import {
+  DropdownSelect,
+  DropdownSelectProps,
+} from '../../Inputs/DropdownSelect'
 import Flex from '../../Flex'
-import { COLORS } from '../../constants';
+import { COLORS } from '../../constants'
 
-interface NumericCSSPropertyEditorProps<N extends (n: number) => any, D extends (d: any) => any> {
-  numericProps?: Pick<NumericInputProps<N>, Exclude<keyof NumericInputProps<N>, 'onChange'>>
-  dropdownProps: Pick<DropdownSelectProps<D>, Exclude<keyof DropdownSelectProps<D>, 'onChange'>>
+interface NumericCSSPropertyEditorProps<
+  N extends (n: number) => any,
+  D extends (d: any) => any
+> {
+  numericProps?: Pick<
+    NumericInputProps<N>,
+    Exclude<keyof NumericInputProps<N>, 'onChange'>
+  >
+  dropdownProps: Pick<
+    DropdownSelectProps<D>,
+    Exclude<keyof DropdownSelectProps<D>, 'onChange'>
+  >
   displayName: string
-  transformValue: (numericValue: any, dropdownValue: any) => string
+  transformValue?: (numericValue: any, dropdownValue: any) => string
   onChange: (value: string) => void
 }
 
-const NumericCSSPropertyEditor = <N extends (n: number) => string, D extends (d: string) => string>({ numericProps, dropdownProps, transformValue, onChange, displayName }: NumericCSSPropertyEditorProps<N, D>) => {
-  const [numericValue, setNumericValue] = useState(get(numericProps, 'start') || 0)
-  const [dropdownValue, setDropdownValue] = useState(get(dropdownProps, 'defaultValue') || get(dropdownProps, `options[0].value`))
+const NumericCSSPropertyEditor = <
+  N extends (n: number) => string,
+  D extends (d: string) => string
+>({
+  numericProps,
+  dropdownProps,
+  transformValue = (n, d) => `${n}${d}`,
+  onChange,
+  displayName,
+}: NumericCSSPropertyEditorProps<N, D>) => {
+  const [numericValue, setNumericValue] = useState(
+    get(numericProps, 'start') || 0
+  )
+  const [dropdownValue, setDropdownValue] = useState(
+    get(dropdownProps, 'defaultValue') || get(dropdownProps, `options[0].value`)
+  )
 
   const handleChange = (nextValue: any, type: 'numeric' | 'dropdown') => {
     let value = transformValue(numericValue, dropdownValue)
@@ -30,17 +55,22 @@ const NumericCSSPropertyEditor = <N extends (n: number) => string, D extends (d:
     onChange(value)
   }
 
-
   return (
     <Flex overflow="visible" flex={1}>
       <Title>{displayName}</Title>
-      <NumericInput {...numericProps} onChange={n => handleChange(n, 'numeric')} />
+      <NumericInput
+        {...numericProps}
+        onChange={n => handleChange(n, 'numeric')}
+      />
       <Flex flex={3} height="20px" overflow="visible">
-        <DropdownSelect {...dropdownProps} onChange={d => handleChange(d, 'dropdown')} />
+        <DropdownSelect
+          {...dropdownProps}
+          onChange={d => handleChange(d, 'dropdown')}
+        />
       </Flex>
     </Flex>
   )
-} 
+}
 
 export default NumericCSSPropertyEditor
 

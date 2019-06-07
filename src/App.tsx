@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from './reducers/store'
-import ComponentEditor from './components/ComponentEditor';
+import ComponentEditor from './components/ComponentEditor'
 
 const App = () => (
   <Provider store={store}>
