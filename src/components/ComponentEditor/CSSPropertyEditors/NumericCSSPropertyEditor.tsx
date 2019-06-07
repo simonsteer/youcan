@@ -9,13 +9,12 @@ import { COLORS } from '../../constants';
 interface NumericCSSPropertyEditorProps<N extends (n: number) => any, D extends (d: any) => any> {
   numericProps?: Pick<NumericInputProps<N>, Exclude<keyof NumericInputProps<N>, 'onChange'>>
   dropdownProps: Pick<DropdownSelectProps<D>, Exclude<keyof DropdownSelectProps<D>, 'onChange'>>
-  property: string
   displayName: string
   transformValue: (numericValue: any, dropdownValue: any) => string
-  onChange: (property: { [key: string]: string }) => void
+  onChange: (value: string) => void
 }
 
-const NumericCSSPropertyEditor = <N extends (n: number) => string, D extends (d: string) => string>({ numericProps, dropdownProps, transformValue, onChange, property, displayName }: NumericCSSPropertyEditorProps<N, D>) => {
+const NumericCSSPropertyEditor = <N extends (n: number) => string, D extends (d: string) => string>({ numericProps, dropdownProps, transformValue, onChange, displayName }: NumericCSSPropertyEditorProps<N, D>) => {
   const [numericValue, setNumericValue] = useState(get(numericProps, 'start') || 0)
   const [dropdownValue, setDropdownValue] = useState(get(dropdownProps, 'defaultValue') || get(dropdownProps, `options[0].value`))
 
@@ -28,7 +27,7 @@ const NumericCSSPropertyEditor = <N extends (n: number) => string, D extends (d:
       setDropdownValue(nextValue)
       value = transformValue(numericValue, nextValue)
     }
-    onChange({ [property]: value })
+    onChange(value)
   }
 
 

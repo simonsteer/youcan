@@ -1,4 +1,4 @@
-import React, { Fragment, RefForwardingComponent, ReactNode } from 'react'
+import React, { Fragment, ReactNode } from 'react'
 import styled from 'styled-components'
 import Expandable, { ExpandableProps } from '../Expandable'
 import Flex from '../Flex'

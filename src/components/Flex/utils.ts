@@ -24,7 +24,7 @@ export const getStyle = ({
     min-width: ${minWidth};
     overflow: ${overflow};
     background: ${background};
-  ` + paddingStyle + marginStyle
+  ` + paddingStyle + marginStyle + positionStyle
 }
 
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
