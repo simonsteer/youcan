@@ -4,23 +4,25 @@ import React, {
   useEffect,
   useCallback,
   TransitionEvent,
-  Dispatch,
-  SetStateAction,
 } from 'react'
 import styled from 'styled-components'
-import { COLORS } from './constants'
+
+export interface ExpandableRenderProps {
+  setIsOpen: (isOpen: boolean) => void
+  toggleIsOpen: () => void
+  isOpen: boolean
+  setContentHeight: (height: number) => void
+  contentHeight: number
+}
 
 export interface ExpandableProps {
-  children: (renderProps: {
-    setIsOpen: Dispatch<SetStateAction<boolean>>
-    toggleIsOpen: () => void
-    isOpen: boolean
-    setHeight: Dispatch<SetStateAction<number>>
-    height: number
-  }) => React.ReactNode
+  children: (renderProps: ExpandableRenderProps) => React.ReactNode
   closedHeight?: number
   closeOnBlur?: boolean
   startOpen?: boolean
+  onOpen?: (diff: number) => void
+  onClose?: (diff: number) => void
+  onChangeContentHeight?: (diff: number) => void
 }
 
 const Expandable = ({
@@ -28,15 +30,33 @@ const Expandable = ({
   closedHeight = 0,
   startOpen = false,
   closeOnBlur = false,
+  onOpen = () => {},
+  onClose = () => {},
+  onChangeContentHeight = () => {},
 }: ExpandableProps) => {
   const root = useRef(null)
-  const [isOpen, setIsOpen] = useState(startOpen)
+  const [isOpen, _setIsOpen] = useState(startOpen)
   const [hasOpened, setHasOpened] = useState(false)
-  const [height, setHeight] = useState(0)
+  const [contentHeight, _setContentHeight] = useState(0)
 
-  const measuredRef = useCallback(node => {
+  const setIsOpen = (isOpen: boolean) => {
+    _setIsOpen(isOpen)
+    if (isOpen) {
+      onOpen(contentHeight - closedHeight)
+    } else {
+      onClose(-contentHeight + closedHeight)
+    }
+  }
+
+  const setContentHeight = (height: number) => {
+    const diff = height - contentHeight
+    onChangeContentHeight(diff)
+    _setContentHeight(height)
+  }
+
+  const measuredContentRef = useCallback(node => {
     if (node !== null) {
-      setHeight(node.getBoundingClientRect().height)
+      setContentHeight(node.getBoundingClientRect().height)
     }
   }, [])
 
@@ -68,18 +88,18 @@ const Expandable = ({
     <ExpandableContainer
       ref={root}
       hasOpened={hasOpened}
-      height={height}
+      height={contentHeight}
       closedHeight={closedHeight}
       isOpen={isOpen}
       onTransitionEnd={handleTransitionEnd}
     >
-      <div ref={measuredRef}>
+      <div ref={measuredContentRef}>
         {children({
           setIsOpen,
           isOpen,
           toggleIsOpen: () => setIsOpen(!isOpen),
-          setHeight,
-          height,
+          setContentHeight,
+          contentHeight,
         })}
       </div>
     </ExpandableContainer>
