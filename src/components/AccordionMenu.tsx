@@ -1,44 +1,40 @@
-import React, { Fragment, cloneElement, ReactElement } from 'react'
-import styled from 'styled-components'
+import React, { Fragment, cloneElement, ReactElement, useState, useCallback } from 'react'
 import get from 'lodash/get'
 import Expandable, { ExpandableProps, ExpandableRenderProps } from './Expandable';
-import Flex from './Flex';
-import { COLORS } from './constants';
 
 export interface AccordionMenuProps {
   children: React.ReactNode
-  title: string
+  title?: React.ReactElement
   onOpen?: ExpandableProps['onOpen']
   onClose?: ExpandableProps['onClose']
   onChangeContentHeight?: ExpandableProps['onChangeContentHeight']
+  zIndex?: number
 }
 
-const AccordionMenu = ({ children, title, onChangeContentHeight, onOpen, onClose }: AccordionMenuProps) => {
-  const transformedChildren = ({ setContentHeight, contentHeight }: ExpandableRenderProps) =>
-    React.Children.map(children, child => {
-      const type: string | 'AccordionMenu' = get(child, 'type.name') || get(child, 'type')
-      return type === 'AccordionMenu'
-        ? cloneElement(child as ReactElement<AccordionMenuProps>, {
-            onOpen: (diff: number) => setContentHeight(contentHeight + diff),
-            onClose: (diff: number) => setContentHeight(contentHeight + diff),
-            onChangeContentHeight: (diff: number) => setContentHeight(contentHeight + diff),
-          })
-        : child
-    })
+const AccordionMenu = ({ children, title, onChangeContentHeight, onOpen, onClose, zIndex }: AccordionMenuProps) => {
+  const [titleHeight, setTitleHeight] = useState(null)
+  const measuredContentRef = useCallback(node => {
+    if (node !== null) {
+      setTitleHeight(node.getBoundingClientRect().height)
+    }
+  }, [])
 
-  return <Expandable closedHeight={48} onChangeContentHeight={onChangeContentHeight} onOpen={onOpen} onClose={onClose}>
+  const transformedChildren = ({ setContentHeight, contentHeight }: ExpandableRenderProps) =>
+  React.Children.map(children, child => {
+    const type: string | 'AccordionMenu' = get(child, 'type.name') || get(child, 'type')
+    return type === 'AccordionMenu'
+      ? cloneElement(child as ReactElement<AccordionMenuProps>, {
+          onOpen: (diff: number) => setContentHeight(contentHeight + diff),
+          onClose: (diff: number) => setContentHeight(contentHeight + diff),
+          onChangeContentHeight: (diff: number) => setContentHeight(contentHeight + diff),
+        })
+      : child
+  })
+
+  return <Expandable zIndex={zIndex} closedHeight={titleHeight || 0} onChangeContentHeight={onChangeContentHeight} onOpen={onOpen} onClose={onClose}>
     {expandable => (
       <Fragment>
-        <Title
-          as="h3"
-          height="48px"
-          flex={1}
-          justify="between"
-          align="center"
-          onClick={expandable.toggleIsOpen}
-        >
-          {title}
-        </Title>
+        {title}
         {transformedChildren(expandable)}
       </Fragment>
     )}
@@ -46,8 +42,3 @@ const AccordionMenu = ({ children, title, onChangeContentHeight, onOpen, onClose
 }
 
 export default AccordionMenu
-
-const Title = styled(Flex)`
-  cursor: pointer;
-  color: ${COLORS.white};
-`

@@ -10,11 +10,13 @@ export const getStyle = ({
   padding,
   margin,
   position,
+  zIndex,
   ...flexProps
 }: FlexProps) => {
   const paddingStyle = padding ? `padding: ${padding};` : ''
   const marginStyle = margin ? `margin: ${margin};` : ''
   const positionStyle = position ? `position: ${position};` : ''
+  const zIndexStyle = zIndex ? `z-index: ${zIndex};` : ''
 
   return (
     `
@@ -28,7 +30,8 @@ export const getStyle = ({
   ` +
     paddingStyle +
     marginStyle +
-    positionStyle
+    positionStyle + 
+    zIndexStyle
   )
 }
 

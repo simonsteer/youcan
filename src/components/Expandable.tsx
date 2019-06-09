@@ -23,6 +23,7 @@ export interface ExpandableProps {
   onOpen?: (diff: number) => void
   onClose?: (diff: number) => void
   onChangeContentHeight?: (diff: number) => void
+  zIndex?: number
 }
 
 const Expandable = ({
@@ -33,6 +34,7 @@ const Expandable = ({
   onOpen = () => {},
   onClose = () => {},
   onChangeContentHeight = () => {},
+  zIndex,
 }: ExpandableProps) => {
   const root = useRef(null)
   const [isOpen, _setIsOpen] = useState(startOpen)
@@ -92,6 +94,7 @@ const Expandable = ({
       closedHeight={closedHeight}
       isOpen={isOpen}
       onTransitionEnd={handleTransitionEnd}
+      zIndex={zIndex}
     >
       <div ref={measuredContentRef}>
         {children({
@@ -113,12 +116,14 @@ const ExpandableContainer = styled.div<{
   closedHeight: number
   height: number
   hasOpened: boolean
+  zIndex?: number
 }>`
-  ${({ isOpen, height, hasOpened, closedHeight }) => `
+  ${({ isOpen, height, hasOpened, closedHeight, zIndex }) => `
 position: relative;    
     width: 100%;
     height: ${isOpen ? `${height}px` : `${closedHeight}px`};
     overflow: ${hasOpened && isOpen ? 'visible' : 'hidden'};
     transition: height 0.2s;
+    ${zIndex ? `z-index: ${zIndex};` : ''}
     `}
 `

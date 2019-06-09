@@ -18,6 +18,7 @@ export interface FlexProps {
   padding?: string
   margin?: string
   position?: 'absolute' | 'relative'
+  zIndex?: number
 }
 
 const Flex = styled.div<FlexProps>`
