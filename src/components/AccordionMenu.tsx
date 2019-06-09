@@ -13,7 +13,7 @@ export interface AccordionMenuProps {
   onChangeContentHeight?: ExpandableProps['onChangeContentHeight']
 }
 
-const AccordionMenu = ({ children, title, onChangeContentHeight = () => {}, onOpen = () => {}, onClose = () => {} }: AccordionMenuProps) => {
+const AccordionMenu = ({ children, title, onChangeContentHeight, onOpen, onClose }: AccordionMenuProps) => {
   const transformedChildren = ({ setContentHeight, contentHeight }: ExpandableRenderProps) =>
     React.Children.map(children, child => {
       const type: string | 'AccordionMenu' = get(child, 'type.name') || get(child, 'type')
