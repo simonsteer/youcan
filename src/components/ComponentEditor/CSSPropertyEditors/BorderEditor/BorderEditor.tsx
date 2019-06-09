@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import NumericCSSPropertyEditor from '../NumericCSSPropertyEditor'
-import MenuItem from '../../MenuItem'
 import {
   createDirectionalDropdownProps,
   Direction,
   DIRECTIONS,
 } from '../DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import { Toggle, DropdownSelect, ColorPicker } from '../../../Inputs'
-import Expandable from '../../../Expandable'
+import { DropdownSelect, ColorPicker } from '../../../Inputs'
 import Flex from '../../../Flex'
 import { COLORS } from '../../../constants'
+import AccordionMenu from '../../../AccordionMenu';
+import EditorTitle from '../../EditorTitle';
 
 interface BorderProperties {
   borderStyle: string
@@ -48,7 +48,7 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
   const handleBorderColorChange = (value: string) =>
     handleChange('Color', value)
 
-  return (
+  return <h1>hi</h1> || (
     <Flex column reverse overflow="visible">
       <Flex height="20px" overflow="visible">
         <Title>type</Title>
@@ -133,18 +133,19 @@ const BorderEditor = ({ onChange }: BorderEditorProps) => {
   }
 
   return (
-    <MenuItem title="border">
-      <Flex column reverse overflow="visible">
-        {DIRECTIONS.map(direction => (
+    <AccordionMenu title={<EditorTitle title="border" size="lg" />}>
+        <AccordionMenu title={<BorderTypeEditor
+          type={DIRECTIONS[0]}
+          onChange={borderProperties => handleChange(DIRECTIONS[0], borderProperties)}
+          />}>
+            {DIRECTIONS.slice(1).map(direction => (
           <BorderTypeEditor
             type={direction}
-            onChange={borderProperties =>
-              handleChange(direction, borderProperties)
-            }
+            onChange={borderProperties => handleChange(direction, borderProperties)}
           />
-        ))}
-      </Flex>
-    </MenuItem>
+          ))}
+        </AccordionMenu>
+    </AccordionMenu>
   )
 }
 

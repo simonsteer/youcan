@@ -4,7 +4,7 @@ import Flex from '../Flex'
 import { COLORS } from '../constants'
 
 const TITLE_SIZES = {
-  FONT: { md: 16, lg: 24 },
+  FONT: { md: 18, lg: 24 },
   CONTAINER: { md: 32, lg: 48 },
 } as const
 
@@ -17,6 +17,7 @@ const EditorTitle = styled(Flex)<EditorTitleProps>`
   color: ${COLORS.white};
   font-size: ${({ size }) => TITLE_SIZES.FONT[size]}px;
   height: ${({ size }) => TITLE_SIZES.CONTAINER[size]}px;
+  font-weight: bold;
 `
 
-export default ({ title, size }: { title: string, size: EditorTitleProps['size'] }) => <EditorTitle justify="between" align="center" padding="0 12px" size={size}>{title}</EditorTitle>
+export default ({ title, size = 'md' }: { title: string, size?: EditorTitleProps['size'] }) => <EditorTitle justify="between" align="center" size={size}>{title}</EditorTitle>

@@ -13,7 +13,7 @@ export interface AccordionMenuProps {
 
 const AccordionMenu = ({ children, title, onChangeContentHeight, onOpen, onClose, zIndex }: AccordionMenuProps) => {
   const [titleHeight, setTitleHeight] = useState(null)
-  const measuredContentRef = useCallback(node => {
+  const measuredTitleRef = useCallback(node => {
     if (node !== null) {
       setTitleHeight(node.getBoundingClientRect().height)
     }
@@ -31,10 +31,14 @@ const AccordionMenu = ({ children, title, onChangeContentHeight, onOpen, onClose
       : child
   })
 
+  console.log({ title })
+
   return <Expandable zIndex={zIndex} closedHeight={titleHeight || 0} onChangeContentHeight={onChangeContentHeight} onOpen={onOpen} onClose={onClose}>
     {expandable => (
       <Fragment>
-        {title}
+        {!!title && <div ref={measuredTitleRef} onClick={expandable.toggleIsOpen}>
+          {title}
+        </div>}
         {transformedChildren(expandable)}
       </Fragment>
     )}
