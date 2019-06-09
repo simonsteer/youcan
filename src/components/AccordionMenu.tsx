@@ -19,18 +19,9 @@ const AccordionMenu = ({ children, title, onChangeContentHeight = () => {}, onOp
       const type: string | 'AccordionMenu' = get(child, 'type.name') || get(child, 'type')
       return type === 'AccordionMenu'
         ? cloneElement(child as ReactElement<AccordionMenuProps>, {
-            onOpen: (diff: number) => {
-              console.log('onopen', { diff })
-              setContentHeight(contentHeight + diff)
-            },
-            onClose: (diff: number) => {
-              console.log('onclose', { diff })
-              setContentHeight(contentHeight + diff)
-            },
-            onChangeContentHeight: (diff: number) => {
-              console.log('onchange', { diff })
-              setContentHeight(contentHeight + diff)
-            },
+            onOpen: (diff: number) => setContentHeight(contentHeight + diff),
+            onClose: (diff: number) => setContentHeight(contentHeight + diff),
+            onChangeContentHeight: (diff: number) => setContentHeight(contentHeight + diff),
           })
         : child
     })
