@@ -81,11 +81,10 @@ const Expandable = ({
   const _contentHeight = get(contentRef.current, 'offsetHeight')
   useLayoutEffect(() => {
     setTitleHeight(_titleHeight)
-    
     if (canSetContentHeight) {
       setContentHeight(_contentHeight + _titleHeight)
     }
-  }, [_titleHeight, _contentHeight])
+  }, [_titleHeight, _contentHeight, canSetContentHeight])
 
   const handleTransitionEnd = (event: TransitionEvent) => {
     if (event.propertyName === 'height') {
