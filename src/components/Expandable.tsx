@@ -2,10 +2,11 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useCallback,
   TransitionEvent,
+  useLayoutEffect,
 } from 'react'
 import styled from 'styled-components'
+import get from 'lodash/get'
 
 export interface ExpandableRenderProps {
   setIsOpen: (isOpen: boolean) => void
@@ -16,7 +17,7 @@ export interface ExpandableRenderProps {
 }
 
 export interface ExpandableProps {
-  children: (renderProps: ExpandableRenderProps) => React.ReactNode
+  children: React.ReactNode | ((renderProps: ExpandableRenderProps) => React.ReactNode)
   closedHeight?: number
   closeOnBlur?: boolean
   startOpen?: boolean
@@ -24,13 +25,15 @@ export interface ExpandableProps {
   onClose?: (diff: number) => void
   onChangeContentHeight?: (diff: number) => void
   zIndex?: number
+  title?: React.ReactNode
 }
 
 const Expandable = ({
   children,
-  closedHeight = 0,
   startOpen = false,
   closeOnBlur = false,
+  closedHeight = 0,
+  title,
   onOpen = () => {},
   onClose = () => {},
   onChangeContentHeight = () => {},
@@ -39,42 +42,43 @@ const Expandable = ({
   const root = useRef(null)
   const [isOpen, _setIsOpen] = useState(startOpen)
   const [hasOpened, setHasOpened] = useState(false)
-  const [contentHeight, _setContentHeight] = useState(0)
+  const [contentHeight, setContentHeight] = useState(0)
+  const [titleHeight, setTitleHeight] = useState(0)
+  const titleRef = useRef(null)
+  const contentRef = useRef(null)
 
   const setIsOpen = (isOpen: boolean) => {
     _setIsOpen(isOpen)
+    let diff = contentHeight - titleHeight
+    diff = isOpen ? diff : diff * -1
     if (isOpen) {
-      onOpen(contentHeight - closedHeight)
+      onOpen(diff)
     } else {
-      onClose(-contentHeight + closedHeight)
+      onClose(diff)
     }
   }
 
-  const setContentHeight = (height: number) => {
-    const diff = height - contentHeight
-    onChangeContentHeight(diff)
-    _setContentHeight(height)
-  }
-
-  const measuredContentRef = useCallback(node => {
-    if (node !== null) {
-      setContentHeight(node.getBoundingClientRect().height)
-    }
-  }, [])
+  const _titleHeight = get(titleRef.current, 'offsetHeight')
+  const _contentHeight = get(contentRef.current, 'offsetHeight')
+  useLayoutEffect(() => {
+      setTitleHeight(_titleHeight)
+      setContentHeight(_contentHeight + _titleHeight)
+  }, [_titleHeight, _contentHeight])
 
   useEffect(() => {
     const handler: EventListener = e => {
       if (!closeOnBlur) {
         return
       }
-
+      
       if (!root || !root.current) {
         return
       }
-
+      
       if (!root.current.contains(e.target)) {
         setIsOpen(false)
       }
+      e.stopPropagation()
     }
     window.addEventListener('click', handler)
     return () => window.removeEventListener('click', handler)
@@ -86,24 +90,29 @@ const Expandable = ({
     }
   }
 
+  const renderProps = {
+    setIsOpen,
+    isOpen,
+    toggleIsOpen: () => setIsOpen(!isOpen),
+    setContentHeight,
+    contentHeight,
+  }
+
   return (
     <ExpandableContainer
       ref={root}
       hasOpened={hasOpened}
-      height={contentHeight}
-      closedHeight={closedHeight}
+      height={contentHeight || 0}
+      closedHeight={closedHeight || titleHeight}
       isOpen={isOpen}
       onTransitionEnd={handleTransitionEnd}
       zIndex={zIndex}
     >
-      <div ref={measuredContentRef}>
-        {children({
-          setIsOpen,
-          isOpen,
-          toggleIsOpen: () => setIsOpen(!isOpen),
-          setContentHeight,
-          contentHeight,
-        })}
+      <div ref={titleRef} onClick={renderProps.toggleIsOpen}>
+        {title}
+      </div>
+      <div ref={contentRef}>
+        {typeof children === 'function' ? children(renderProps) : children}
       </div>
     </ExpandableContainer>
   )

@@ -9,8 +9,8 @@ import {
 import { DropdownSelect, ColorPicker } from '../../../Inputs'
 import Flex from '../../../Flex'
 import { COLORS } from '../../../constants'
-import AccordionMenu from '../../../AccordionMenu';
-import EditorTitle from '../../EditorTitle';
+import AccordionMenu from '../../../AccordionMenu'
+import EditorTitle from '../../EditorTitle'
 
 interface BorderProperties {
   borderStyle: string
@@ -48,7 +48,7 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
   const handleBorderColorChange = (value: string) =>
     handleChange('Color', value)
 
-  return <h1>hi</h1> || (
+  return (
     <Flex column reverse overflow="visible">
       <Flex height="20px" overflow="visible">
         <Title>type</Title>
@@ -134,17 +134,16 @@ const BorderEditor = ({ onChange }: BorderEditorProps) => {
 
   return (
     <AccordionMenu title={<EditorTitle title="border" size="lg" />}>
-        <AccordionMenu title={<BorderTypeEditor
-          type={DIRECTIONS[0]}
-          onChange={borderProperties => handleChange(DIRECTIONS[0], borderProperties)}
-          />}>
-            {DIRECTIONS.slice(1).map(direction => (
+      {DIRECTIONS.map((direction, index) => (
+        <AccordionMenu zIndex={DIRECTIONS.length - index} title={<EditorTitle title={direction} size="md" />}>
           <BorderTypeEditor
             type={direction}
-            onChange={borderProperties => handleChange(direction, borderProperties)}
+            onChange={borderProperties =>
+              handleChange(direction, borderProperties)
+            }
           />
-          ))}
         </AccordionMenu>
+      ))}
     </AccordionMenu>
   )
 }

@@ -20,4 +20,6 @@ const EditorTitle = styled(Flex)<EditorTitleProps>`
   font-weight: bold;
 `
 
-export default ({ title, size = 'md' }: { title: string, size?: EditorTitleProps['size'] }) => <EditorTitle justify="between" align="center" size={size}>{title}</EditorTitle>
+interface EditorTitleComponentProps { title: string, size?: EditorTitleProps['size']; onClick?: () => void }
+
+export default ({ title, size = 'md', onClick }: EditorTitleComponentProps) => <EditorTitle justify="between" align="center" onClick={onClick} size={size}>{title}</EditorTitle>

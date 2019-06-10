@@ -36,8 +36,8 @@ export const ColorPicker = ({
 
   return (
     <Flex height="20px" overflow="visible">
-      <Expandable closedHeight={20} closeOnBlur>
-        {({ setIsOpen, isOpen }) => {
+      <Expandable title={<ColorPreview width="100%" height="20px" background={displayValue || value} />} closeOnBlur>
+        {({ setIsOpen }) => {
           const handleClick = () => {
             setValue(displayValue)
             onChange(displayValue)
@@ -46,12 +46,6 @@ export const ColorPicker = ({
 
           return (
             <div>
-              <ColorPreview
-                width="100%"
-                height="20px"
-                style={{ background: displayValue }}
-                onClick={() => setIsOpen(!isOpen)}
-              />
               <ColorMap
                 column
                 onClick={handleClick}
