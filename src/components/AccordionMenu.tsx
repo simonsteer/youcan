@@ -13,7 +13,6 @@ export interface AccordionMenuProps {
   title?: ExpandableProps['title']
   onOpen?: ExpandableProps['onOpen']
   onClose?: ExpandableProps['onClose']
-  onChangeContentHeight?: ExpandableProps['onChangeContentHeight']
   zIndex?: number
 }
 

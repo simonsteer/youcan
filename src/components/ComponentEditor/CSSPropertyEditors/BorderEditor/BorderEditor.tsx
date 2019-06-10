@@ -49,7 +49,7 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
     handleChange('Color', value)
 
   return (
-    <Flex column reverse overflow="visible">
+    <Flex column reverse overflow="visible" padding="0 0 10px 0">
       <Flex height="20px" overflow="visible">
         <Title>type</Title>
         <DropdownSelect

@@ -23,7 +23,6 @@ export interface ExpandableProps {
   startOpen?: boolean
   onOpen?: (diff: number) => void
   onClose?: (diff: number) => void
-  onChangeContentHeight?: (diff: number) => void
   zIndex?: number
   title?: React.ReactNode
 }
@@ -36,7 +35,6 @@ const Expandable = ({
   title,
   onOpen = () => {},
   onClose = () => {},
-  onChangeContentHeight = () => {},
   zIndex,
 }: ExpandableProps) => {
   const root = useRef(null)
@@ -44,6 +42,8 @@ const Expandable = ({
   const [hasOpened, setHasOpened] = useState(false)
   const [contentHeight, setContentHeight] = useState(0)
   const [titleHeight, setTitleHeight] = useState(0)
+  const [canSetContentHeight, setCanSetContentHeight] = useState(true)
+
   const titleRef = useRef(null)
   const contentRef = useRef(null)
 
@@ -57,13 +57,6 @@ const Expandable = ({
       onClose(diff)
     }
   }
-
-  const _titleHeight = get(titleRef.current, 'offsetHeight')
-  const _contentHeight = get(contentRef.current, 'offsetHeight')
-  useLayoutEffect(() => {
-      setTitleHeight(_titleHeight)
-      setContentHeight(_contentHeight + _titleHeight)
-  }, [_titleHeight, _contentHeight])
 
   useEffect(() => {
     const handler: EventListener = e => {
@@ -84,9 +77,20 @@ const Expandable = ({
     return () => window.removeEventListener('click', handler)
   })
 
+  const _titleHeight = get(titleRef.current, 'offsetHeight')
+  const _contentHeight = get(contentRef.current, 'offsetHeight')
+  useLayoutEffect(() => {
+    setTitleHeight(_titleHeight)
+    
+    if (canSetContentHeight) {
+      setContentHeight(_contentHeight + _titleHeight)
+    }
+  }, [_titleHeight, _contentHeight])
+
   const handleTransitionEnd = (event: TransitionEvent) => {
     if (event.propertyName === 'height') {
       setHasOpened(isOpen)
+      setCanSetContentHeight(!canSetContentHeight)
     }
   }
 
