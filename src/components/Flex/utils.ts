@@ -4,11 +4,10 @@ export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)
   const justifyContent = getJustification(props)
   const alignItems = getAlignment(props)
-  const flexAmount = typeof flex === 'number' ? flex : '1'
 
   return `
     display: flex;
-    flex: ${flexAmount};
+    ${flex ? `flex: ${flex};` : ''}
     flex-flow: ${flexFlow};
     justify-content: ${justifyContent};
     align-items: ${alignItems};

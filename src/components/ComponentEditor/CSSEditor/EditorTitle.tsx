@@ -9,7 +9,7 @@ export interface EditorTitleProps {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const EditorTitle = styled(Title)<EditorTitleProps>`
+const EditorTitleBase = styled(Title)<EditorTitleProps>`
   cursor: pointer;
   height: ${({ size = 'md' }) => TITLE_HEIGHTS[size]}px;
   transition: background-color 0.2s;
@@ -18,8 +18,8 @@ const EditorTitle = styled(Title)<EditorTitleProps>`
   }
 `
 
-export default (props: TitleProps) => (
-  <EditorTitle
+const EditorTitle = (props: TitleProps) => (
+  <EditorTitleBase
     padding="0px 12px"
     justify="between"
     align="center"
@@ -27,3 +27,5 @@ export default (props: TitleProps) => (
     {...props}
   />
 )
+
+export default EditorTitle

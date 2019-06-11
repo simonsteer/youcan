@@ -11,6 +11,7 @@ import Flex from '../../../Flex'
 import { COLORS } from '../../../constants'
 import AccordionMenu from '../../../AccordionMenu'
 import EditorTitle from '../EditorTitle'
+import PropertyTitle from '../PropertyTitle'
 
 export interface BorderProperties {
   borderStyle?: string
@@ -51,7 +52,7 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
   return (
     <Flex column reverse overflow="visible" padding="12px">
       <Flex height="20px" overflow="visible">
-        <Title>style</Title>
+        <PropertyTitle>style</PropertyTitle>
         <DropdownSelect
           options={[
             { value: 'none', label: 'none' },
@@ -152,13 +153,3 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
 }
 
 export default BorderEditor
-
-export const Title = styled.p`
-  font-size: 12px;
-  color: ${COLORS.white};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 5px;
-  width: 100px;
-`

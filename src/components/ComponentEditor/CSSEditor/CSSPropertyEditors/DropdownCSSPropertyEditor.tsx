@@ -5,8 +5,7 @@ import {
   DropdownSelectProps,
 } from '../../../Inputs/DropdownSelect'
 import Flex from '../../../Flex'
-import { COLORS } from '../../../constants'
-import { Title } from './BorderEditor'
+import PropertyTitle from '../PropertyTitle'
 
 interface DropdownCSSPropertyEditorProps<D extends (d: string) => string>
   extends DropdownSelectProps<D> {
@@ -20,7 +19,7 @@ const DropdownCSSPropertyEditor = <D extends (d: string) => string>({
   ...dropdownProps
 }: DropdownCSSPropertyEditorProps<D>) => (
   <Flex overflow="visible" flex={1}>
-    <Title>{displayName}</Title>
+    <PropertyTitle>{displayName}</PropertyTitle>
     <Flex flex={1} height="20px" overflow="visible">
       <DropdownSelect
         {...dropdownProps}

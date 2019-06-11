@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import get from 'lodash/get'
 import { NumericInput, NumericInputProps } from '../../../Inputs/NumericInput'
 import {
@@ -7,8 +6,7 @@ import {
   DropdownSelectProps,
 } from '../../../Inputs/DropdownSelect'
 import Flex from '../../../Flex'
-import { COLORS } from '../../../constants'
-import { Title } from './BorderEditor'
+import PropertyTitle from '../PropertyTitle'
 
 interface NumericDropdownCSSPropertyEditorProps<
   N extends (n: number) => any,
@@ -58,7 +56,7 @@ const NumericDropdownCSSPropertyEditor = <
 
   return (
     <Flex overflow="visible" flex={1}>
-      <Title>{displayName}</Title>
+      <PropertyTitle>{displayName}</PropertyTitle>
       <NumericInput
         {...numericProps}
         onChange={n => handleChange(n, 'numeric')}

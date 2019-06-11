@@ -4,6 +4,7 @@ import sortBy from 'lodash/sortBy'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
 import Expandable from '../Expandable'
+import { Paragraph } from '../Text'
 
 export interface DropdownSelectProps<T extends (n: string) => any> {
   options: { value: string; label: string }[]
@@ -35,10 +36,13 @@ export const DropdownSelect = <F extends (n: string) => any>({
       <Expandable closedHeight={20} closeOnBlur>
         {({ setIsOpen, isOpen }) =>
           items.map(({ value, label }, index) => (
-            <Item
+            <DropdownText
               isOpen={isOpen}
+              size="sm"
+              height="20px"
+              padding="0 20px 0 0"
               key={`dropdown-item-${index}`}
-              index={index}
+              cursor="pointer"
               align="center"
               justify="end"
               onClick={() => {
@@ -54,7 +58,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
                 />
               )}
               {label}
-            </Item>
+            </DropdownText>
           ))
         }
       </Expandable>
@@ -96,16 +100,9 @@ export const Arrow = styled.div<DropdownArrowProps>`
   }}
 `
 
-const Item = styled(Flex)<{ index: number; isOpen: boolean }>`
-  position: relative;
-  font-size: 10px;
-  height: 20px;
-  padding-right: 20px;
+const DropdownText = styled(Paragraph)<{ isOpen: boolean }>`
   background: ${({ isOpen }) => (isOpen ? COLORS.grey : COLORS.black)};
   color: ${COLORS.white};
-  border: none;
-  border-radius: 0px;
-  cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
   &:hover {
     background: ${({ isOpen }) => (isOpen ? COLORS.white : COLORS.grey)};

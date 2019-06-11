@@ -4,7 +4,7 @@ import get from 'lodash/get'
 import tinycolor from 'tinycolor2'
 import Flex from '../Flex'
 import Expandable from '../Expandable'
-import { Title } from '../ComponentEditor/CSSEditor/CSSPropertyEditors/BorderEditor'
+import PropertyTitle from '../ComponentEditor/CSSEditor/PropertyTitle'
 
 interface ColorPickerProps {
   onChange: (color: string) => void
@@ -37,8 +37,8 @@ export const ColorPicker = ({
 
   return (
     <Flex overflow="visible">
-      <Title>color</Title>
-      <Flex height="20px" overflow="visible">
+      <PropertyTitle>color</PropertyTitle>
+      <Flex height="20px" flex={1} overflow="visible">
         <Expandable
           title={
             <ColorPreview
