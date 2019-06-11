@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Flex from '../Flex'
-import { COLORS } from '../constants'
+import Flex from '../../Flex'
+import { COLORS } from '../../constants'
 
 const TITLE_SIZES = {
   FONT: { md: 18, lg: 24 },
@@ -30,6 +30,7 @@ const EditorTitle = styled(Flex)<EditorTitleProps>`
 
 interface EditorTitleComponentProps {
   title: string
+  children?: React.ReactNode
   size?: EditorTitleProps['size']
   onClick?: () => void
   useRegularCursor?: boolean
@@ -37,6 +38,7 @@ interface EditorTitleComponentProps {
 
 export default ({
   title,
+  children,
   size = 'md',
   onClick,
   useRegularCursor = false,
@@ -49,5 +51,6 @@ export default ({
     size={size}
   >
     {title}
+    {children}
   </EditorTitle>
 )

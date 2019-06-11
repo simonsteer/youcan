@@ -1,20 +1,18 @@
 import React, { useState } from 'react'
 import { Provider } from 'react-redux'
 import store from './reducers/store'
-import ComponentEditor from './components/ComponentEditor'
-import AccordionMenu from './components/AccordionMenu'
-import { CSSPropertyChanges } from './components/ComponentEditor/ComponentEditor'
+import CSSEditor from './components/ComponentEditor/CSSEditor'
 
 const App = () => {
   const [componentStyle, setComponentStyle] = useState({})
 
-  const handleChange = (style: CSSPropertyChanges) => {
-    setComponentStyle({ ...componentStyle, ...style })
-  }
-
   return (
     <Provider store={store}>
-      <ComponentEditor onChange={handleChange} />
+      <CSSEditor
+        onChange={style => {
+          setComponentStyle({ ...componentStyle, ...style })
+        }}
+      />
       <div style={componentStyle} />
     </Provider>
   )

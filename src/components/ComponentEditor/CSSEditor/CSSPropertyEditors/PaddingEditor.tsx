@@ -7,12 +7,14 @@ export interface PaddingProperties {
 
 export interface PaddingEditorProps {
   onChange: (properties: PaddingProperties) => void
+  zIndex?: number
 }
 
-const PaddingEditor = ({ onChange }: PaddingEditorProps) => (
+const PaddingEditor = ({ onChange, zIndex }: PaddingEditorProps) => (
   <DirectionalNumericCSSPropertyEditor
     title="Padding"
     onChange={padding => onChange({ padding })}
+    zIndex={zIndex}
   />
 )
 

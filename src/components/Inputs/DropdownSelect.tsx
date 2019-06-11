@@ -37,7 +37,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
           items.map(({ value, label }, index) => (
             <Item
               isOpen={isOpen}
-              key={index}
+              key={`dropdown-item-${index}`}
               index={index}
               align="center"
               justify="end"

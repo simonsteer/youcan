@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import get from 'lodash/get'
-import { NumericInput, NumericInputProps } from '../../Inputs/NumericInput'
+import { NumericInput, NumericInputProps } from '../../../Inputs/NumericInput'
 import {
   DropdownSelect,
   DropdownSelectProps,
-} from '../../Inputs/DropdownSelect'
-import Flex from '../../Flex'
-import { COLORS } from '../../constants'
+} from '../../../Inputs/DropdownSelect'
+import Flex from '../../../Flex'
+import { COLORS } from '../../../constants'
+import { Title } from './BorderEditor'
 
-interface NumericCSSPropertyEditorProps<
+interface NumericDropdownCSSPropertyEditorProps<
   N extends (n: number) => any,
   D extends (d: any) => any
 > {
@@ -26,7 +27,7 @@ interface NumericCSSPropertyEditorProps<
   onChange: (value: string) => void
 }
 
-const NumericCSSPropertyEditor = <
+const NumericDropdownCSSPropertyEditor = <
   N extends (n: number) => string,
   D extends (d: string) => string
 >({
@@ -35,7 +36,7 @@ const NumericCSSPropertyEditor = <
   transformValue = (n, d) => `${n}${d}`,
   onChange,
   displayName,
-}: NumericCSSPropertyEditorProps<N, D>) => {
+}: NumericDropdownCSSPropertyEditorProps<N, D>) => {
   const [numericValue, setNumericValue] = useState(
     get(numericProps, 'start') || 0
   )
@@ -72,14 +73,4 @@ const NumericCSSPropertyEditor = <
   )
 }
 
-export default NumericCSSPropertyEditor
-
-const Title = styled.p`
-  font-size: 12px;
-  color: ${COLORS.white};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 5px;
-  width: 100px;
-`
+export default NumericDropdownCSSPropertyEditor

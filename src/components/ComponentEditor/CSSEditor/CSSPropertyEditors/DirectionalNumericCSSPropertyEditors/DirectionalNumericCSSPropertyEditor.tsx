@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import NumericCSSPropertyEditor from '../NumericCSSPropertyEditor'
-import Flex from '../../../Flex'
-import MenuItem from '../../MenuItem'
-import AccordionMenu from '../../../AccordionMenu'
+import NumericCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
+import Flex from '../../../../Flex'
+import AccordionMenu from '../../../../AccordionMenu'
 import EditorTitle from '../../EditorTitle'
 
 export const DIRECTIONS = ['left', 'bottom', 'right', 'top'] as const
@@ -17,6 +16,7 @@ interface DirectionEditorProps<T> {
 export interface DirectionalNumericCSSPropertyEditorProps {
   onChange: (value: string) => void
   title: string
+  zIndex?: number
 }
 
 const DirectionEditor = <T extends Direction>({
@@ -33,6 +33,7 @@ const DirectionEditor = <T extends Direction>({
 const DirectionalNumericCSSPropertyEditor = ({
   title,
   onChange,
+  zIndex = 0,
 }: DirectionalNumericCSSPropertyEditorProps) => {
   const [values, setValues] = useState({
     top: '0px',
@@ -60,8 +61,11 @@ const DirectionalNumericCSSPropertyEditor = ({
   }
 
   return (
-    <AccordionMenu title={<EditorTitle title={title} size="lg" />}>
-      <Flex column reverse overflow="visible" padding="0px 12px 12px">
+    <AccordionMenu
+      zIndex={zIndex}
+      title={<EditorTitle title={title} size="lg" />}
+    >
+      <Flex column reverse overflow="visible" padding="12px">
         {DIRECTIONS.map(type => (
           <DirectionEditor
             key={`${title}-${type}`}

@@ -1,9 +1,9 @@
 import React from 'react'
-import NumericCSSPropertyEditor from './NumericCSSPropertyEditor'
-import AccordionMenu from '../../AccordionMenu'
+import NumericCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
+import AccordionMenu from '../../../AccordionMenu'
 import EditorTitle from '../EditorTitle'
 import { createDirectionalDropdownProps } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import Flex from '../../Flex'
+import Flex from '../../../Flex'
 
 export interface DimensionsProperties {
   width?: string
@@ -12,12 +12,16 @@ export interface DimensionsProperties {
 
 export interface DimensionEditorProps {
   onChange: (properties: DimensionsProperties) => void
+  zIndex?: number
 }
 
-const DimensionEditor = ({ onChange }: DimensionEditorProps) => {
+const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
   return (
-    <AccordionMenu title={<EditorTitle size="lg" title="Dimensions" />}>
-      <Flex column reverse overflow="visible" padding="0px 12px">
+    <AccordionMenu
+      zIndex={zIndex}
+      title={<EditorTitle size="lg" title="Dimensions" />}
+    >
+      <Flex column reverse overflow="visible" padding="12px">
         <NumericCSSPropertyEditor
           displayName="height"
           dropdownProps={createDirectionalDropdownProps('top')}

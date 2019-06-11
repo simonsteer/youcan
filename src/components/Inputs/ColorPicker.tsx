@@ -4,6 +4,7 @@ import get from 'lodash/get'
 import tinycolor from 'tinycolor2'
 import Flex from '../Flex'
 import Expandable from '../Expandable'
+import { Title } from '../ComponentEditor/CSSEditor/CSSPropertyEditors/BorderEditor'
 
 interface ColorPickerProps {
   onChange: (color: string) => void
@@ -35,32 +36,44 @@ export const ColorPicker = ({
   }
 
   return (
-    <Flex height="20px" overflow="visible">
-      <Expandable title={<ColorPreview width="100%" height="20px" background={displayValue || value} />} closeOnBlur>
-        {({ setIsOpen }) => {
-          const handleClick = () => {
-            setValue(displayValue)
-            onChange(displayValue)
-            setIsOpen(false)
+    <Flex overflow="visible">
+      <Title>color</Title>
+      <Flex height="20px" overflow="visible">
+        <Expandable
+          title={
+            <ColorPreview
+              width="100%"
+              height="20px"
+              background={displayValue || value}
+            />
           }
+          closeOnBlur
+        >
+          {({ setIsOpen }) => {
+            const handleClick = () => {
+              setValue(displayValue)
+              onChange(displayValue)
+              setIsOpen(false)
+            }
 
-          return (
-            <div>
-              <ColorMap
-                column
-                onClick={handleClick}
-                onMouseMove={handleMouseMove}
-                onMouseOut={handleMouseOut}
-                width="100%"
-                height="75px"
-              >
-                <LightnessMap flex={1} />
-                <DarknessMap flex={1} />
-              </ColorMap>
-            </div>
-          )
-        }}
-      </Expandable>
+            return (
+              <div>
+                <ColorMap
+                  column
+                  onClick={handleClick}
+                  onMouseMove={handleMouseMove}
+                  onMouseOut={handleMouseOut}
+                  width="100%"
+                  height="75px"
+                >
+                  <LightnessMap flex={1} />
+                  <DarknessMap flex={1} />
+                </ColorMap>
+              </div>
+            )
+          }}
+        </Expandable>
+      </Flex>
     </Flex>
   )
 }
