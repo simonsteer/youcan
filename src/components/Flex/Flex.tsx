@@ -1,15 +1,15 @@
 import styled from 'styled-components'
-import { getStyle } from './utils'
+import { getFlexStyle } from './utils'
 
 export interface FlexProps {
   flex?: number
   column?: boolean
   reverse?: boolean
   wrap?: boolean
-  background?: string
   justify?: 'start' | 'center' | 'end' | 'around' | 'between' | 'even'
   align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
   center?: boolean
+  background?: string
   height?: string
   width?: string
   minHeight?: string
@@ -17,12 +17,35 @@ export interface FlexProps {
   overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
   padding?: string
   margin?: string
-  position?: 'absolute' | 'relative'
   zIndex?: number
 }
 
-const Flex = styled.div<FlexProps>`
-  ${getStyle}
+const Flex = styled.div.attrs<FlexProps>(
+  ({
+    background,
+    height,
+    width,
+    minHeight,
+    minWidth,
+    overflow,
+    padding,
+    margin,
+    zIndex,
+  }: FlexProps) => ({
+    style: {
+      background,
+      height,
+      width,
+      minHeight,
+      minWidth,
+      overflow,
+      padding,
+      margin,
+      zIndex,
+    },
+  })
+)`
+  ${getFlexStyle}
 `
 
 export default Flex

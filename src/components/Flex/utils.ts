@@ -1,40 +1,5 @@
 import { FlexProps } from './Flex'
 
-export const getStyle = ({
-  height = 'auto',
-  width = 'auto',
-  minHeight = 'auto',
-  minWidth = 'auto',
-  overflow = 'auto',
-  background = 'transparent',
-  padding,
-  margin,
-  position,
-  zIndex,
-  ...flexProps
-}: FlexProps) => {
-  const paddingStyle = padding ? `padding: ${padding};` : ''
-  const marginStyle = margin ? `margin: ${margin};` : ''
-  const positionStyle = position ? `position: ${position};` : ''
-  const zIndexStyle = zIndex ? `z-index: ${zIndex};` : ''
-
-  return (
-    `
-    ${getFlexStyle(flexProps)}
-    height: ${height};
-    width: ${width};
-    min-height: ${minHeight};
-    min-width: ${minWidth};
-    overflow: ${overflow};
-    background: ${background};
-  ` +
-    paddingStyle +
-    marginStyle +
-    positionStyle + 
-    zIndexStyle
-  )
-}
-
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)
   const justifyContent = getJustification(props)
