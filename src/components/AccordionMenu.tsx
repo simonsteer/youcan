@@ -1,19 +1,18 @@
-import React, {
-  cloneElement,
-  ReactElement,
-} from 'react'
+import React, { cloneElement, ReactElement, Fragment } from 'react'
 import get from 'lodash/get'
 import Expandable, {
   ExpandableProps,
   ExpandableRenderProps,
 } from './Expandable'
+import { Arrow, DropdownArrowProps } from './Inputs/DropdownSelect'
 
 export interface AccordionMenuProps {
-  children: React.ReactNode
+  children: ExpandableProps['children']
   title?: ExpandableProps['title']
   onOpen?: ExpandableProps['onOpen']
   onClose?: ExpandableProps['onClose']
   zIndex?: number
+  arrow?: Pick<DropdownArrowProps, 'position' | 'size'>
 }
 
 const AccordionMenu = ({
@@ -22,6 +21,7 @@ const AccordionMenu = ({
   onOpen,
   onClose,
   zIndex,
+  arrow,
 }: AccordionMenuProps) => {
   const transformedChildren = ({
     setContentHeight,
@@ -39,13 +39,13 @@ const AccordionMenu = ({
     })
 
   return (
-    <Expandable
-      zIndex={zIndex}
-      title={title}
-      onOpen={onOpen}
-      onClose={onClose}
-    >
-      {transformedChildren}
+    <Expandable zIndex={zIndex} title={title} onOpen={onOpen} onClose={onClose}>
+      {expandable => (
+        <Fragment>
+          {transformedChildren(expandable)}
+          {!!arrow && <Arrow isOpen={expandable.isOpen} {...arrow} />}
+        </Fragment>
+      )}
     </Expandable>
   )
 }

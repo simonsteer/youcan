@@ -1,21 +1,22 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import NumericCSSPropertyEditor from '../NumericCSSPropertyEditor'
+import NumericCSSPropertyEditor from './NumericCSSPropertyEditor'
 import {
   createDirectionalDropdownProps,
   Direction,
   DIRECTIONS,
-} from '../DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import { DropdownSelect, ColorPicker } from '../../../Inputs'
-import Flex from '../../../Flex'
-import { COLORS } from '../../../constants'
-import AccordionMenu from '../../../AccordionMenu'
-import EditorTitle from '../../EditorTitle'
+} from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
+import { DropdownSelect, ColorPicker, Toggle } from '../../Inputs'
+import Flex from '../../Flex'
+import { COLORS } from '../../constants'
+import AccordionMenu from '../../AccordionMenu'
+import EditorTitle from '../EditorTitle'
+import Expandable from '../../Expandable'
 
-interface BorderProperties {
-  borderStyle: string
-  borderWidth: string
-  borderColor: string
+export interface BorderProperties {
+  borderStyle?: string
+  borderWidth?: string
+  borderColor?: string
 }
 
 interface BorderTypeEditorProps {
@@ -49,9 +50,9 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
     handleChange('Color', value)
 
   return (
-    <Flex column reverse overflow="visible" padding="0 0 10px 0">
+    <Flex column reverse overflow="visible" padding="12px">
       <Flex height="20px" overflow="visible">
-        <Title>type</Title>
+        <Title>style</Title>
         <DropdownSelect
           options={[
             { value: 'none', label: 'none' },
@@ -133,9 +134,13 @@ const BorderEditor = ({ onChange }: BorderEditorProps) => {
   }
 
   return (
-    <AccordionMenu title={<EditorTitle title="border" size="lg" />}>
+    <AccordionMenu title={<EditorTitle title="Border" size="lg" />}>
       {DIRECTIONS.map((direction, index) => (
-        <AccordionMenu zIndex={DIRECTIONS.length - index} title={<EditorTitle title={direction} size="md" />}>
+        <AccordionMenu
+          zIndex={DIRECTIONS.length - index}
+          title={<EditorTitle title={direction} size="md" />}
+          arrow={{ size: 10, position: { top: 10, right: 12 } }}
+        >
           <BorderTypeEditor
             type={direction}
             onChange={borderProperties =>

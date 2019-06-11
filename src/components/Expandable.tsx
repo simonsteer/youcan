@@ -2,8 +2,8 @@ import React, {
   useState,
   useRef,
   useEffect,
-  TransitionEvent,
   useLayoutEffect,
+  TransitionEvent,
 } from 'react'
 import styled from 'styled-components'
 import get from 'lodash/get'
@@ -16,20 +16,22 @@ export interface ExpandableRenderProps {
   contentHeight: number
 }
 
+type ExpandableChild =
+  | React.ReactNode
+  | ((renderProps: ExpandableRenderProps) => React.ReactNode)
+
 export interface ExpandableProps {
-  children: React.ReactNode | ((renderProps: ExpandableRenderProps) => React.ReactNode)
+  children: ExpandableChild
   closedHeight?: number
   closeOnBlur?: boolean
-  startOpen?: boolean
   onOpen?: (diff: number) => void
   onClose?: (diff: number) => void
   zIndex?: number
-  title?: React.ReactNode
+  title?: ExpandableChild
 }
 
 const Expandable = ({
   children,
-  startOpen = false,
   closeOnBlur = false,
   closedHeight = 0,
   title,
@@ -38,7 +40,7 @@ const Expandable = ({
   zIndex,
 }: ExpandableProps) => {
   const root = useRef(null)
-  const [isOpen, _setIsOpen] = useState(startOpen)
+  const [isOpen, _setIsOpen] = useState(false)
   const [hasOpened, setHasOpened] = useState(false)
   const [contentHeight, setContentHeight] = useState(0)
   const [titleHeight, setTitleHeight] = useState(0)
@@ -63,11 +65,11 @@ const Expandable = ({
       if (!closeOnBlur) {
         return
       }
-      
+
       if (!root || !root.current) {
         return
       }
-      
+
       if (!root.current.contains(e.target)) {
         setIsOpen(false)
       }
@@ -111,8 +113,13 @@ const Expandable = ({
       onTransitionEnd={handleTransitionEnd}
       zIndex={zIndex}
     >
-      <div ref={titleRef} onClick={renderProps.toggleIsOpen}>
-        {title}
+      <div
+        ref={titleRef}
+        onClick={
+          typeof title === 'function' ? undefined : renderProps.toggleIsOpen
+        }
+      >
+        {typeof title === 'function' ? title(renderProps) : title}
       </div>
       <div ref={contentRef}>
         {typeof children === 'function' ? children(renderProps) : children}

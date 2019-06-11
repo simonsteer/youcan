@@ -1,14 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Flex from '../Flex'
 import { COLORS } from '../constants'
-import { PaddingEditor, MarginEditor, BorderEditor } from './CSSPropertyEditors'
+import MarginEditor, {
+  MarginProperties,
+} from './CSSPropertyEditors/MarginEditor'
+import PaddingEditor, {
+  PaddingProperties,
+} from './CSSPropertyEditors/PaddingEditor'
+import BorderEditor, {
+  BorderProperties,
+} from './CSSPropertyEditors/BorderEditor'
+import DimensionEditor, {
+  DimensionsProperties,
+} from './CSSPropertyEditors/DimensionsEditor'
 
-const ComponentEditor = () => (
+export interface CSSProperties
+  extends MarginProperties,
+    PaddingProperties,
+    BorderProperties {
+  [property: string]: string
+}
+
+export type CSSPropertyChanges =
+  | MarginProperties
+  | PaddingProperties
+  | BorderProperties
+  | DimensionsProperties
+
+export interface ComponentEditorProps {
+  onChange: (properties: CSSPropertyChanges) => void
+}
+
+const ComponentEditor = ({ onChange }: ComponentEditorProps) => (
   <Root column reverse justify="end">
-    <PaddingEditor onChange={console.log} />
-    <MarginEditor onChange={console.log} />
-    <BorderEditor onChange={console.log} />
+    <PaddingEditor onChange={onChange} />
+    <MarginEditor onChange={onChange} />
+    <BorderEditor onChange={onChange} />
+    <DimensionEditor onChange={onChange} />
   </Root>
 )
 
@@ -19,5 +48,7 @@ const Root = styled(Flex)`
   background: ${COLORS.black};
   width: 300px;
   height: 100vh;
-  padding: 0px 12px;
+  position: absolute;
+  top: 0;
+  right: 0;
 `

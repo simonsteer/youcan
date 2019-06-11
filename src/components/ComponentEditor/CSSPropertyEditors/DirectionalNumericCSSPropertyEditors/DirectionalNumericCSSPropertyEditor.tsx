@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import NumericCSSPropertyEditor from '../NumericCSSPropertyEditor'
 import Flex from '../../../Flex'
 import MenuItem from '../../MenuItem'
-import AccordionMenu from '../../../AccordionMenu';
-import EditorTitle from '../../EditorTitle';
+import AccordionMenu from '../../../AccordionMenu'
+import EditorTitle from '../../EditorTitle'
 
 export const DIRECTIONS = ['left', 'bottom', 'right', 'top'] as const
 
@@ -61,7 +61,7 @@ const DirectionalNumericCSSPropertyEditor = ({
 
   return (
     <AccordionMenu title={<EditorTitle title={title} size="lg" />}>
-      <Flex column reverse overflow="visible">
+      <Flex column reverse overflow="visible" padding="0px 12px 12px">
         {DIRECTIONS.map(type => (
           <DirectionEditor
             key={`${title}-${type}`}
@@ -76,9 +76,7 @@ const DirectionalNumericCSSPropertyEditor = ({
 
 export default DirectionalNumericCSSPropertyEditor
 
-export const createDirectionalDropdownProps = <T extends Direction>(
-  type: DirectionEditorProps<T>['type'] | 'all'
-) => ({
+export const createDirectionalDropdownProps = (type: Direction | 'all') => ({
   options: [
     { value: 'vw', label: '% window width' },
     { value: 'vh', label: '% window height' },

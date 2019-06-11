@@ -46,7 +46,13 @@ export const DropdownSelect = <F extends (n: string) => any>({
                 setIsOpen(!isOpen)
               }}
             >
-              {index === 0 && <Arrow isOpen={isOpen} size={6} />}
+              {index === 0 && (
+                <Arrow
+                  isOpen={isOpen}
+                  size={6}
+                  position={{ top: 6, right: 5 }}
+                />
+              )}
               {label}
             </Item>
           ))
@@ -56,8 +62,19 @@ export const DropdownSelect = <F extends (n: string) => any>({
   )
 }
 
-const Arrow = styled.div<{ size: number | string; isOpen: boolean }>`
-  ${({ size, isOpen }) => {
+export interface DropdownArrowProps {
+  size: number | string
+  isOpen: boolean
+  position?: {
+    top?: number
+    right?: number
+    bottom?: number
+    left?: number
+  }
+}
+
+export const Arrow = styled.div<DropdownArrowProps>`
+  ${({ size, isOpen, position = {} }) => {
     const dimensions =
       typeof size === 'number'
         ? `width: ${size}px; height: ${size}px;`
@@ -67,8 +84,10 @@ const Arrow = styled.div<{ size: number | string; isOpen: boolean }>`
       pointer-events: none;
       ${dimensions}
       transform: rotate(${isOpen ? 0 : 90}deg);
-      right: 5px;
-      top: 6px;
+      ${position.top ? `top: ${position.top}px;` : ''}
+      ${position.right ? `right: ${position.right}px;` : ''}
+      ${position.bottom ? `bottom: ${position.bottom}px;` : ''}
+      ${position.left ? `left: ${position.left}px;` : ''}
       clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
       position: absolute;
       transition: transform 0.2s, background-color 0.2s;

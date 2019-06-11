@@ -10,16 +10,44 @@ const TITLE_SIZES = {
 
 export interface EditorTitleProps {
   size: 'md' | 'lg'
+  useRegularCursor?: boolean
 }
 
 const EditorTitle = styled(Flex)<EditorTitleProps>`
-  cursor: pointer;
+  cursor: ${({ useRegularCursor }) =>
+    useRegularCursor ? 'default' : 'pointer'};
   color: ${COLORS.white};
   font-size: ${({ size }) => TITLE_SIZES.FONT[size]}px;
   height: ${({ size }) => TITLE_SIZES.CONTAINER[size]}px;
   font-weight: bold;
+  font-style: italic;
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: ${COLORS.grey};
+  }
+  padding: 0px 12px;
 `
 
-interface EditorTitleComponentProps { title: string, size?: EditorTitleProps['size']; onClick?: () => void }
+interface EditorTitleComponentProps {
+  title: string
+  size?: EditorTitleProps['size']
+  onClick?: () => void
+  useRegularCursor?: boolean
+}
 
-export default ({ title, size = 'md', onClick }: EditorTitleComponentProps) => <EditorTitle justify="between" align="center" onClick={onClick} size={size}>{title}</EditorTitle>
+export default ({
+  title,
+  size = 'md',
+  onClick,
+  useRegularCursor = false,
+}: EditorTitleComponentProps) => (
+  <EditorTitle
+    useRegularCursor={useRegularCursor}
+    justify="between"
+    align="center"
+    onClick={onClick}
+    size={size}
+  >
+    {title}
+  </EditorTitle>
+)
