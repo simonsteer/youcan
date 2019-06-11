@@ -61,10 +61,7 @@ const DirectionalNumericCSSPropertyEditor = ({
   }
 
   return (
-    <AccordionMenu
-      zIndex={zIndex}
-      title={<EditorTitle title={title} size="lg" />}
-    >
+    <AccordionMenu zIndex={zIndex} title={<EditorTitle>{title}</EditorTitle>}>
       <Flex column reverse overflow="visible" padding="12px">
         {DIRECTIONS.map(type => (
           <DirectionEditor

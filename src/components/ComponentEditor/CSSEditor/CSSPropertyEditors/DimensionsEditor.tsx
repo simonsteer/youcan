@@ -19,7 +19,7 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
   return (
     <AccordionMenu
       zIndex={zIndex}
-      title={<EditorTitle size="lg" title="Dimensions" />}
+      title={<EditorTitle>Dimensions</EditorTitle>}
     >
       <Flex column reverse overflow="visible" padding="12px">
         <NumericCSSPropertyEditor

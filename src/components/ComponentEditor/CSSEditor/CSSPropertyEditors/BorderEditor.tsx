@@ -131,16 +131,13 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
   }
 
   return (
-    <AccordionMenu
-      zIndex={zIndex}
-      title={<EditorTitle title="Border" size="lg" />}
-    >
+    <AccordionMenu zIndex={zIndex} title={<EditorTitle>Border</EditorTitle>}>
       {DIRECTIONS.map((direction, index) => (
         <AccordionMenu
           key={`border-${direction}-editor`}
           zIndex={DIRECTIONS.length - index}
-          title={<EditorTitle title={direction} size="md" />}
-          arrow={{ size: 10, position: { top: 10, right: 12 } }}
+          title={<EditorTitle size="sm">{direction}</EditorTitle>}
+          arrow={{ size: 8, position: { top: 9, right: 12 } }}
         >
           <BorderTypeEditor
             type={direction}

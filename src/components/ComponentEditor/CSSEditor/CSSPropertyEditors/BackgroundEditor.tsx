@@ -17,10 +17,7 @@ export interface BackgroundEditorProps {
 }
 
 const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
-  <AccordionMenu
-    zIndex={zIndex}
-    title={<EditorTitle size="lg" title="Background" />}
-  >
+  <AccordionMenu zIndex={zIndex} title={<EditorTitle>Background</EditorTitle>}>
     <Flex column reverse overflow="visible" padding="12px">
       <DropdownCSSPropertyEditor
         displayName="size"
