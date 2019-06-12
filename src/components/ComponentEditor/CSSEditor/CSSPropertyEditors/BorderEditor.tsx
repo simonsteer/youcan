@@ -132,7 +132,21 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
   }
 
   return (
-    <AccordionMenu zIndex={zIndex} title={<EditorTitle>Border</EditorTitle>}>
+    <AccordionMenu
+      zIndex={zIndex}
+      title={({ toggleIsOpen }) => (
+        <EditorTitle
+          shortcut={{
+            key: 'B',
+            callback: toggleIsOpen,
+            options: { meta: true },
+          }}
+          onClick={toggleIsOpen}
+        >
+          Border
+        </EditorTitle>
+      )}
+    >
       {DIRECTIONS.map((direction, index) => (
         <AccordionMenu
           key={`border-${direction}-editor`}

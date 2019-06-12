@@ -36,15 +36,10 @@ export const DropdownSelect = <F extends (n: string) => any>({
       <Expandable closedHeight={20} closeOnBlur>
         {({ setIsOpen, isOpen }) =>
           items.map(({ value, label }, index) => (
-            <DropdownText
+            <DropdownItem
               isOpen={isOpen}
-              size="sm"
-              height="20px"
-              padding="0 20px 0 0"
               key={`dropdown-item-${index}`}
               cursor="pointer"
-              align="center"
-              justify="end"
               onClick={() => {
                 handleChange(isOpen, value)
                 setIsOpen(!isOpen)
@@ -57,8 +52,16 @@ export const DropdownSelect = <F extends (n: string) => any>({
                   position={{ top: 6, right: 5 }}
                 />
               )}
-              {label}
-            </DropdownText>
+              <DropdownText
+                size="sm"
+                height="20px"
+                align="center"
+                justify="end"
+                padding="0 20px 0 0"
+              >
+                {label}
+              </DropdownText>
+            </DropdownItem>
           ))
         }
       </Expandable>
@@ -100,15 +103,25 @@ export const Arrow = styled.div<DropdownArrowProps>`
   }}
 `
 
-const DropdownText = styled(Paragraph)<{ isOpen: boolean }>`
-  background: ${({ isOpen }) => (isOpen ? COLORS.grey : COLORS.black)};
-  color: ${COLORS.white};
-  transition: background-color 0.2s, color 0.2s;
-  &:hover {
-    background: ${({ isOpen }) => (isOpen ? COLORS.white : COLORS.grey)};
-    color: ${({ isOpen }) => (isOpen ? COLORS.black : COLORS.white)};
-    ${Arrow} {
-      background: ${({ isOpen }) => (isOpen ? COLORS.black : COLORS.white)};
+const DropdownItem = styled(Flex)<{ isOpen: boolean }>`
+  ${({ isOpen }) => `
+    background: ${isOpen ? COLORS.grey : COLORS.black};
+    transition: background-color 0.2s, color 0.2s;
+    &:hover {
+      background: ${isOpen ? COLORS.white : COLORS.grey};
+      color: ${isOpen ? COLORS.black : COLORS.white};
+      ${Arrow} {
+        background: ${isOpen ? COLORS.black : COLORS.white};
+      }
+      ${DropdownText} {
+        color: ${isOpen ? COLORS.black : COLORS.white};
+      }
     }
-  }
+    ${DropdownText} {
+      color: ${COLORS.white};
+      transition: color 0.2s;
+    }
+  `}
 `
+
+const DropdownText = styled(Paragraph)``
