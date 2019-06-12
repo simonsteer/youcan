@@ -2,11 +2,11 @@ import React, { useState, MouseEvent } from 'react'
 import styled from 'styled-components'
 import get from 'lodash/get'
 import tinycolor from 'tinycolor2'
-import Flex from '../Flex'
+import Flex, { FlexProps } from '../Flex/Flex'
 import Expandable from '../Expandable'
 import PropertyTitle from '../ComponentEditor/CSSEditor/PropertyTitle'
 
-interface ColorPickerProps {
+interface ColorPickerProps extends FlexProps {
   onChange: (color: string) => void
   initialValue: string
 }
@@ -14,6 +14,7 @@ interface ColorPickerProps {
 export const ColorPicker = ({
   initialValue = '#a3a3a3',
   onChange,
+  ...flexProps
 }: ColorPickerProps) => {
   const [value, setValue] = useState(initialValue)
   const [displayValue, setDisplayValue] = useState(initialValue)
@@ -57,7 +58,7 @@ export const ColorPicker = ({
             }
 
             return (
-              <div>
+              <Flex {...flexProps} column>
                 <ColorMap
                   column
                   onClick={handleClick}
@@ -69,7 +70,7 @@ export const ColorPicker = ({
                   <LightnessMap flex={1} />
                   <DarknessMap flex={1} />
                 </ColorMap>
-              </div>
+              </Flex>
             )
           }}
         </Expandable>

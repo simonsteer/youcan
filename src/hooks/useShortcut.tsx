@@ -1,22 +1,19 @@
 import { useEffect } from 'react'
 
-type ShortcutOptions = {
+interface ShortcutOptions {
   shift?: boolean
   alt?: boolean
   ctrl?: boolean
   meta?: boolean
 }
 
-type UseShortcut = (
-  key: string,
-  callback: () => void,
+export interface ShortcutParams {
+  key: string
+  callback: () => void
   options?: ShortcutOptions
-) => string
-export const useShortcut: UseShortcut = (
-  key = '',
-  callback = () => {},
-  options = {}
-) => {
+}
+type UseShortcut = (params: ShortcutParams) => string
+export const useShortcut: UseShortcut = ({ key, callback, options = {} }) => {
   const { shift, alt, ctrl, meta } = options
   const handler = (e: KeyboardEvent) => {
     const keyMatches = String.fromCharCode(e.keyCode) === key
@@ -49,11 +46,11 @@ const getShortcutString = (key: string, options: ShortcutOptions) => {
   return orderedShortcut
     .map((option, index) => {
       if (index === 0) {
-        return option && 'shift'
+        return option && '⇧'
       } else if (index === 1) {
         return option && '⌘'
       } else if (index === 2) {
-        return option && 'ctrl'
+        return option && '^'
       } else if (index === 3) {
         return option && 'alt'
       } else {

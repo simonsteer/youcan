@@ -4,6 +4,7 @@ import EditorTitle from '../EditorTitle'
 import Flex from '../../../Flex'
 import DropdownCSSPropertyEditor from './DropdownCSSPropertyEditor'
 import { ColorPicker } from '../../../Inputs'
+import KeyboardShortcut from '../../../KeyboardShortcut'
 
 export interface BackgroundProperties {
   backgroundColor?: string
@@ -21,11 +22,15 @@ const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
     zIndex={zIndex}
     title={({ toggleIsOpen, setIsOpen, isOpen }) => (
       <EditorTitle
-        shortcut={{
-          key: 'G',
-          callback: toggleIsOpen,
-          options: { meta: true },
-        }}
+        shortcut={
+          <KeyboardShortcut
+            shortcut={{
+              key: 'G',
+              callback: toggleIsOpen,
+              options: { meta: true },
+            }}
+          />
+        }
         onClick={toggleIsOpen}
         tabIndex={0}
         onFocus={() => {

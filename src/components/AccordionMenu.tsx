@@ -5,14 +5,15 @@ import Expandable, {
   ExpandableRenderProps,
 } from './Expandable'
 import { Arrow, DropdownArrowProps } from './Inputs/DropdownSelect'
+import { FlexProps } from './Flex/Flex'
 
-export interface AccordionMenuProps {
+export interface AccordionMenuProps extends FlexProps {
   children: ExpandableProps['children']
   title?: ExpandableProps['title']
   onOpen?: ExpandableProps['onOpen']
   onClose?: ExpandableProps['onClose']
-  zIndex?: number
   arrow?: Pick<DropdownArrowProps, 'position' | 'size'>
+  startOpen?: boolean
 }
 
 const AccordionMenu = ({
@@ -20,8 +21,9 @@ const AccordionMenu = ({
   title,
   onOpen,
   onClose,
-  zIndex,
   arrow,
+  startOpen,
+  ...flexProps
 }: AccordionMenuProps) => {
   const transformedChildren = ({
     setContentHeight,
@@ -39,7 +41,13 @@ const AccordionMenu = ({
     })
 
   return (
-    <Expandable zIndex={zIndex} title={title} onOpen={onOpen} onClose={onClose}>
+    <Expandable
+      {...flexProps}
+      title={title}
+      onOpen={onOpen}
+      onClose={onClose}
+      startOpen={startOpen}
+    >
       {expandable => (
         <Fragment>
           {transformedChildren(expandable)}

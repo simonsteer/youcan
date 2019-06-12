@@ -4,6 +4,7 @@ import AccordionMenu from '../../../AccordionMenu'
 import EditorTitle from '../EditorTitle'
 import { createDirectionalDropdownProps } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
 import Flex from '../../../Flex'
+import KeyboardShortcut from '../../../KeyboardShortcut'
 
 export interface DimensionsProperties {
   width?: string
@@ -21,11 +22,15 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
       zIndex={zIndex}
       title={({ toggleIsOpen, setIsOpen, isOpen }) => (
         <EditorTitle
-          shortcut={{
-            key: 'D',
-            callback: toggleIsOpen,
-            options: { meta: true },
-          }}
+          shortcut={
+            <KeyboardShortcut
+              shortcut={{
+                key: 'D',
+                callback: toggleIsOpen,
+                options: { meta: true },
+              }}
+            />
+          }
           onClick={toggleIsOpen}
           tabIndex={0}
           onFocus={() => {
@@ -37,13 +42,15 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
         </EditorTitle>
       )}
     >
-      <Flex column reverse overflow="visible" padding="12px">
+      <Flex column overflow="visible" padding="12px">
         <NumericCSSPropertyEditor
+          zIndex={1}
           displayName="height"
           dropdownProps={createDirectionalDropdownProps('top')}
           onChange={height => onChange({ height })}
         />
         <NumericCSSPropertyEditor
+          zIndex={0}
           displayName="width"
           dropdownProps={createDirectionalDropdownProps('left')}
           onChange={width => onChange({ width })}

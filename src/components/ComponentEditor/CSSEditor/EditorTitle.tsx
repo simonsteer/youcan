@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../../constants'
 import { Title, TitleProps, Paragraph } from '../../Text'
-import { useShortcut } from '../../../hooks'
 
 const TITLE_HEIGHTS = { sm: 28, md: 40, lg: 52 } as const
 
@@ -20,27 +19,10 @@ const EditorTitleBase = styled(Title)<EditorTitleBaseProps>`
 `
 
 export interface EditorTitleProps extends TitleProps {
-  shortcut?: {
-    key: string
-    callback: () => void
-    options?: { shift?: boolean; ctrl?: boolean; alt?: boolean; meta?: boolean }
-  }
+  shortcut?: React.ReactNode
 }
 
-const EditorTitle = ({
-  children,
-  shortcut = {
-    key: '',
-    callback: () => {},
-    options: {},
-  },
-  ...props
-}: EditorTitleProps) => {
-  const shortcutString = useShortcut(
-    shortcut.key,
-    shortcut.callback,
-    shortcut.options
-  )
+const EditorTitle = ({ children, shortcut, ...props }: EditorTitleProps) => {
   return (
     <EditorTitleBase
       padding="0px 12px"
@@ -52,7 +34,7 @@ const EditorTitle = ({
       {children}
       {!!shortcut && (
         <Paragraph size="lg" color={COLORS.white}>
-          {shortcutString}
+          {shortcut}
         </Paragraph>
       )}
     </EditorTitleBase>

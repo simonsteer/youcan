@@ -7,6 +7,8 @@ import React, {
 } from 'react'
 import styled from 'styled-components'
 import get from 'lodash/get'
+import Flex from './Flex'
+import { FlexProps } from './Flex/Flex'
 
 export interface ExpandableRenderProps {
   setIsOpen: (isOpen: boolean) => void
@@ -20,7 +22,7 @@ type ExpandableChild =
   | React.ReactNode
   | ((renderProps: ExpandableRenderProps) => React.ReactNode)
 
-export interface ExpandableProps {
+export interface ExpandableProps extends FlexProps {
   children: ExpandableChild
   closedHeight?: number
   closeOnBlur?: boolean
@@ -28,6 +30,7 @@ export interface ExpandableProps {
   onClose?: (diff: number) => void
   zIndex?: number
   title?: ExpandableChild
+  startOpen?: boolean
 }
 
 const Expandable = ({
@@ -37,11 +40,12 @@ const Expandable = ({
   title,
   onOpen = () => {},
   onClose = () => {},
-  zIndex,
+  startOpen = false,
+  ...restProps
 }: ExpandableProps) => {
   const root = useRef(null)
-  const [isOpen, _setIsOpen] = useState(false)
-  const [hasOpened, setHasOpened] = useState(false)
+  const [isOpen, _setIsOpen] = useState(startOpen)
+  const [hasOpened, setHasOpened] = useState(startOpen)
   const [contentHeight, setContentHeight] = useState(0)
   const [titleHeight, setTitleHeight] = useState(0)
   const [canSetContentHeight, setCanSetContentHeight] = useState(true)
@@ -105,44 +109,44 @@ const Expandable = ({
 
   return (
     <ExpandableContainer
+      column
       ref={root}
       hasOpened={hasOpened}
-      height={contentHeight || 0}
+      contentHeight={contentHeight || 0}
       closedHeight={closedHeight || titleHeight}
       isOpen={isOpen}
       onTransitionEnd={handleTransitionEnd}
-      zIndex={zIndex}
+      {...restProps}
     >
-      <div
+      <Flex
+        column
         ref={titleRef}
         onClick={
           typeof title === 'function' ? undefined : renderProps.toggleIsOpen
         }
       >
         {typeof title === 'function' ? title(renderProps) : title}
-      </div>
-      <div ref={contentRef}>
+      </Flex>
+      <Flex column ref={contentRef}>
         {typeof children === 'function' ? children(renderProps) : children}
-      </div>
+      </Flex>
     </ExpandableContainer>
   )
 }
 
 export default Expandable
 
-const ExpandableContainer = styled.div<{
+const ExpandableContainer = styled(Flex)<{
   isOpen: boolean
   closedHeight: number
-  height: number
+  contentHeight: number
   hasOpened: boolean
-  zIndex?: number
 }>`
-  ${({ isOpen, height, hasOpened, closedHeight, zIndex }) => `
+  ${({ isOpen, contentHeight, hasOpened, closedHeight, zIndex }) => `
 position: relative;    
     width: 100%;
-    height: ${isOpen ? `${height}px` : `${closedHeight}px`};
+    height: ${isOpen ? `${contentHeight}px` : `${closedHeight}px`};
     overflow: ${hasOpened && isOpen ? 'visible' : 'hidden'};
     transition: height 0.2s;
-    ${zIndex ? `z-index: ${zIndex};` : ''}
     `}
 `

@@ -6,12 +6,12 @@ import {
   Direction,
   DIRECTIONS,
 } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import { DropdownSelect, ColorPicker } from '../../../Inputs'
+import { DropdownSelect, ColorPicker, Toggle } from '../../../Inputs'
 import Flex from '../../../Flex'
-import { COLORS } from '../../../constants'
 import AccordionMenu from '../../../AccordionMenu'
 import EditorTitle from '../EditorTitle'
 import PropertyTitle from '../PropertyTitle'
+import KeyboardShortcut from '../../../KeyboardShortcut'
 
 export interface BorderProperties {
   borderStyle?: string
@@ -136,11 +136,15 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
       zIndex={zIndex}
       title={({ toggleIsOpen, setIsOpen, isOpen }) => (
         <EditorTitle
-          shortcut={{
-            key: 'B',
-            callback: toggleIsOpen,
-            options: { meta: true },
-          }}
+          shortcut={
+            <KeyboardShortcut
+              shortcut={{
+                key: 'B',
+                callback: toggleIsOpen,
+                options: { meta: true },
+              }}
+            />
+          }
           onClick={toggleIsOpen}
           tabIndex={0}
           onFocus={() => {
@@ -152,6 +156,15 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
         </EditorTitle>
       )}
     >
+      <AccordionMenu
+        startOpen
+        title={({ toggleIsOpen }) => <Toggle onChange={toggleIsOpen} />}
+      >
+        <BorderTypeEditor
+          type="top"
+          onChange={borderProperties => handleChange('top', borderProperties)}
+        />
+      </AccordionMenu>
       {DIRECTIONS.map((direction, index) => (
         <AccordionMenu
           key={`border-${direction}-editor`}

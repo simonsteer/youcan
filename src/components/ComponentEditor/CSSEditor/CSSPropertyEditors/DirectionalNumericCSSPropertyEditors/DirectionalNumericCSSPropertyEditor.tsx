@@ -3,17 +3,19 @@ import NumericCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
 import Flex from '../../../../Flex'
 import AccordionMenu from '../../../../AccordionMenu'
 import EditorTitle from '../../EditorTitle'
+import { FlexProps } from '../../../../Flex/Flex'
+import KeyboardShortcut from '../../../../KeyboardShortcut'
 
 export const DIRECTIONS = ['left', 'bottom', 'right', 'top'] as const
 
 export type Direction = 'top' | 'right' | 'bottom' | 'left'
 
-interface DirectionEditorProps<T> {
+interface DirectionEditorProps<T> extends FlexProps {
   onChange: (value: { type: T; value: string }) => void
   type: T
 }
 
-export interface DirectionalNumericCSSPropertyEditorProps {
+export interface DirectionalNumericCSSPropertyEditorProps extends FlexProps {
   onChange: (value: string) => void
   title: string
   zIndex?: number
@@ -23,8 +25,10 @@ export interface DirectionalNumericCSSPropertyEditorProps {
 const DirectionEditor = <T extends Direction>({
   onChange,
   type,
+  ...flexProps
 }: DirectionEditorProps<T>) => (
   <NumericCSSPropertyEditor
+    {...flexProps}
     displayName={type}
     dropdownProps={createDirectionalDropdownProps(type)}
     onChange={value => onChange({ type, value })}
@@ -34,8 +38,8 @@ const DirectionEditor = <T extends Direction>({
 const DirectionalNumericCSSPropertyEditor = ({
   title,
   onChange,
-  zIndex = 0,
   shortcutKey = '',
+  ...flexProps
 }: DirectionalNumericCSSPropertyEditorProps) => {
   const [values, setValues] = useState({
     top: '0px',
@@ -64,14 +68,18 @@ const DirectionalNumericCSSPropertyEditor = ({
 
   return (
     <AccordionMenu
-      zIndex={zIndex}
+      {...flexProps}
       title={({ toggleIsOpen, setIsOpen, isOpen }) => (
         <EditorTitle
-          shortcut={{
-            key: shortcutKey,
-            callback: toggleIsOpen,
-            options: { meta: true },
-          }}
+          shortcut={
+            <KeyboardShortcut
+              shortcut={{
+                key: shortcutKey,
+                callback: toggleIsOpen,
+                options: { meta: true },
+              }}
+            />
+          }
           onClick={toggleIsOpen}
           tabIndex={0}
           onFocus={() => {
