@@ -7,11 +7,14 @@ import {
   DIRECTIONS,
 } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
 import { DropdownSelect, ColorPicker, Toggle } from '../../../Inputs'
-import Flex from '../../../Flex'
 import AccordionMenu from '../../../AccordionMenu'
 import EditorTitle from '../EditorTitle'
 import PropertyTitle from '../PropertyTitle'
 import KeyboardShortcut from '../../../KeyboardShortcut'
+import Flex, { FlexProps } from '../../../Flex/Flex'
+import { Title } from '../../../Text'
+import { COLORS } from '../../../constants'
+import Expandable from '../../../Expandable'
 
 export interface BorderProperties {
   borderStyle?: string
@@ -19,14 +22,18 @@ export interface BorderProperties {
   borderColor?: string
 }
 
-interface BorderTypeEditorProps {
+interface BorderTypeEditorProps extends FlexProps {
   onChange: (values: BorderProperties) => void
   type?: Direction
 }
 
 type BorderProp = 'Style' | 'Color' | 'Width'
 
-const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
+const BorderTypeEditor = ({
+  onChange,
+  type,
+  ...flexProps
+}: BorderTypeEditorProps) => {
   const [borderProperties, setBorderProperties] = useState({
     borderStyle: 'none',
     borderColor: 'transparent',
@@ -50,7 +57,18 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
     handleChange('Color', value)
 
   return (
-    <Flex column reverse overflow="visible" padding="12px">
+    <Flex column overflow="visible" {...flexProps} padding="12px">
+      <NumericCSSPropertyEditor
+        zIndex={2}
+        displayName="width"
+        dropdownProps={createDirectionalDropdownProps(type)}
+        onChange={handleBorderWidthChange}
+      />
+      <ColorPicker
+        zIndex={1}
+        initialValue="#fff"
+        onChange={handleBorderColorChange}
+      />
       <Flex height="20px" overflow="visible">
         <PropertyTitle>style</PropertyTitle>
         <DropdownSelect
@@ -69,12 +87,6 @@ const BorderTypeEditor = ({ onChange, type }: BorderTypeEditorProps) => {
           onChange={handleBorderStyleChange}
         />
       </Flex>
-      <ColorPicker initialValue="#fff" onChange={handleBorderColorChange} />
-      <NumericCSSPropertyEditor
-        displayName="width"
-        dropdownProps={createDirectionalDropdownProps(type)}
-        onChange={handleBorderWidthChange}
-      />
     </Flex>
   )
 }
@@ -146,39 +158,31 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
             />
           }
           onClick={toggleIsOpen}
-          tabIndex={0}
-          onFocus={() => {
-            if (isOpen) return
-            setIsOpen(true)
-          }}
         >
           Border
         </EditorTitle>
       )}
     >
-      <AccordionMenu
-        startOpen
-        title={({ toggleIsOpen }) => <Toggle onChange={toggleIsOpen} />}
+      <Title
+        size="sm"
+        color={COLORS.white}
+        padding="12px 12px 0 12px"
+        justify="between"
       >
-        <BorderTypeEditor
-          type="top"
-          onChange={borderProperties => handleChange('top', borderProperties)}
-        />
-      </AccordionMenu>
+        <Flex as="span">all</Flex>
+        <Toggle onChange={console.log} />
+      </Title>
+      <BorderTypeEditor
+        type="top"
+        onChange={borderProperties => handleChange('top', borderProperties)}
+        zIndex={5}
+      />
       {DIRECTIONS.map((direction, index) => (
         <AccordionMenu
           key={`border-${direction}-editor`}
           zIndex={DIRECTIONS.length - index}
           title={({ toggleIsOpen, setIsOpen, isOpen }) => (
-            <EditorTitle
-              size="sm"
-              onClick={toggleIsOpen}
-              tabIndex={0}
-              onFocus={() => {
-                if (isOpen) return
-                setIsOpen(true)
-              }}
-            >
+            <EditorTitle size="sm" onClick={toggleIsOpen}>
               {direction}
             </EditorTitle>
           )}

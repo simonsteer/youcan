@@ -32,11 +32,6 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
             />
           }
           onClick={toggleIsOpen}
-          tabIndex={0}
-          onFocus={() => {
-            if (isOpen) return
-            setIsOpen(true)
-          }}
         >
           Dimensions
         </EditorTitle>
@@ -50,7 +45,6 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
           onChange={height => onChange({ height })}
         />
         <NumericCSSPropertyEditor
-          zIndex={0}
           displayName="width"
           dropdownProps={createDirectionalDropdownProps('left')}
           onChange={width => onChange({ width })}

@@ -15,27 +15,27 @@ export interface ShortcutParams {
 type UseShortcut = (params: ShortcutParams) => string
 export const useShortcut: UseShortcut = ({ key, callback, options = {} }) => {
   const { shift, alt, ctrl, meta } = options
-  const handler = (e: KeyboardEvent) => {
-    const keyMatches = String.fromCharCode(e.keyCode) === key
-    if (
-      !keyMatches ||
-      (shift && !e.shiftKey) ||
-      (alt && !e.altKey) ||
-      (ctrl && !e.ctrlKey) ||
-      (meta && !e.metaKey)
-    ) {
-      return
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const keyMatches = String.fromCharCode(e.keyCode) === key
+      if (
+        !keyMatches ||
+        (shift && !e.shiftKey) ||
+        (alt && !e.altKey) ||
+        (ctrl && !e.ctrlKey) ||
+        (meta && !e.metaKey)
+      ) {
+        return
+      }
+
+      e.preventDefault()
+      callback()
+      e.stopPropagation()
     }
 
-    e.preventDefault()
-    callback()
-    e.stopPropagation()
-  }
-
-  useEffect(() => {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handler])
+  }, [key, callback, shift, alt, ctrl, meta])
 
   return getShortcutString(key, options)
 }

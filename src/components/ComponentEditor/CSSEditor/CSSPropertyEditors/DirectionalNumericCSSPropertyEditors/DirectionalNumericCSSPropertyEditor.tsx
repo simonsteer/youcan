@@ -81,11 +81,6 @@ const DirectionalNumericCSSPropertyEditor = ({
             />
           }
           onClick={toggleIsOpen}
-          tabIndex={0}
-          onFocus={() => {
-            if (isOpen) return
-            setIsOpen(true)
-          }}
         >
           {title}
         </EditorTitle>

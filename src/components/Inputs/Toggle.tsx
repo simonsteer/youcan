@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../constants'
+import Flex, { FlexProps } from '../Flex/Flex'
 
-export interface ToggleProps {
+export interface ToggleProps extends FlexProps {
   initialValue?: boolean
   onChange: (value: boolean) => void
 }
 
-export const Toggle = ({ initialValue = false, onChange }: ToggleProps) => {
+export const Toggle = ({
+  initialValue = false,
+  onChange,
+  ...flexProps
+}: ToggleProps) => {
   const [isToggled, setIsToggled] = useState(initialValue)
 
   const handleClick = () => {
@@ -17,20 +22,20 @@ export const Toggle = ({ initialValue = false, onChange }: ToggleProps) => {
   }
 
   return (
-    <Container onClick={handleClick} isToggled={isToggled}>
+    <Container onClick={handleClick} isToggled={isToggled} {...flexProps}>
       <Switch />
     </Container>
   )
 }
 
-const Switch = styled.div`
+const Switch = styled(Flex)`
   width: 14px;
   height: 14px;
   border-radius: 7px;
   background: ${COLORS.white};
 `
 
-const Container = styled.div<{ isToggled: boolean }>`
+const Container = styled(Flex)<{ isToggled: boolean }>`
   cursor: pointer;
   width: 75px;
   height: 20px;

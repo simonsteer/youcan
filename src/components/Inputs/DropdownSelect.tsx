@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
-import Flex from '../Flex'
+import Flex, { FlexProps } from '../Flex/Flex'
 import { COLORS } from '../constants'
 import Expandable from '../Expandable'
 import { Paragraph } from '../Text'
 
-export interface DropdownSelectProps<T extends (n: string) => any> {
+export interface DropdownSelectProps<T extends (n: string) => any>
+  extends FlexProps {
   options: { value: string; label: string }[]
   defaultValue?: string
   onChange: (value: ReturnType<T>) => void
@@ -18,6 +19,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
   defaultValue,
   onChange,
   transformValue,
+  ...flexProps
 }: DropdownSelectProps<F>) => {
   const [items, setItems] = useState(
     sortBy(options, ({ value }) => value !== defaultValue)
@@ -32,7 +34,7 @@ export const DropdownSelect = <F extends (n: string) => any>({
   }
 
   return (
-    <Flex height="20px" flex={1} overflow="visible">
+    <Flex height="20px" flex={1} overflow="visible" {...flexProps}>
       <Expandable closedHeight={20} closeOnBlur>
         {({ setIsOpen, isOpen }) =>
           items.map(({ value, label }, index) => (

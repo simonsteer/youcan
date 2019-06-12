@@ -32,39 +32,41 @@ const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
           />
         }
         onClick={toggleIsOpen}
-        tabIndex={0}
-        onFocus={() => {
-          if (isOpen) return
-          setIsOpen(true)
-        }}
       >
         Background
       </EditorTitle>
     )}
   >
-    <Flex column reverse overflow="visible" padding="12px">
-      <DropdownCSSPropertyEditor
-        displayName="size"
-        options={[
-          { label: 'fill container', value: 'cover' },
-          { label: 'fit to container', value: 'contain' },
-        ]}
-        defaultValue="none"
-        onChange={backgroundSize => onChange({ backgroundSize })}
-      />
-      <DropdownCSSPropertyEditor
-        displayName="image"
-        options={[
-          { label: 'none', value: 'none' },
-          { label: 'upload image to app', value: 'upload' },
-          { label: 'select image from app', value: 'upload' },
-        ]}
-        defaultValue="none"
-        onChange={background => onChange({ backgroundImage: `${background}` })}
-      />
+    <Flex column overflow="visible" padding="12px">
       <ColorPicker
+        zIndex={2}
         initialValue="#fff"
         onChange={backgroundColor => onChange({ backgroundColor })}
+      />
+      <DropdownCSSPropertyEditor
+        zIndex={1}
+        displayName="image"
+        dropdownProps={{
+          options: [
+            { label: 'none', value: 'none' },
+            { label: 'upload image to app', value: 'upload' },
+            { label: 'select image from app', value: 'upload' },
+          ],
+          defaultValue: 'none',
+          onChange: background =>
+            onChange({ backgroundImage: `${background}` }),
+        }}
+      />
+      <DropdownCSSPropertyEditor
+        displayName="size"
+        dropdownProps={{
+          options: [
+            { label: 'fill container', value: 'cover' },
+            { label: 'fit to container', value: 'contain' },
+          ],
+          defaultValue: 'none',
+          onChange: backgroundSize => onChange({ backgroundSize }),
+        }}
       />
     </Flex>
   </AccordionMenu>

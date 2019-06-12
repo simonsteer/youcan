@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { getFlexStyle } from './utils'
-import omit from 'lodash/omit'
+import { getFlexStyle, getOtherStyle } from './utils'
 import { MouseEventHandler, FocusEventHandler } from 'react'
 
 export interface FlexProps {
+  // use these props in styled-component template string
   flex?: number
   column?: boolean
   reverse?: boolean
@@ -11,15 +11,6 @@ export interface FlexProps {
   justify?: 'start' | 'center' | 'end' | 'around' | 'between' | 'even'
   align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
   center?: boolean
-  background?: string
-  height?: string
-  width?: string
-  minHeight?: string
-  minWidth?: string
-  overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
-  padding?: string
-  margin?: string
-  zIndex?: number
   cursor?:
     | 'pointer'
     | 'crosshair'
@@ -34,8 +25,21 @@ export interface FlexProps {
     | 'row-resize'
     | 'col-resize'
     | 'text'
+  overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
+  position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky'
+  // use these props in attrs
+  background?: string
+  height?: string
+  width?: string
+  minHeight?: string
+  minWidth?: string
+  padding?: string
+  margin?: string
+  zIndex?: number
   transition?: string
   tabIndex?: number
+  borderRadius?: string
+  // handlers
   onClick?: MouseEventHandler
   onHover?: MouseEventHandler
   onMouseOut?: MouseEventHandler
@@ -47,28 +51,38 @@ export interface FlexProps {
 }
 
 const Flex = styled.div.attrs<FlexProps>(
-  ({ tabIndex, ...props }: FlexProps) => ({
+  ({
     tabIndex,
-    style: omit(props, [
-      'flex',
-      'column',
-      'reverse',
-      'wrap',
-      'justify',
-      'align',
-      'center',
-      'onClick',
-      'onHover',
-      'onMouseOut',
-      'onMouseOver',
-      'onMouseDown',
-      'onMouseUp',
-      'onFocus',
-      'onBlur',
-    ]),
+    background,
+    height,
+    width,
+    minHeight,
+    minWidth,
+    padding,
+    margin,
+    zIndex,
+    transition,
+    borderRadius,
+    position,
+  }: FlexProps) => ({
+    tabIndex,
+    style: {
+      background,
+      height,
+      width,
+      minHeight,
+      minWidth,
+      padding,
+      margin,
+      zIndex,
+      transition,
+      borderRadius,
+      position,
+    },
   })
 )`
   ${getFlexStyle}
+  ${getOtherStyle}
 `
 
 export default Flex

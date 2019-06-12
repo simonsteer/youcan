@@ -1,5 +1,10 @@
 import { FlexProps } from './Flex'
 
+export const getOtherStyle = ({ cursor, overflow }: FlexProps) => `
+  ${cursor ? `cursor: ${cursor};` : ''}
+  ${overflow ? `overflow: ${overflow};` : ''}
+`
+
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)
   const justifyContent = getJustification(props)
