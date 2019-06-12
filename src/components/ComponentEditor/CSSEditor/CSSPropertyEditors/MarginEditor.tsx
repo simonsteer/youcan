@@ -15,6 +15,7 @@ const MarginEditor = ({ onChange, zIndex = 0 }: MarginEditorProps) => (
     title="Margin"
     onChange={margin => onChange({ margin })}
     zIndex={zIndex}
+    shortcutKey="M"
   />
 )
 

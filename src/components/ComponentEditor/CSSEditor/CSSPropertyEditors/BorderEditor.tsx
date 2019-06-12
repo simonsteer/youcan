@@ -134,7 +134,7 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
   return (
     <AccordionMenu
       zIndex={zIndex}
-      title={({ toggleIsOpen }) => (
+      title={({ toggleIsOpen, setIsOpen, isOpen }) => (
         <EditorTitle
           shortcut={{
             key: 'B',
@@ -142,6 +142,11 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
             options: { meta: true },
           }}
           onClick={toggleIsOpen}
+          tabIndex={0}
+          onFocus={() => {
+            if (isOpen) return
+            setIsOpen(true)
+          }}
         >
           Border
         </EditorTitle>
@@ -151,7 +156,19 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
         <AccordionMenu
           key={`border-${direction}-editor`}
           zIndex={DIRECTIONS.length - index}
-          title={<EditorTitle size="sm">{direction}</EditorTitle>}
+          title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+            <EditorTitle
+              size="sm"
+              onClick={toggleIsOpen}
+              tabIndex={0}
+              onFocus={() => {
+                if (isOpen) return
+                setIsOpen(true)
+              }}
+            >
+              {direction}
+            </EditorTitle>
+          )}
           arrow={{ size: 8, position: { top: 9, right: 12 } }}
         >
           <BorderTypeEditor

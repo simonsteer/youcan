@@ -29,7 +29,10 @@ export const useShortcut: UseShortcut = (
     ) {
       return
     }
+
+    e.preventDefault()
     callback()
+    e.stopPropagation()
   }
 
   useEffect(() => {

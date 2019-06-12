@@ -17,7 +17,26 @@ export interface BackgroundEditorProps {
 }
 
 const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
-  <AccordionMenu zIndex={zIndex} title={<EditorTitle>Background</EditorTitle>}>
+  <AccordionMenu
+    zIndex={zIndex}
+    title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+      <EditorTitle
+        shortcut={{
+          key: 'G',
+          callback: toggleIsOpen,
+          options: { meta: true },
+        }}
+        onClick={toggleIsOpen}
+        tabIndex={0}
+        onFocus={() => {
+          if (isOpen) return
+          setIsOpen(true)
+        }}
+      >
+        Background
+      </EditorTitle>
+    )}
+  >
     <Flex column reverse overflow="visible" padding="12px">
       <DropdownCSSPropertyEditor
         displayName="size"

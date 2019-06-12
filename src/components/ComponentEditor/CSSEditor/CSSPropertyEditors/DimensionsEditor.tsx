@@ -19,7 +19,23 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
   return (
     <AccordionMenu
       zIndex={zIndex}
-      title={<EditorTitle>Dimensions</EditorTitle>}
+      title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+        <EditorTitle
+          shortcut={{
+            key: 'D',
+            callback: toggleIsOpen,
+            options: { meta: true },
+          }}
+          onClick={toggleIsOpen}
+          tabIndex={0}
+          onFocus={() => {
+            if (isOpen) return
+            setIsOpen(true)
+          }}
+        >
+          Dimensions
+        </EditorTitle>
+      )}
     >
       <Flex column reverse overflow="visible" padding="12px">
         <NumericCSSPropertyEditor

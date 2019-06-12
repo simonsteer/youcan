@@ -15,6 +15,7 @@ const PaddingEditor = ({ onChange, zIndex }: PaddingEditorProps) => (
     title="Padding"
     onChange={padding => onChange({ padding })}
     zIndex={zIndex}
+    shortcutKey="P"
   />
 )
 

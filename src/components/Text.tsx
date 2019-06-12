@@ -38,12 +38,6 @@ export interface TextProps {
   variant?: 'small-caps'
   letterSpacing?: number
   children: React.ReactNode
-  onClick?: MouseEventHandler
-  onHover?: MouseEventHandler
-  onMouseOut?: MouseEventHandler
-  onMouseOver?: MouseEventHandler
-  onMouseDown?: MouseEventHandler
-  onMouseUp?: MouseEventHandler
 }
 
 const Text = styled(Flex)<TextProps>`

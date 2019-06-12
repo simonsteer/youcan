@@ -17,6 +17,7 @@ export interface DirectionalNumericCSSPropertyEditorProps {
   onChange: (value: string) => void
   title: string
   zIndex?: number
+  shortcutKey?: string
 }
 
 const DirectionEditor = <T extends Direction>({
@@ -34,6 +35,7 @@ const DirectionalNumericCSSPropertyEditor = ({
   title,
   onChange,
   zIndex = 0,
+  shortcutKey = '',
 }: DirectionalNumericCSSPropertyEditorProps) => {
   const [values, setValues] = useState({
     top: '0px',
@@ -61,7 +63,26 @@ const DirectionalNumericCSSPropertyEditor = ({
   }
 
   return (
-    <AccordionMenu zIndex={zIndex} title={<EditorTitle>{title}</EditorTitle>}>
+    <AccordionMenu
+      zIndex={zIndex}
+      title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+        <EditorTitle
+          shortcut={{
+            key: shortcutKey,
+            callback: toggleIsOpen,
+            options: { meta: true },
+          }}
+          onClick={toggleIsOpen}
+          tabIndex={0}
+          onFocus={() => {
+            if (isOpen) return
+            setIsOpen(true)
+          }}
+        >
+          {title}
+        </EditorTitle>
+      )}
+    >
       <Flex column reverse overflow="visible" padding="12px">
         {DIRECTIONS.map(type => (
           <DirectionEditor
