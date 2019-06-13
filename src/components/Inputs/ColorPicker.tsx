@@ -37,44 +37,43 @@ export const ColorPicker = ({
   }
 
   return (
-    <Flex overflow="visible">
+    <Flex height="20px" overflow="visible" {...flexProps}>
       <PropertyTitle>color</PropertyTitle>
-      <Flex height="20px" flex={1} overflow="visible">
-        <Expandable
-          title={
-            <ColorPreview
-              width="100%"
-              height="20px"
-              background={displayValue || value}
-            />
+      <Expandable
+        closeOnBlur
+        flex={1}
+        title={({ toggleIsOpen }) => (
+          <ColorPreview
+            width="100%"
+            height="100%"
+            background={displayValue || value}
+            onClick={toggleIsOpen}
+          />
+        )}
+      >
+        {({ setIsOpen }) => {
+          const handleClick = () => {
+            setValue(displayValue)
+            onChange(displayValue)
+            setIsOpen(false)
           }
-          closeOnBlur
-        >
-          {({ setIsOpen }) => {
-            const handleClick = () => {
-              setValue(displayValue)
-              onChange(displayValue)
-              setIsOpen(false)
-            }
 
-            return (
-              <Flex {...flexProps} column>
-                <ColorMap
-                  column
-                  onClick={handleClick}
-                  onMouseMove={handleMouseMove}
-                  onMouseOut={handleMouseOut}
-                  width="100%"
-                  height="75px"
-                >
-                  <LightnessMap flex={1} />
-                  <DarknessMap flex={1} />
-                </ColorMap>
-              </Flex>
-            )
-          }}
-        </Expandable>
-      </Flex>
+          return (
+            <ColorMap
+              column
+              onClick={handleClick}
+              onMouseMove={handleMouseMove}
+              onMouseOut={handleMouseOut}
+              width="100%"
+              height="75px"
+              position="absolute"
+            >
+              <LightnessMap flex={1} />
+              <DarknessMap flex={1} />
+            </ColorMap>
+          )
+        }}
+      </Expandable>
     </Flex>
   )
 }
@@ -87,6 +86,7 @@ interface ColorMapProps {
   onMouseMove: (e: any) => void
 }
 const ColorMap = styled(Flex)<ColorMapProps>`
+  top: 20px;
   background: -webkit-linear-gradient(
     left,
     #f00 0%,

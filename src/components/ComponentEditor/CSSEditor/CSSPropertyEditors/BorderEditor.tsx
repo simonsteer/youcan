@@ -7,7 +7,6 @@ import {
   DIRECTIONS,
 } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
 import { DropdownSelect, ColorPicker, Toggle } from '../../../Inputs'
-import AccordionMenu from '../../../AccordionMenu'
 import EditorTitle from '../EditorTitle'
 import PropertyTitle from '../PropertyTitle'
 import KeyboardShortcut from '../../../KeyboardShortcut'
@@ -39,7 +38,6 @@ const BorderTypeEditor = ({
     borderColor: 'transparent',
     borderWidth: '0px',
   })
-
   const handleChange = (prop: BorderProp, value: string) => {
     const nextBorderProperties = {
       ...borderProperties,
@@ -49,15 +47,12 @@ const BorderTypeEditor = ({
     onChange(nextBorderProperties)
   }
 
-  const handleBorderWidthChange = (value: string) =>
-    handleChange('Width', value)
-  const handleBorderStyleChange = (value: string) =>
-    handleChange('Style', value)
-  const handleBorderColorChange = (value: string) =>
-    handleChange('Color', value)
+  const handleBorderWidthChange = (value: string) => handleChange('Width', value)
+  const handleBorderStyleChange = (value: string) => handleChange('Style', value)
+  const handleBorderColorChange = (value: string) => handleChange('Color', value)
 
   return (
-    <Flex column overflow="visible" {...flexProps} padding="12px">
+    <Flex column overflow="visible" padding="12px" {...flexProps}>
       <NumericCSSPropertyEditor
         zIndex={2}
         displayName="width"
@@ -69,9 +64,10 @@ const BorderTypeEditor = ({
         initialValue="#fff"
         onChange={handleBorderColorChange}
       />
-      <Flex height="20px" overflow="visible">
+      <Flex height="20px" width="100%" overflow="visible">
         <PropertyTitle>style</PropertyTitle>
         <DropdownSelect
+          flex={1}
           options={[
             { value: 'none', label: 'none' },
             { value: 'solid', label: 'solid' },
@@ -117,6 +113,7 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
     'transparent',
   ])
   const [_borderWidth, setBorderWidth] = useState(['0px', '0px', '0px', '0px'])
+  const [isAdvancedMode, setIsAdvancedMode] = useState(false)
 
   const handleChange = (type: Direction, values: BorderProperties) => {
     const index = DIRECTION_INDICES[type]
@@ -144,11 +141,11 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
   }
 
   return (
-    <AccordionMenu
+    <Expandable
       zIndex={zIndex}
-      title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+      title={({ toggleIsOpen }) => (
         <EditorTitle
-          shortcut={
+          shortcut={(
             <KeyboardShortcut
               shortcut={{
                 key: 'B',
@@ -156,7 +153,7 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
                 options: { meta: true },
               }}
             />
-          }
+)}
           onClick={toggleIsOpen}
         >
           Border
@@ -166,38 +163,52 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
       <Title
         size="sm"
         color={COLORS.white}
-        padding="12px 12px 0 12px"
+        padding={isAdvancedMode ? '12px' : '12px 12px 0 12px'}
         justify="between"
       >
-        <Flex as="span">all</Flex>
-        <Toggle onChange={console.log} />
+        <ModeIndicator isAdvancedMode={isAdvancedMode}>
+          <Flex as="span">all</Flex>individual
+        </ModeIndicator>
+        <Toggle onChange={setIsAdvancedMode} />
       </Title>
-      <BorderTypeEditor
-        type="top"
-        onChange={borderProperties => handleChange('top', borderProperties)}
-        zIndex={5}
-      />
-      {DIRECTIONS.map((direction, index) => (
-        <AccordionMenu
-          key={`border-${direction}-editor`}
-          zIndex={DIRECTIONS.length - index}
-          title={({ toggleIsOpen, setIsOpen, isOpen }) => (
-            <EditorTitle size="sm" onClick={toggleIsOpen}>
-              {direction}
-            </EditorTitle>
-          )}
-          arrow={{ size: 8, position: { top: 9, right: 12 } }}
-        >
-          <BorderTypeEditor
-            type={direction}
-            onChange={borderProperties =>
-              handleChange(direction, borderProperties)
-            }
-          />
-        </AccordionMenu>
-      ))}
-    </AccordionMenu>
+      {isAdvancedMode ? (
+        DIRECTIONS.map((direction, index) => (
+          <Expandable
+            key={`border-${direction}-editor`}
+            zIndex={DIRECTIONS.length - index}
+            title={({ toggleIsOpen }) => (
+              <EditorTitle size="sm" onClick={toggleIsOpen}>
+                {direction}
+              </EditorTitle>
+            )}
+            arrow={{ size: 8, position: { top: 9, right: 12 } }}
+          >
+            <BorderTypeEditor
+              type={direction}
+              onChange={borderProperties => handleChange(direction, borderProperties)
+              }
+            />
+          </Expandable>
+        ))
+      ) : (
+        <BorderTypeEditor
+          type="top"
+          onChange={borderProperties => handleChange('top', borderProperties)}
+        />
+      )}
+    </Expandable>
   )
 }
 
 export default BorderEditor
+
+const ModeIndicator = styled(Flex)<{ isAdvancedMode: boolean }>`
+  ${({ isAdvancedMode }) => `
+transition: color 0.2s;
+color: ${isAdvancedMode ? COLORS.white : COLORS.grey}
+${Flex} {
+  margin-right: 5px;
+  color: ${isAdvancedMode ? COLORS.grey : COLORS.white};
+}
+`}
+`

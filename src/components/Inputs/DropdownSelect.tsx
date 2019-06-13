@@ -4,7 +4,7 @@ import sortBy from 'lodash/sortBy'
 import Flex, { FlexProps } from '../Flex/Flex'
 import { COLORS } from '../constants'
 import Expandable from '../Expandable'
-import { Paragraph } from '../Text'
+import Text, { Paragraph } from '../Text'
 
 export interface DropdownSelectProps<T extends (n: string) => any>
   extends FlexProps {
@@ -33,37 +33,54 @@ export const DropdownSelect = <F extends (n: string) => any>({
     }
   }
 
+  const [firstItem, ...restItems] = items
+
   return (
     <Flex height="20px" flex={1} overflow="visible" {...flexProps}>
-      <Expandable closedHeight={20} closeOnBlur>
-        {({ setIsOpen, isOpen }) =>
-          items.map(({ value, label }, index) => (
-            <DropdownItem
-              isOpen={isOpen}
-              key={`dropdown-item-${index}`}
-              cursor="pointer"
-              onClick={() => {
+      <Expandable
+        width="100%"
+        closeOnBlur
+        title={({ isOpen, setIsOpen }) => (
+          <DropdownItem
+            isOpen={isOpen}
+            cursor="pointer"
+            onClick={() => {
+              handleChange(isOpen, firstItem.value)
+              setIsOpen(!isOpen)
+            }}
+          >
+            <Arrow isOpen={isOpen} size={6} position={{ top: 6, right: 5 }} />
+            <Paragraph
+              size="sm"
+              height="20px"
+              align="center"
+              padding="0 0 0 5px"
+            >
+              {firstItem.label}
+            </Paragraph>
+          </DropdownItem>
+        )}
+      >
+        {({ setIsOpen, isOpen }) => restItems.map(({ value, label }, index) => (
+          <DropdownItem
+            isOpen={isOpen}
+            key={`dropdown-item-${index + 1}`}
+            cursor="pointer"
+            onClick={() => {
                 handleChange(isOpen, value)
                 setIsOpen(!isOpen)
               }}
+          >
+            <Paragraph
+              size="sm"
+              height="20px"
+              align="center"
+              justify="end"
+              padding="0 0 0 5px"
             >
-              {index === 0 && (
-                <Arrow
-                  isOpen={isOpen}
-                  size={6}
-                  position={{ top: 6, right: 5 }}
-                />
-              )}
-              <DropdownText
-                size="sm"
-                height="20px"
-                align="center"
-                justify="end"
-                padding="0 20px 0 0"
-              >
-                {label}
-              </DropdownText>
-            </DropdownItem>
+              {label}
+            </Paragraph>
+          </DropdownItem>
           ))
         }
       </Expandable>
@@ -84,8 +101,7 @@ export interface DropdownArrowProps {
 
 export const Arrow = styled.div<DropdownArrowProps>`
   ${({ size, isOpen, position = {} }) => {
-    const dimensions =
-      typeof size === 'number'
+    const dimensions = typeof size === 'number'
         ? `width: ${size}px; height: ${size}px;`
         : `width: ${size}; height: ${size};`
 
@@ -115,15 +131,13 @@ const DropdownItem = styled(Flex)<{ isOpen: boolean }>`
       ${Arrow} {
         background: ${isOpen ? COLORS.black : COLORS.white};
       }
-      ${DropdownText} {
+      ${Text} {
         color: ${isOpen ? COLORS.black : COLORS.white};
       }
     }
-    ${DropdownText} {
+    ${Text} {
       color: ${COLORS.white};
       transition: color 0.2s;
     }
   `}
 `
-
-const DropdownText = styled(Paragraph)``

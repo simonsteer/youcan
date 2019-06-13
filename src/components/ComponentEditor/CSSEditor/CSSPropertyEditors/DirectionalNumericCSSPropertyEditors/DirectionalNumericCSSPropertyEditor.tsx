@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import NumericCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
 import Flex from '../../../../Flex'
-import AccordionMenu from '../../../../AccordionMenu'
+import Expandable from '../../../../Expandable'
 import EditorTitle from '../../EditorTitle'
 import { FlexProps } from '../../../../Flex/Flex'
 import KeyboardShortcut from '../../../../KeyboardShortcut'
 
-export const DIRECTIONS = ['left', 'bottom', 'right', 'top'] as const
+export const DIRECTIONS = ['top', 'right', 'bottom', 'left'] as const
 
 export type Direction = 'top' | 'right' | 'bottom' | 'left'
 
@@ -67,11 +67,11 @@ const DirectionalNumericCSSPropertyEditor = ({
   }
 
   return (
-    <AccordionMenu
+    <Expandable
       {...flexProps}
-      title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+      title={({ toggleIsOpen }) => (
         <EditorTitle
-          shortcut={
+          shortcut={(
             <KeyboardShortcut
               shortcut={{
                 key: shortcutKey,
@@ -79,23 +79,24 @@ const DirectionalNumericCSSPropertyEditor = ({
                 options: { meta: true },
               }}
             />
-          }
+)}
           onClick={toggleIsOpen}
         >
           {title}
         </EditorTitle>
       )}
     >
-      <Flex column reverse overflow="visible" padding="12px">
-        {DIRECTIONS.map(type => (
+      <Flex column overflow="visible" padding="12px">
+        {DIRECTIONS.map((type, index) => (
           <DirectionEditor
             key={`${title}-${type}`}
+            zIndex={DIRECTIONS.length - index}
             type={type}
             onChange={handleChange}
           />
         ))}
       </Flex>
-    </AccordionMenu>
+    </Expandable>
   )
 }
 

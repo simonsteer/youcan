@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { COLORS } from './constants'
 import Flex from './Flex'
@@ -52,7 +52,7 @@ const Text = styled(Flex)<TextProps>`
   }) => `
     font-size: ${TEXT_CONFIGS[type][size].fontSize};
     ${weight ? `font-weight: ${weight};` : ''}
-    ${italic ? `font-style: italic;` : ''}
+    ${italic ? 'font-style: italic;' : ''}
     ${variant ? `font-variant: ${variant};` : ''}
     ${letterSpacing ? `letter-spacing: ${letterSpacing}px;` : ''}
     color: ${color};

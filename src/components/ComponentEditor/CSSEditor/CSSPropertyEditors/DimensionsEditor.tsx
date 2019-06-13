@@ -1,6 +1,6 @@
 import React from 'react'
 import NumericCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
-import AccordionMenu from '../../../AccordionMenu'
+import Expandable from '../../../Expandable'
 import EditorTitle from '../EditorTitle'
 import { createDirectionalDropdownProps } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
 import Flex from '../../../Flex'
@@ -18,9 +18,9 @@ export interface DimensionEditorProps {
 
 const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
   return (
-    <AccordionMenu
+    <Expandable
       zIndex={zIndex}
-      title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+      title={({ toggleIsOpen }) => (
         <EditorTitle
           shortcut={
             <KeyboardShortcut
@@ -50,7 +50,7 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
           onChange={width => onChange({ width })}
         />
       </Flex>
-    </AccordionMenu>
+    </Expandable>
   )
 }
 

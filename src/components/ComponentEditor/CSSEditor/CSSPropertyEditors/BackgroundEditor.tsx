@@ -1,5 +1,5 @@
 import React from 'react'
-import AccordionMenu from '../../../AccordionMenu'
+import Expandable, { ExpandableProps } from '../../../Expandable'
 import EditorTitle from '../EditorTitle'
 import Flex from '../../../Flex'
 import DropdownCSSPropertyEditor from './DropdownCSSPropertyEditor'
@@ -12,17 +12,21 @@ export interface BackgroundProperties {
   backgroundSize?: string
 }
 
-export interface BackgroundEditorProps {
+export interface BackgroundEditorProps
+  extends Pick<ExpandableProps, Exclude<keyof ExpandableProps, 'children'>> {
   onChange: (properties: BackgroundProperties) => void
   zIndex?: number
 }
 
-const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
-  <AccordionMenu
-    zIndex={zIndex}
-    title={({ toggleIsOpen, setIsOpen, isOpen }) => (
+const BackgroundEditor = ({
+  onChange,
+  ...expandableProps
+}: BackgroundEditorProps) => (
+  <Expandable
+    {...expandableProps}
+    title={({ toggleIsOpen }) => (
       <EditorTitle
-        shortcut={
+        shortcut={(
           <KeyboardShortcut
             shortcut={{
               key: 'G',
@@ -30,7 +34,7 @@ const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
               options: { meta: true },
             }}
           />
-        }
+)}
         onClick={toggleIsOpen}
       >
         Background
@@ -53,8 +57,7 @@ const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
             { label: 'select image from app', value: 'upload' },
           ],
           defaultValue: 'none',
-          onChange: background =>
-            onChange({ backgroundImage: `${background}` }),
+          onChange: background => onChange({ backgroundImage: `${background}` }),
         }}
       />
       <DropdownCSSPropertyEditor
@@ -69,7 +72,7 @@ const BackgroundEditor = ({ onChange, zIndex = 0 }: BackgroundEditorProps) => (
         }}
       />
     </Flex>
-  </AccordionMenu>
+  </Expandable>
 )
 
 export default BackgroundEditor

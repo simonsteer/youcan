@@ -16,6 +16,7 @@ import DimensionEditor, {
 import BackgroundEditor, {
   BackgroundProperties,
 } from './CSSPropertyEditors/BackgroundEditor'
+import Flex, { FlexProps } from '../../Flex/Flex';
 
 export interface CSSProperties
   extends MarginProperties,
@@ -31,7 +32,7 @@ export type CSSPropertyChanges =
   | DimensionsProperties
   | BackgroundProperties
 
-export interface CSSEditorProps {
+export interface CSSEditorProps extends FlexProps {
   onChange: (properties: CSSPropertyChanges) => void
 }
 
@@ -43,8 +44,8 @@ const CSS_EDITORS = [
   MarginEditor,
 ]
 
-const CSSEditor = ({ onChange }: CSSEditorProps) => (
-  <SideBar>
+const CSSEditor = ({ onChange, ...flexProps }: CSSEditorProps) => (
+  <SideBar column as="aside" {...flexProps}>
     {CSS_EDITORS.map((Editor, index) => (
       <Editor
         key={`css-editor-${index}`}
@@ -57,7 +58,7 @@ const CSSEditor = ({ onChange }: CSSEditorProps) => (
 
 export default CSSEditor
 
-const SideBar = styled.aside`
+const SideBar = styled(Flex)`
   font-family: sans-serif;
   background: ${COLORS.black};
   width: 300px;
