@@ -16,7 +16,7 @@ import DimensionEditor, {
 import BackgroundEditor, {
   BackgroundProperties,
 } from './CSSPropertyEditors/BackgroundEditor'
-import Flex, { FlexProps } from '../../Flex/Flex';
+import Flex, { FlexProps } from '../../Flex/Flex'
 
 export interface CSSProperties
   extends MarginProperties,
@@ -25,8 +25,7 @@ export interface CSSProperties
   [property: string]: string
 }
 
-export type CSSPropertyChanges =
-  | MarginProperties
+export type CSSPropertyChanges = | MarginProperties
   | PaddingProperties
   | BorderProperties
   | DimensionsProperties
@@ -67,4 +66,9 @@ const SideBar = styled(Flex)`
   position: absolute;
   right: 0;
   top: 0;
+  -ms-overflow-style: none; // IE 10+
+  scrollbar-width: none; // Firefox
+  &::-webkit-scrollbar {
+    display: none; // Safari and Chrome
+  }
 `
