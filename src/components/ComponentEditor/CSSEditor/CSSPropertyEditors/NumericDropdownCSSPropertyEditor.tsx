@@ -6,21 +6,15 @@ import {
   DropdownSelectProps,
 } from '../../../Inputs/DropdownSelect'
 import Flex from '../../../Flex'
-import PropertyTitle from '../PropertyTitle'
+import PropertyTitle from './PropertyTitle'
 import { FlexProps } from '../../../Flex/Flex'
 
 interface NumericDropdownCSSPropertyEditorProps<
   N extends (n: number) => any,
   D extends (d: any) => any
-> extends FlexProps {
-  numericProps?: Pick<
-    NumericInputProps<N>,
-    Exclude<keyof NumericInputProps<N>, 'onChange'>
-  >
-  dropdownProps: Pick<
-    DropdownSelectProps<D>,
-    Exclude<keyof DropdownSelectProps<D>, 'onChange'>
-  >
+> extends Omit<FlexProps, 'children'> {
+  numericProps?: Omit<NumericInputProps<N>, 'onChange'>
+  dropdownProps: Omit<DropdownSelectProps<D>, 'onChange'>
   displayName: string
   transformValue?: (numericValue: any, dropdownValue: any) => string
   onChange: (value: string) => void
@@ -41,7 +35,7 @@ const NumericDropdownCSSPropertyEditor = <
     get(numericProps, 'start') || 0
   )
   const [dropdownValue, setDropdownValue] = useState(
-    get(dropdownProps, 'defaultValue') || get(dropdownProps, `options[0].value`)
+    get(dropdownProps, 'defaultValue') || get(dropdownProps, 'options[0].value')
   )
 
   const handleChange = (nextValue: any, type: 'numeric' | 'dropdown') => {

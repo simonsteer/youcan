@@ -1,21 +1,21 @@
 import React from 'react'
 import DirectionalNumericCSSPropertyEditor from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
+import { FlexProps } from '../../../Flex/Flex'
 
 export interface MarginProperties {
   margin?: string
 }
 
-export interface MarginEditorProps {
+export interface MarginEditorProps extends Omit<FlexProps, 'children'> {
   onChange: (properties: MarginProperties) => void
-  zIndex?: number
 }
 
-const MarginEditor = ({ onChange, zIndex = 0 }: MarginEditorProps) => (
+const MarginEditor = ({ onChange, ...flexProps }: MarginEditorProps) => (
   <DirectionalNumericCSSPropertyEditor
     title="Margin"
     onChange={margin => onChange({ margin })}
-    zIndex={zIndex}
     shortcutKey="M"
+    {...flexProps}
   />
 )
 

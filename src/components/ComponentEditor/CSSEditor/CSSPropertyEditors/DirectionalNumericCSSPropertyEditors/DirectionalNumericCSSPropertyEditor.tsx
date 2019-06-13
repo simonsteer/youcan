@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import NumericCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
+import NumericDropdownCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
 import Flex from '../../../../Flex'
 import Expandable from '../../../../Expandable'
-import EditorTitle from '../../EditorTitle'
+import EditorTitle from '../EditorTitle'
 import { FlexProps } from '../../../../Flex/Flex'
 import KeyboardShortcut from '../../../../KeyboardShortcut'
 
@@ -27,7 +27,7 @@ const DirectionEditor = <T extends Direction>({
   type,
   ...flexProps
 }: DirectionEditorProps<T>) => (
-  <NumericCSSPropertyEditor
+  <NumericDropdownCSSPropertyEditor
     {...flexProps}
     displayName={type}
     dropdownProps={createDirectionalDropdownProps(type)}

@@ -1,8 +1,9 @@
 import { FlexProps } from './Flex'
 
-export const getOtherStyle = ({ cursor, overflow }: FlexProps) => `
+export const getOtherStyle = ({ cursor, overflow, position }: FlexProps) => `
   ${cursor ? `cursor: ${cursor};` : ''}
   ${overflow ? `overflow: ${overflow};` : ''}
+  ${position ? `position: ${position};` : ''}
 `
 
 export const getFlexStyle = ({ flex, ...props }: FlexProps) => {

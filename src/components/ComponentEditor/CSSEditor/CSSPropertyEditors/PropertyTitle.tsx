@@ -1,6 +1,6 @@
 import React from 'react'
-import { Paragraph, ParagraphProps } from '../../Text'
-import { COLORS } from '../../constants'
+import { Paragraph, ParagraphProps } from '../../../Text'
+import { COLORS } from '../../../constants'
 
 const PropertyTitle = ({ children }: ParagraphProps) => (
   <Paragraph

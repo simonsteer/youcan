@@ -1,21 +1,21 @@
 import React from 'react'
 import DirectionalNumericCSSPropertyEditor from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
+import { FlexProps } from '../../../Flex/Flex'
 
 export interface PaddingProperties {
   padding?: string
 }
 
-export interface PaddingEditorProps {
+export interface PaddingEditorProps extends Omit<FlexProps, 'children'> {
   onChange: (properties: PaddingProperties) => void
-  zIndex?: number
 }
 
-const PaddingEditor = ({ onChange, zIndex }: PaddingEditorProps) => (
+const PaddingEditor = ({ onChange, ...flexProps }: PaddingEditorProps) => (
   <DirectionalNumericCSSPropertyEditor
     title="Padding"
     onChange={padding => onChange({ padding })}
-    zIndex={zIndex}
     shortcutKey="P"
+    {...flexProps}
   />
 )
 

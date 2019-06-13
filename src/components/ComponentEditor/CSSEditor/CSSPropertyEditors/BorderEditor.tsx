@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import NumericCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
+import NumericDropdownCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
 import {
   createDirectionalDropdownProps,
   Direction,
   DIRECTIONS,
 } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
 import { DropdownSelect, ColorPicker, Toggle } from '../../../Inputs'
-import EditorTitle from '../EditorTitle'
-import PropertyTitle from '../PropertyTitle'
+import EditorTitle from './EditorTitle'
+import PropertyTitle from './PropertyTitle'
 import KeyboardShortcut from '../../../KeyboardShortcut'
 import Flex, { FlexProps } from '../../../Flex/Flex'
 import { Title } from '../../../Text'
@@ -21,7 +21,7 @@ export interface BorderProperties {
   borderColor?: string
 }
 
-interface BorderTypeEditorProps extends FlexProps {
+interface BorderTypeEditorProps extends Omit<FlexProps, 'children'> {
   onChange: (values: BorderProperties) => void
   type?: Direction
 }
@@ -53,7 +53,7 @@ const BorderTypeEditor = ({
 
   return (
     <Flex column overflow="visible" padding="12px" {...flexProps}>
-      <NumericCSSPropertyEditor
+      <NumericDropdownCSSPropertyEditor
         zIndex={2}
         displayName="width"
         dropdownProps={createDirectionalDropdownProps(type)}
@@ -94,12 +94,11 @@ const DIRECTION_INDICES = {
   left: 3,
 } as const
 
-export interface BorderEditorProps {
+export interface BorderEditorProps extends Omit<FlexProps, 'children'> {
   onChange: (values: BorderProperties) => void
-  zIndex?: number
 }
 
-const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
+const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
   const [_borderStyle, setBorderStyle] = useState([
     'none',
     'none',
@@ -142,7 +141,7 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
 
   return (
     <Expandable
-      zIndex={zIndex}
+      {...flexProps}
       title={({ toggleIsOpen }) => (
         <EditorTitle
           shortcut={(
@@ -166,10 +165,11 @@ const BorderEditor = ({ onChange, zIndex = 0 }: BorderEditorProps) => {
         padding={isAdvancedMode ? '12px' : '12px 12px 0 12px'}
         justify="between"
       >
-        <ModeIndicator isAdvancedMode={isAdvancedMode}>
-          <Flex as="span">all</Flex>individual
-        </ModeIndicator>
         <Toggle onChange={setIsAdvancedMode} />
+        <ModeIndicator isAdvancedMode={isAdvancedMode}>
+          <Flex as="span">all</Flex>
+individual
+        </ModeIndicator>
       </Title>
       {isAdvancedMode ? (
         DIRECTIONS.map((direction, index) => (
@@ -207,7 +207,7 @@ const ModeIndicator = styled(Flex)<{ isAdvancedMode: boolean }>`
 transition: color 0.2s;
 color: ${isAdvancedMode ? COLORS.white : COLORS.grey}
 ${Flex} {
-  margin-right: 5px;
+  margin-right: 12px;
   color: ${isAdvancedMode ? COLORS.grey : COLORS.white};
 }
 `}

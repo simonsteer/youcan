@@ -1,6 +1,6 @@
 import React from 'react'
 import Expandable, { ExpandableProps } from '../../../Expandable'
-import EditorTitle from '../EditorTitle'
+import EditorTitle from './EditorTitle'
 import Flex from '../../../Flex'
 import DropdownCSSPropertyEditor from './DropdownCSSPropertyEditor'
 import { ColorPicker } from '../../../Inputs'
@@ -13,7 +13,7 @@ export interface BackgroundProperties {
 }
 
 export interface BackgroundEditorProps
-  extends Pick<ExpandableProps, Exclude<keyof ExpandableProps, 'children'>> {
+  extends Omit<ExpandableProps, 'children'> {
   onChange: (properties: BackgroundProperties) => void
   zIndex?: number
 }

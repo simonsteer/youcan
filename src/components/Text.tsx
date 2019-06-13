@@ -61,8 +61,7 @@ const Text = styled(Flex)<TextProps>`
 
 export default Text
 
-type CustomTextProps = Pick<TextProps, Exclude<keyof TextProps, 'type'>> &
-  FlexProps
+type CustomTextProps = Omit<TextProps, 'type'> & FlexProps
 
 export type TitleProps = CustomTextProps
 export const Title = ({ children, ...restProps }: TitleProps) => (

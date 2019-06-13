@@ -4,7 +4,7 @@ import get from 'lodash/get'
 import tinycolor from 'tinycolor2'
 import Flex, { FlexProps } from '../Flex/Flex'
 import Expandable from '../Expandable'
-import PropertyTitle from '../ComponentEditor/CSSEditor/PropertyTitle'
+import PropertyTitle from '../ComponentEditor/CSSEditor/CSSPropertyEditors/PropertyTitle'
 
 interface ColorPickerProps extends FlexProps {
   onChange: (color: string) => void

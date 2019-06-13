@@ -1,25 +1,24 @@
 import React from 'react'
-import NumericCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
+import NumericDropdownCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
 import Expandable from '../../../Expandable'
-import EditorTitle from '../EditorTitle'
+import EditorTitle from './EditorTitle'
 import { createDirectionalDropdownProps } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import Flex from '../../../Flex'
 import KeyboardShortcut from '../../../KeyboardShortcut'
+import Flex, { FlexProps } from '../../../Flex/Flex';
 
 export interface DimensionsProperties {
   width?: string
   height?: string
 }
 
-export interface DimensionEditorProps {
+export interface DimensionEditorProps extends Omit<FlexProps, 'children'> {
   onChange: (properties: DimensionsProperties) => void
-  zIndex?: number
 }
 
-const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
+const DimensionEditor = ({ onChange, ...flexProps }: DimensionEditorProps) => {
   return (
     <Expandable
-      zIndex={zIndex}
+      {...flexProps}
       title={({ toggleIsOpen }) => (
         <EditorTitle
           shortcut={
@@ -38,13 +37,13 @@ const DimensionEditor = ({ onChange, zIndex = 0 }: DimensionEditorProps) => {
       )}
     >
       <Flex column overflow="visible" padding="12px">
-        <NumericCSSPropertyEditor
+        <NumericDropdownCSSPropertyEditor
           zIndex={1}
           displayName="height"
           dropdownProps={createDirectionalDropdownProps('top')}
           onChange={height => onChange({ height })}
         />
-        <NumericCSSPropertyEditor
+        <NumericDropdownCSSPropertyEditor
           displayName="width"
           dropdownProps={createDirectionalDropdownProps('left')}
           onChange={width => onChange({ width })}

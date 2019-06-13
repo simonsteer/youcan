@@ -50,6 +50,7 @@ const CSSEditor = ({ onChange, ...flexProps }: CSSEditorProps) => (
         key={`css-editor-${index}`}
         onChange={onChange}
         zIndex={CSS_EDITORS.length - index}
+        borderBottom={`1px solid ${COLORS.white}`}
       />
     ))}
   </SideBar>
@@ -66,6 +67,7 @@ const SideBar = styled(Flex)`
   position: absolute;
   right: 0;
   top: 0;
+  border-left: 1px solid ${COLORS.white};
   -ms-overflow-style: none; // IE 10+
   scrollbar-width: none; // Firefox
   &::-webkit-scrollbar {

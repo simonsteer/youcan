@@ -1,10 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
 import {
   DropdownSelect,
   DropdownSelectProps,
 } from '../../../Inputs/DropdownSelect'
-import PropertyTitle from '../PropertyTitle'
+import PropertyTitle from './PropertyTitle'
 import Flex, { FlexProps } from '../../../Flex/Flex'
 
 interface DropdownCSSPropertyEditorProps<D extends (d: string) => string>

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { getFlexStyle, getOtherStyle } from './utils'
 import { MouseEventHandler, FocusEventHandler } from 'react'
+import { getFlexStyle, getOtherStyle } from './utils'
 
 export interface FlexProps {
   // use these props in styled-component template string
@@ -29,6 +29,11 @@ export interface FlexProps {
   position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky'
   // use these props in attrs
   background?: string
+  borderTop?: string
+  borderRight?: string
+  borderBottom?: string
+  borderLeft?: string
+  border?: string
   height?: string
   width?: string
   minHeight?: string
@@ -63,7 +68,11 @@ const Flex = styled.div.attrs<FlexProps>(
     zIndex,
     transition,
     borderRadius,
-    position,
+    border,
+    borderTop,
+    borderRight,
+    borderBottom,
+    borderLeft,
   }: FlexProps) => ({
     tabIndex,
     style: {
@@ -77,7 +86,11 @@ const Flex = styled.div.attrs<FlexProps>(
       zIndex,
       transition,
       borderRadius,
-      position,
+      border,
+      borderTop,
+      borderRight,
+      borderBottom,
+      borderLeft,
     },
   })
 )`
