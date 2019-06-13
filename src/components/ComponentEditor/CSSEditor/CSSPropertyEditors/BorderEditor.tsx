@@ -115,18 +115,28 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
   const [isAdvancedMode, setIsAdvancedMode] = useState(false)
 
   const handleChange = (type: Direction, values: BorderProperties) => {
-    const index = DIRECTION_INDICES[type]
     const { borderColor, borderStyle, borderWidth } = values
 
-    const nextBorderColor = [..._borderColor]
-    nextBorderColor[index] = borderColor
-
-    const nextBorderStyle = [..._borderStyle]
-    nextBorderStyle[index] = borderStyle
-
-    const nextBorderWidth = [..._borderWidth]
-    nextBorderWidth[index] = borderWidth
-
+    let nextBorderColor
+    let nextBorderStyle
+    let nextBorderWidth
+    if (type === 'all') {
+      nextBorderColor = [borderColor, borderColor, borderColor, borderColor]
+      nextBorderStyle = [borderStyle, borderStyle, borderStyle, borderStyle]
+      nextBorderWidth = [borderWidth, borderWidth, borderWidth, borderWidth]
+    } else {
+      const index = DIRECTION_INDICES[type]
+      
+      nextBorderColor = [..._borderColor]
+      nextBorderColor[index] = borderColor
+      
+      nextBorderStyle = [..._borderStyle]
+      nextBorderStyle[index] = borderStyle
+      
+      nextBorderWidth = [..._borderWidth]
+      nextBorderWidth[index] = borderWidth
+    }
+      
     setBorderColor(nextBorderColor)
     setBorderStyle(nextBorderStyle)
     setBorderWidth(nextBorderWidth)
@@ -165,10 +175,10 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
         padding={isAdvancedMode ? '12px' : '12px 12px 0 12px'}
         justify="between"
       >
-        <Toggle onChange={setIsAdvancedMode} />
+        <Toggle initialValue={isAdvancedMode} onChange={setIsAdvancedMode} />
         <ModeIndicator isAdvancedMode={isAdvancedMode}>
           <Flex as="span">all</Flex>
-individual
+          individual
         </ModeIndicator>
       </Title>
       {isAdvancedMode ? (
@@ -192,8 +202,8 @@ individual
         ))
       ) : (
         <BorderTypeEditor
-          type="top"
-          onChange={borderProperties => handleChange('top', borderProperties)}
+          type="all"
+          onChange={borderProperties => handleChange('all', borderProperties)}
         />
       )}
     </Expandable>

@@ -8,7 +8,7 @@ import KeyboardShortcut from '../../../../KeyboardShortcut'
 
 export const DIRECTIONS = ['top', 'right', 'bottom', 'left'] as const
 
-export type Direction = 'top' | 'right' | 'bottom' | 'left'
+export type Direction = 'top' | 'right' | 'bottom' | 'left' | 'all'
 
 interface DirectionEditorProps<T> extends FlexProps {
   onChange: (value: { type: T; value: string }) => void
@@ -102,17 +102,17 @@ const DirectionalNumericCSSPropertyEditor = ({
 
 export default DirectionalNumericCSSPropertyEditor
 
-export const createDirectionalDropdownProps = (type: Direction | 'all') => ({
+export const createDirectionalDropdownProps = (type: Direction) => ({
   options: [
     { value: 'vw', label: '% window width' },
     { value: 'vh', label: '% window height' },
     { value: 'px', label: 'pixels' },
-    {
+    type !== 'all' && {
       value: '%',
       label: `% container ${
         type === 'bottom' || type === 'top' ? 'height' : 'width'
       }`,
     },
-  ],
+  ].filter(Boolean),
   defaultValue: 'px',
 })

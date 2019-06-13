@@ -55,6 +55,7 @@ const Expandable = ({
 
   return (
     <Flex
+      flex={0}
       ref={rootRef}
       overflow={isOpen ? 'visible' : 'hidden'}
       position="relative"
