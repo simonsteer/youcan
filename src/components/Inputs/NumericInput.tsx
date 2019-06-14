@@ -76,20 +76,18 @@ const Container = styled(Flex)<{ isFocused: boolean }>`
   flex: 1;
   height: 20px;
   font-size: 12px;
-  background: ${({ isFocused }) => (isFocused ? COLORS.lightGrey : COLORS.white)};
+  background: ${({ isFocused }) => (isFocused ? COLORS.white : 'transparent')};
   transition: background 0.2s;
   button {
     transition: border-color 0.2s;
-    border-bottom-color: ${({ isFocused }) =>
-      isFocused ? COLORS.lightGrey : COLORS.white};
-    border-right-color: ${({ isFocused }) =>
-      isFocused ? COLORS.lightGrey : COLORS.white};
+    border-bottom-color: ${({ isFocused }) => (isFocused ? COLORS.white : COLORS.lightGrey)};
+    border-right-color: ${({ isFocused }) => (isFocused ? COLORS.white : COLORS.lightGrey)};
   }
   &:hover {
-    background: ${COLORS.lightGrey};
+    background: ${COLORS.white};
     button {
-      border-bottom-color: ${COLORS.lightGrey};
-      border-right-color: ${COLORS.lightGrey};
+      border-bottom-color: ${COLORS.white};
+      border-right-color: ${COLORS.white};
     }
   }
 `

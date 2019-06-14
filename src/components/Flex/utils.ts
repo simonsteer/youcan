@@ -12,6 +12,7 @@ const getOtherStyle = ({
   position,
   shadow,
   pointerEvents,
+  hover,
 }: FlexProps) => `
   ${createStyle({
     cursor,
@@ -20,6 +21,7 @@ const getOtherStyle = ({
     pointerEvents,
   })}
   ${createBoxShadowStyle(shadow)}
+  ${createNestedStyle({ hover })}
 `
 
 const getFlexStyle = ({ flex, ...props }: FlexProps) => {
@@ -99,6 +101,30 @@ export const createBoxShadowStyle = (shadow: BoxShadowConfig) => (shadow
     ? `box-shadow: ${shadow.offset.x} ${shadow.offset.y} ${shadow.blur} ${shadow.spread} ${shadow.color};`
     : '')
 
-export const createStyle = (prop: { [propName: string]: string | number }) => Object.keys(prop)
-    .map(key => (key && prop[key] ? `${kebabCase(key)}: ${prop[key]};` : ''))
+export const createStyle = (props: { [propName: string]: string | number }) => Object.keys(props)
+    .map(createTransformStyleString(props))
     .join('\n')
+
+const createNestedStyle = (props: { [propName: string]: string | number }) => Object.keys(props)
+    .map(
+      createTransformStyleString(
+        props,
+        ({ props, key }) => `&:${key} {
+          ${props[key]}
+        }`
+      )
+    )
+    .join('\n')
+
+const createTransformStyleString = <
+  P extends { [propName: string]: string | number },
+  K extends keyof P
+>(
+  props: P,
+  transform = (params: { props: P; key: K }) => `${kebabCase(params.key as string)}: ${params.props[params.key]};`
+) => (key: K) => (key && props[key]
+    ? transform({
+        props,
+        key,
+      })
+    : '')

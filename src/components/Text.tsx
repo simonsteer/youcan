@@ -44,7 +44,7 @@ const Text = styled(Flex)<TextProps>`
   ${({
     type = 'paragraph',
     size = 'md',
-    color = COLORS.white,
+    color,
     weight,
     italic,
     variant,
@@ -55,7 +55,7 @@ const Text = styled(Flex)<TextProps>`
     ${italic ? 'font-style: italic;' : ''}
     ${variant ? `font-variant: ${variant};` : ''}
     ${letterSpacing ? `letter-spacing: ${letterSpacing}px;` : ''}
-    color: ${color};
+    ${color ? `color: ${color};` : ''}
   `}
 `
 

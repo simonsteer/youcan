@@ -17,6 +17,7 @@ import BackgroundEditor, {
   BackgroundProperties,
 } from './CSSPropertyEditors/BackgroundEditor'
 import Flex, { FlexProps } from '../../Flex/Flex'
+import Expandable from '../../Expandable'
 
 export interface CSSProperties
   extends MarginProperties,
@@ -48,8 +49,11 @@ const CSSEditor = ({ onChange, ...flexProps }: CSSEditorProps) => (
     {CSS_EDITORS.map((Editor, index) => (
       <Editor
         key={`css-editor-${index}`}
-        onChange={onChange}
         zIndex={CSS_EDITORS.length - index}
+        onChange={onChange}
+        transition="background-color 0.2s"
+        hover={`background: ${COLORS.lightGrey};`}
+        borderBottom={`1px solid ${COLORS.black}`}
       />
     ))}
   </SideBar>

@@ -42,7 +42,7 @@ const Container = styled(Flex)<{ isToggled: boolean }>`
   border-radius: 10px;
   padding: 3px;
   transition: background-color 0.2s;
-  background: ${({ isToggled }) => (isToggled ? COLORS.blue : COLORS.lightGrey)};
+  background: ${({ isToggled }) => (isToggled ? COLORS.blue : COLORS.grey)};
   ${Switch} {
     transition: transform 0.2s;
     transform: translateX(${({ isToggled }) => (isToggled ? 55 : 0)}px);

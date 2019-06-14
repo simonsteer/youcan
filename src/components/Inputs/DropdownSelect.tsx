@@ -123,10 +123,10 @@ export const Arrow = styled.div<DropdownArrowProps>`
 
 const DropdownItem = styled(Flex)<{ isOpen: boolean }>`
   ${({ isOpen }) => `
-    background: ${isOpen ? COLORS.lightGrey : COLORS.white};
+    background: ${isOpen ? COLORS.grey : 'transparent'};
     transition: background-color 0.2s, color 0.2s;
     &:hover {
-      background: ${isOpen ? COLORS.black : COLORS.lightGrey};
+      background: ${isOpen ? COLORS.black : COLORS.white};
       color: ${isOpen ? COLORS.white : COLORS.black};
       ${Arrow} {
         background: ${isOpen ? COLORS.white : COLORS.black};
@@ -136,7 +136,7 @@ const DropdownItem = styled(Flex)<{ isOpen: boolean }>`
       }
     }
     ${Text} {
-      color: ${COLORS.black};
+      color: ${isOpen ? COLORS.white : COLORS.black};
       transition: color 0.2s;
     }
   `}

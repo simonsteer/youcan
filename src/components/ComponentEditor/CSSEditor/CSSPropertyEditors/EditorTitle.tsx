@@ -11,10 +11,6 @@ interface EditorTitleBaseProps {
 
 const EditorTitleBase = styled(Title)<EditorTitleBaseProps>`
   height: ${({ size = 'md' }) => TITLE_HEIGHTS[size]}px;
-  transition: background-color 0.2s;
-  &:hover {
-    background-color: ${COLORS.lightGrey};
-  }
 `
 
 export interface EditorTitleProps extends TitleProps {

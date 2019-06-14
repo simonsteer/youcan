@@ -168,8 +168,8 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
       )}
     >
       <BinaryModeIndicator
-        modes={['all', 'individual']}
-        onChange={mode => setIsIndividualMode(mode === 'individual')}
+        modes={['all borders', 'each border']}
+        onChange={mode => setIsIndividualMode(mode === 'each border')}
         initialValue={isIndividualMode}
         justify="between"
         padding={isIndividualMode ? '12px' : '12px 12px 0 12px'}

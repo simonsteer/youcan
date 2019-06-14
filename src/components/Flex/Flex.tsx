@@ -29,6 +29,7 @@ interface FlexTemplateProps {
   position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky'
   pointerEvents?: 'none' | 'auto'
   shadow?: BoxShadowConfig
+  hover?: string
 }
 
 // use these props in attrs
