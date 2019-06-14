@@ -1,26 +1,39 @@
+import kebabCase from 'lodash/kebabCase'
 import { FlexProps } from './Flex'
 
-export const getOtherStyle = ({ cursor, overflow, position }: FlexProps) => `
-  ${cursor ? `cursor: ${cursor};` : ''}
-  ${overflow ? `overflow: ${overflow};` : ''}
-  ${position ? `position: ${position};` : ''}
+export const getStyle = (props: FlexProps) => `
+  ${getFlexStyle(props)}
+  ${getOtherStyle(props)}
 `
 
-export const getFlexStyle = ({ flex, ...props }: FlexProps) => {
+const getOtherStyle = ({
+  cursor,
+  overflow,
+  position,
+  shadow,
+  pointerEvents,
+}: FlexProps) => `
+  ${createStyle({
+    cursor,
+    overflow,
+    position,
+    pointerEvents,
+  })}
+  ${createBoxShadowStyle(shadow)}
+`
+
+const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)
   const justifyContent = getJustification(props)
   const alignItems = getAlignment(props)
 
   return `
     display: flex;
-    ${flex ? `flex: ${flex};` : ''}
-    flex-flow: ${flexFlow};
-    justify-content: ${justifyContent};
-    align-items: ${alignItems};
+    ${createStyle({ flex, flexFlow, justifyContent, alignItems })}
   `
 }
 
-export const getFlow = ({ wrap, reverse, column }: FlexProps) => {
+const getFlow = ({ wrap, reverse, column }: FlexProps) => {
   const flexWrap = wrap ? 'wrap' : 'nowrap'
   const flexDirection = column ? 'column' : 'row'
   const flexFlow = reverse
@@ -29,7 +42,7 @@ export const getFlow = ({ wrap, reverse, column }: FlexProps) => {
   return flexFlow
 }
 
-export const getJustification = ({ justify, center }: FlexProps) => {
+const getJustification = ({ justify, center }: FlexProps) => {
   if (center) {
     return 'center'
   }
@@ -52,7 +65,7 @@ export const getJustification = ({ justify, center }: FlexProps) => {
   }
 }
 
-export const getAlignment = ({ align, center }: FlexProps) => {
+const getAlignment = ({ align, center }: FlexProps) => {
   if (center) {
     return 'center'
   }
@@ -72,3 +85,20 @@ export const getAlignment = ({ align, center }: FlexProps) => {
       return 'stretch'
   }
 }
+
+export interface BoxShadowConfig {
+  offset?: {
+    x: string
+    y: string
+  }
+  blur: string
+  spread: string
+  color: string
+}
+export const createBoxShadowStyle = (shadow: BoxShadowConfig) => (shadow
+    ? `box-shadow: ${shadow.offset.x} ${shadow.offset.y} ${shadow.blur} ${shadow.spread} ${shadow.color};`
+    : '')
+
+export const createStyle = (prop: { [propName: string]: string | number }) => Object.keys(prop)
+    .map(key => (key && prop[key] ? `${kebabCase(key)}: ${prop[key]};` : ''))
+    .join('\n')

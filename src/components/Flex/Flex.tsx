@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { MouseEventHandler, FocusEventHandler } from 'react'
-import { getFlexStyle, getOtherStyle } from './utils'
+import { getStyle, BoxShadowConfig } from './utils'
 
-export interface FlexProps {
-  // use these props in styled-component template string
+// use these props in styled-component template string
+interface FlexTemplateProps {
   flex?: number
   column?: boolean
   reverse?: boolean
@@ -27,7 +27,12 @@ export interface FlexProps {
     | 'text'
   overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
   position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky'
-  // use these props in attrs
+  pointerEvents?: 'none' | 'auto'
+  shadow?: BoxShadowConfig
+}
+
+// use these props in attrs
+interface FlexAttributeProps {
   background?: string
   borderTop?: string
   borderRight?: string
@@ -44,7 +49,10 @@ export interface FlexProps {
   transition?: string
   tabIndex?: number
   borderRadius?: string
-  // handlers
+}
+
+// handlers
+interface FlexHandlerProps {
   onClick?: MouseEventHandler
   onHover?: MouseEventHandler
   onMouseOut?: MouseEventHandler
@@ -54,6 +62,11 @@ export interface FlexProps {
   onFocus?: FocusEventHandler
   onBlur?: FocusEventHandler
 }
+
+export interface FlexProps
+  extends FlexTemplateProps,
+    FlexAttributeProps,
+    FlexHandlerProps {}
 
 const Flex = styled.div.attrs<FlexProps>(
   ({
@@ -94,8 +107,7 @@ const Flex = styled.div.attrs<FlexProps>(
     },
   })
 )`
-  ${getFlexStyle}
-  ${getOtherStyle}
+  ${getStyle}
 `
 
 export default Flex

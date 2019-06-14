@@ -1,20 +1,17 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import NumericDropdownCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
 import {
   createDirectionalDropdownProps,
   Direction,
   DIRECTIONS,
 } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import { DropdownSelect, ColorPicker, Toggle } from '../../../Inputs'
+import { DropdownSelect, ColorPicker } from '../../../Inputs'
 import EditorTitle from './EditorTitle'
 import PropertyTitle from './PropertyTitle'
 import KeyboardShortcut from '../../../KeyboardShortcut'
 import Flex, { FlexProps } from '../../../Flex/Flex'
-import { Title } from '../../../Text'
-import { COLORS } from '../../../constants'
 import Expandable from '../../../Expandable'
-import { ToggleProps } from '../../../Inputs/Toggle'
+import BinaryModeIndicator from '../../../BinaryModeIndicator';
 
 export interface BorderProperties {
   borderStyle?: string
@@ -207,44 +204,3 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
 }
 
 export default BorderEditor
-
-const Indicator = styled(Flex)<{ isIndividualMode: boolean }>`
-  ${({ isIndividualMode }) => `
-transition: color 0.2s;
-color: ${isIndividualMode ? COLORS.black : COLORS.lightGrey}
-${Flex} {
-  margin-right: 12px;
-  color: ${isIndividualMode ? COLORS.lightGrey : COLORS.black};
-}
-`}
-`
-
-export interface BinaryModeIndicatorProps<M extends string>
-  extends Omit<ToggleProps, 'onChange'> {
-  modes: M[]
-  onChange: (mode: M) => void
-}
-
-const BinaryModeIndicator = <M extends string>({
-  modes,
-  onChange,
-  initialValue,
-  ...flexProps
-}: BinaryModeIndicatorProps<M>) => {
-  const [indicatorValue, setIndicatorValue] = useState(initialValue)
-  const handleChange = (nextValue: boolean) => {
-    const mode = modes.find((_, i) => Boolean(i) === nextValue)
-    onChange(mode)
-    setIndicatorValue(nextValue)
-  }
-
-  return (
-    <Flex color={COLORS.black} justify="between" {...flexProps}>
-      <Toggle onChange={handleChange} initialValue={initialValue} />
-      <Indicator isIndividualMode={indicatorValue}>
-        <Flex as="span">{modes[0]}</Flex>
-        {modes[1]}
-      </Indicator>
-    </Flex>
-  )
-}

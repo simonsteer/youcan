@@ -71,6 +71,7 @@ export const ColorPicker = ({
             >
               <LightnessMap flex={1} />
               <DarknessMap flex={1} />
+              <SaturationMap flex={1} />
             </ColorMap>
           )
         }}
@@ -113,5 +114,11 @@ const LightnessMap = styled(Flex)`
 const DarknessMap = styled(Flex)`
   background: -webkit-linear-gradient(bottom, white 5%, transparent);
   mix-blend-mode: screen;
+  pointer-events: none;
+`
+
+const SaturationMap = styled(Flex)`
+  background: hsla(180, 100, 50, 1);
+  mix-blend-mode: saturation;
   pointer-events: none;
 `
