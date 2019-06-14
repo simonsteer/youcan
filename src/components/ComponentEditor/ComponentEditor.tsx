@@ -12,7 +12,7 @@ const ComponentEditor = () => {
         onChange={nextStyle => setComponentStyle({ ...componentStyle, ...nextStyle })
         }
       />
-      <Flex ignoreAttrs {...componentStyle} />
+      <Flex {...componentStyle} />
     </Flex>
   )
 }
