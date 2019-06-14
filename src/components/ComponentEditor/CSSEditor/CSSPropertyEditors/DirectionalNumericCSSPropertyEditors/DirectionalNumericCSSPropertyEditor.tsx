@@ -93,7 +93,7 @@ const DirectionalNumericCSSPropertyEditor = ({
       <Flex column overflow="visible" padding="12px">
         <BinaryModeIndicator
           margin="0 0 12px 0"
-          modes={[`all ${title.toLowerCase()}s`, `each ${title.toLowerCase()}`]}
+          modes={[`all ${title.toLowerCase()}`, `each ${title.toLowerCase()}`]}
           onChange={mode => setIsMultiMode(mode === `each ${title.toLowerCase()}`)
           }
         />

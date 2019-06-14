@@ -15,7 +15,7 @@ import DimensionEditor, {
 } from './CSSPropertyEditors/DimensionsEditor/DimensionsEditor'
 import BackgroundEditor, {
   BackgroundProperties,
-} from './CSSPropertyEditors/BackgroundEditor'
+} from './CSSPropertyEditors/BackgroundEditor/BackgroundEditor'
 import Flex, { FlexProps } from '../../Flex/Flex'
 
 export interface CSSProperties

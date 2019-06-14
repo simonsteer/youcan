@@ -1,21 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import store from './reducers/store'
-import CSSEditor from './components/ComponentEditor/CSSEditor'
+import ComponentEditor from './components/ComponentEditor/ComponentEditor'
 
-const App = () => {
-  const [componentStyle, setComponentStyle] = useState({})
-
-  return (
-    <Provider store={store}>
-      <CSSEditor
-        onChange={style => {
-          setComponentStyle({ ...componentStyle, ...style })
-        }}
-      />
-      <div style={componentStyle} />
-    </Provider>
-  )
-}
+const App = () => (
+  <Provider store={store}>
+    <ComponentEditor />
+  </Provider>
+)
 
 export default App
