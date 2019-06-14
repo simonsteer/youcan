@@ -14,6 +14,7 @@ import Flex, { FlexProps } from '../../../Flex/Flex'
 import { Title } from '../../../Text'
 import { COLORS } from '../../../constants'
 import Expandable from '../../../Expandable'
+import { ToggleProps } from '../../../Inputs/Toggle'
 
 export interface BorderProperties {
   borderStyle?: string
@@ -112,7 +113,7 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
     'transparent',
   ])
   const [_borderWidth, setBorderWidth] = useState(['0px', '0px', '0px', '0px'])
-  const [isAdvancedMode, setIsAdvancedMode] = useState(false)
+  const [isIndividualMode, setIsIndividualMode] = useState(false)
 
   const handleChange = (type: Direction, values: BorderProperties) => {
     const { borderColor, borderStyle, borderWidth } = values
@@ -126,17 +127,17 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
       nextBorderWidth = [borderWidth, borderWidth, borderWidth, borderWidth]
     } else {
       const index = DIRECTION_INDICES[type]
-      
+
       nextBorderColor = [..._borderColor]
       nextBorderColor[index] = borderColor
-      
+
       nextBorderStyle = [..._borderStyle]
       nextBorderStyle[index] = borderStyle
-      
+
       nextBorderWidth = [..._borderWidth]
       nextBorderWidth[index] = borderWidth
     }
-      
+
     setBorderColor(nextBorderColor)
     setBorderStyle(nextBorderStyle)
     setBorderWidth(nextBorderWidth)
@@ -169,19 +170,14 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
         </EditorTitle>
       )}
     >
-      <Title
-        size="sm"
-        color={COLORS.white}
-        padding={isAdvancedMode ? '12px' : '12px 12px 0 12px'}
+      <BinaryModeIndicator
+        modes={['all', 'individual']}
+        onChange={mode => setIsIndividualMode(mode === 'individual')}
+        initialValue={isIndividualMode}
         justify="between"
-      >
-        <Toggle initialValue={isAdvancedMode} onChange={setIsAdvancedMode} />
-        <ModeIndicator isAdvancedMode={isAdvancedMode}>
-          <Flex as="span">all</Flex>
-          individual
-        </ModeIndicator>
-      </Title>
-      {isAdvancedMode ? (
+        padding={isIndividualMode ? '12px' : '12px 12px 0 12px'}
+      />
+      {isIndividualMode ? (
         DIRECTIONS.map((direction, index) => (
           <Expandable
             key={`border-${direction}-editor`}
@@ -212,13 +208,43 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
 
 export default BorderEditor
 
-const ModeIndicator = styled(Flex)<{ isAdvancedMode: boolean }>`
-  ${({ isAdvancedMode }) => `
+const Indicator = styled(Flex)<{ isIndividualMode: boolean }>`
+  ${({ isIndividualMode }) => `
 transition: color 0.2s;
-color: ${isAdvancedMode ? COLORS.white : COLORS.grey}
+color: ${isIndividualMode ? COLORS.black : COLORS.lightGrey}
 ${Flex} {
   margin-right: 12px;
-  color: ${isAdvancedMode ? COLORS.grey : COLORS.white};
+  color: ${isIndividualMode ? COLORS.lightGrey : COLORS.black};
 }
 `}
 `
+
+export interface BinaryModeIndicatorProps<M extends string>
+  extends Omit<ToggleProps, 'onChange'> {
+  modes: M[]
+  onChange: (mode: M) => void
+}
+
+const BinaryModeIndicator = <M extends string>({
+  modes,
+  onChange,
+  initialValue,
+  ...flexProps
+}: BinaryModeIndicatorProps<M>) => {
+  const [indicatorValue, setIndicatorValue] = useState(initialValue)
+  const handleChange = (nextValue: boolean) => {
+    const mode = modes.find((_, i) => Boolean(i) === nextValue)
+    onChange(mode)
+    setIndicatorValue(nextValue)
+  }
+
+  return (
+    <Flex color={COLORS.black} justify="between" {...flexProps}>
+      <Toggle onChange={handleChange} initialValue={initialValue} />
+      <Indicator isIndividualMode={indicatorValue}>
+        <Flex as="span">{modes[0]}</Flex>
+        {modes[1]}
+      </Indicator>
+    </Flex>
+  )
+}

@@ -5,6 +5,7 @@ import tinycolor from 'tinycolor2'
 import Flex, { FlexProps } from '../Flex/Flex'
 import Expandable from '../Expandable'
 import PropertyTitle from '../ComponentEditor/CSSEditor/CSSPropertyEditors/PropertyTitle'
+import { COLORS } from '../constants'
 
 interface ColorPickerProps extends FlexProps {
   onChange: (color: string) => void
@@ -80,6 +81,7 @@ export const ColorPicker = ({
 
 const ColorPreview = styled(Flex)`
   cursor: pointer;
+  border: 1px solid ${COLORS.black};
 `
 
 interface ColorMapProps {
@@ -98,6 +100,8 @@ const ColorMap = styled(Flex)<ColorMapProps>`
     #f00 100%
   );
   cursor: crosshair;
+  border: 1px solid ${COLORS.black};
+  border-top: none;
 `
 
 const LightnessMap = styled(Flex)`

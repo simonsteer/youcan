@@ -1,10 +1,10 @@
 import React from 'react'
-import NumericDropdownCSSPropertyEditor from './NumericDropdownCSSPropertyEditor'
-import Expandable from '../../../Expandable'
-import EditorTitle from './EditorTitle'
-import { createDirectionalDropdownProps } from './DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
-import KeyboardShortcut from '../../../KeyboardShortcut'
-import Flex, { FlexProps } from '../../../Flex/Flex'
+import NumericDropdownCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
+import Expandable from '../../../../Expandable'
+import EditorTitle from '../EditorTitle'
+import { createDirectionalDropdownProps } from '../DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
+import KeyboardShortcut from '../../../../KeyboardShortcut'
+import Flex, { FlexProps } from '../../../../Flex/Flex'
 
 export interface DimensionsProperties {
   width?: string
@@ -23,17 +23,17 @@ const DimensionEditor = ({ onChange, ...flexProps }: DimensionEditorProps) => (
         shortcut={(
           <KeyboardShortcut
             shortcut={{
-                key: 'D',
-                callback: toggleIsOpen,
-                options: { meta: true },
-              }}
+              key: 'D',
+              callback: toggleIsOpen,
+              options: { meta: true },
+            }}
           />
 )}
         onClick={toggleIsOpen}
       >
-          Dimensions
+        Dimensions
       </EditorTitle>
-      )}
+    )}
   >
     <Flex column overflow="visible" padding="12px">
       <NumericDropdownCSSPropertyEditor
@@ -49,6 +49,6 @@ const DimensionEditor = ({ onChange, ...flexProps }: DimensionEditorProps) => (
       />
     </Flex>
   </Expandable>
-  )
+)
 
 export default DimensionEditor

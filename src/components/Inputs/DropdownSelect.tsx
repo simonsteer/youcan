@@ -116,27 +116,27 @@ export const Arrow = styled.div<DropdownArrowProps>`
       clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
       position: absolute;
       transition: transform 0.2s, background-color 0.2s;
-      background: ${COLORS.white};
+      background: ${COLORS.black};
       `
   }}
 `
 
 const DropdownItem = styled(Flex)<{ isOpen: boolean }>`
   ${({ isOpen }) => `
-    background: ${isOpen ? COLORS.grey : COLORS.black};
+    background: ${isOpen ? COLORS.lightGrey : COLORS.white};
     transition: background-color 0.2s, color 0.2s;
     &:hover {
-      background: ${isOpen ? COLORS.white : COLORS.grey};
-      color: ${isOpen ? COLORS.black : COLORS.white};
+      background: ${isOpen ? COLORS.black : COLORS.lightGrey};
+      color: ${isOpen ? COLORS.white : COLORS.black};
       ${Arrow} {
-        background: ${isOpen ? COLORS.black : COLORS.white};
+        background: ${isOpen ? COLORS.white : COLORS.black};
       }
       ${Text} {
-        color: ${isOpen ? COLORS.black : COLORS.white};
+        color: ${isOpen ? COLORS.white : COLORS.black};
       }
     }
     ${Text} {
-      color: ${COLORS.white};
+      color: ${COLORS.black};
       transition: color 0.2s;
     }
   `}

@@ -13,7 +13,7 @@ const EditorTitleBase = styled(Title)<EditorTitleBaseProps>`
   height: ${({ size = 'md' }) => TITLE_HEIGHTS[size]}px;
   transition: background-color 0.2s;
   &:hover {
-    background-color: ${COLORS.grey};
+    background-color: ${COLORS.lightGrey};
   }
 `
 
@@ -27,12 +27,12 @@ const EditorTitle = ({ children, shortcut, ...props }: EditorTitleProps) => (
     padding="0px 12px"
     justify="between"
     align="center"
-    color={COLORS.white}
+    color={COLORS.black}
     {...props}
   >
     {children}
     {!!shortcut && (
-      <Paragraph size="lg" color={COLORS.white}>
+      <Paragraph size="lg" color={COLORS.black}>
         {shortcut}
       </Paragraph>
     )}

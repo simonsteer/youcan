@@ -1,6 +1,9 @@
 export const COLORS = {
-  white: '#f2f2f2',
+  white: '#f9f9f9',
   black: '#1a1a1a',
-  grey: '#666666',
-  green: '#22b573',
+  lightGrey: '#dbdbdb',
+  grey: '#7f7f7f',
+  darkGrey: '#494949',
+  green: '#14e97b',
+  blue: '#bfecff',
 }

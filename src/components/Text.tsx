@@ -44,7 +44,7 @@ const Text = styled(Flex)<TextProps>`
   ${({
     type = 'paragraph',
     size = 'md',
-    color = COLORS.black,
+    color = COLORS.white,
     weight,
     italic,
     variant,

@@ -8,7 +8,7 @@ const PropertyTitle = ({ children }: ParagraphProps) => (
     padding="0 5px 0 0"
     justify="start"
     align="center"
-    color={COLORS.white}
+    color={COLORS.black}
   >
     {children}
   </Paragraph>

@@ -12,7 +12,7 @@ import BorderEditor, {
 } from './CSSPropertyEditors/BorderEditor'
 import DimensionEditor, {
   DimensionsProperties,
-} from './CSSPropertyEditors/DimensionsEditor'
+} from './CSSPropertyEditors/DimensionsEditor/DimensionsEditor'
 import BackgroundEditor, {
   BackgroundProperties,
 } from './CSSPropertyEditors/BackgroundEditor'
@@ -50,7 +50,6 @@ const CSSEditor = ({ onChange, ...flexProps }: CSSEditorProps) => (
         key={`css-editor-${index}`}
         onChange={onChange}
         zIndex={CSS_EDITORS.length - index}
-        borderBottom={`1px solid ${COLORS.white}`}
       />
     ))}
   </SideBar>
@@ -60,14 +59,14 @@ export default CSSEditor
 
 const SideBar = styled(Flex)`
   font-family: sans-serif;
-  background: ${COLORS.black};
+  background: ${COLORS.white};
   width: 300px;
   height: 100vh;
   overflow-y: scroll;
   position: absolute;
   right: 0;
   top: 0;
-  border-left: 1px solid ${COLORS.white};
+  border-left: 1px solid ${COLORS.black};
   -ms-overflow-style: none; // IE 10+
   scrollbar-width: none; // Firefox
   &::-webkit-scrollbar {

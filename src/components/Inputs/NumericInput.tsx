@@ -76,26 +76,26 @@ const Container = styled(Flex)<{ isFocused: boolean }>`
   flex: 1;
   height: 20px;
   font-size: 12px;
-  background: ${({ isFocused }) => (isFocused ? COLORS.grey : COLORS.black)};
+  background: ${({ isFocused }) => (isFocused ? COLORS.lightGrey : COLORS.white)};
   transition: background 0.2s;
   button {
     transition: border-color 0.2s;
     border-bottom-color: ${({ isFocused }) =>
-      isFocused ? COLORS.grey : COLORS.black};
+      isFocused ? COLORS.lightGrey : COLORS.white};
     border-right-color: ${({ isFocused }) =>
-      isFocused ? COLORS.grey : COLORS.black};
+      isFocused ? COLORS.lightGrey : COLORS.white};
   }
   &:hover {
-    background: ${COLORS.grey};
+    background: ${COLORS.lightGrey};
     button {
-      border-bottom-color: ${COLORS.grey};
-      border-right-color: ${COLORS.grey};
+      border-bottom-color: ${COLORS.lightGrey};
+      border-right-color: ${COLORS.lightGrey};
     }
   }
 `
 
 const Input = styled.input`
-  color: ${COLORS.white};
+  color: ${COLORS.black};
   width: calc(100% - 10px);
   height: 100%;
   border: none;
