@@ -17,7 +17,6 @@ import BackgroundEditor, {
   BackgroundProperties,
 } from './CSSPropertyEditors/BackgroundEditor'
 import Flex, { FlexProps } from '../../Flex/Flex'
-import Expandable from '../../Expandable'
 
 export interface CSSProperties
   extends MarginProperties,

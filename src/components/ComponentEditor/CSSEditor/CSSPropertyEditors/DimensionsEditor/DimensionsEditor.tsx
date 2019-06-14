@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import NumericDropdownCSSPropertyEditor from '../NumericDropdownCSSPropertyEditor'
 import Expandable from '../../../../Expandable'
 import EditorTitle from '../EditorTitle'
 import { createDirectionalDropdownProps } from '../DirectionalNumericCSSPropertyEditors/DirectionalNumericCSSPropertyEditor'
 import KeyboardShortcut from '../../../../KeyboardShortcut'
 import Flex, { FlexProps } from '../../../../Flex/Flex'
-import BinaryModeIndicator from '../../../../BinaryModeIndicator'
-import BorderRadiusEditor from './BorderRadiusEditor'
+import BorderRadiusEditor, { BorderRadiusProperties } from './BorderRadiusEditor'
 
-export interface DimensionsProperties {
+export interface DimensionsProperties extends BorderRadiusProperties {
   width?: string
   height?: string
 }
@@ -50,7 +49,7 @@ const DimensionEditor = ({ onChange, ...flexProps }: DimensionEditorProps) => (
         onChange={width => onChange({ width })}
       />
     </Flex>
-      <BorderRadiusEditor />
+    <BorderRadiusEditor onChange={onChange} />
   </Expandable>
 )
 

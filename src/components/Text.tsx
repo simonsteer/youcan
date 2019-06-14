@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { COLORS } from './constants'
 import Flex from './Flex'
 import { FlexProps } from './Flex/Flex'
 

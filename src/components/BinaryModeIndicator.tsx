@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { COLORS } from './constants'
 import Flex from './Flex'
 import { Toggle, ToggleProps } from './Inputs/Toggle'
@@ -25,25 +24,17 @@ const BinaryModeIndicator = <M extends string>({
   }
 
   return (
-    <Flex color={COLORS.black} justify="between" {...flexProps}>
-      <Toggle onChange={handleChange} initialValue={initialValue} />
-      <Indicator size="sm" center indicatorValue={indicatorValue}>
-        <Flex as="span">{modes[0]}</Flex>
-        {modes[1]}
-      </Indicator>
+    <Flex color={COLORS.black} {...flexProps}>
+      <Toggle
+        onChange={handleChange}
+        initialValue={initialValue}
+        margin="0 12px 0 0"
+      />
+      <Paragraph size="sm" center>
+        {indicatorValue ? modes[1] : modes[0]}
+      </Paragraph>
     </Flex>
   )
 }
 
 export default BinaryModeIndicator
-
-const Indicator = styled(Paragraph)<{ indicatorValue: boolean }>`
-  ${({ indicatorValue }) => `
-transition: color 0.2s;
-color: ${indicatorValue ? COLORS.black : COLORS.lightGrey}
-${Flex} {
-  margin-right: 8px;
-  color: ${indicatorValue ? COLORS.lightGrey : COLORS.black};
-}
-`}
-`

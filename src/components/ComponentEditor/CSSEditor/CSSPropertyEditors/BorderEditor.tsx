@@ -12,6 +12,7 @@ import KeyboardShortcut from '../../../KeyboardShortcut'
 import Flex, { FlexProps } from '../../../Flex/Flex'
 import Expandable from '../../../Expandable'
 import BinaryModeIndicator from '../../../BinaryModeIndicator';
+import { DIRECTION_INDICES } from '../constants';
 
 export interface BorderProperties {
   borderStyle?: string
@@ -84,13 +85,6 @@ const BorderTypeEditor = ({
     </Flex>
   )
 }
-
-const DIRECTION_INDICES = {
-  top: 0,
-  right: 1,
-  bottom: 2,
-  left: 3,
-} as const
 
 export interface BorderEditorProps extends Omit<FlexProps, 'children'> {
   onChange: (values: BorderProperties) => void
@@ -171,7 +165,6 @@ const BorderEditor = ({ onChange, ...flexProps }: BorderEditorProps) => {
         modes={['all borders', 'each border']}
         onChange={mode => setIsIndividualMode(mode === 'each border')}
         initialValue={isIndividualMode}
-        justify="between"
         padding={isIndividualMode ? '12px' : '12px 12px 0 12px'}
       />
       {isIndividualMode ? (

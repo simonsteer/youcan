@@ -5,6 +5,7 @@ import Expandable from '../../../../Expandable'
 import EditorTitle from '../EditorTitle'
 import { FlexProps } from '../../../../Flex/Flex'
 import KeyboardShortcut from '../../../../KeyboardShortcut'
+import BinaryModeIndicator from '../../../../BinaryModeIndicator'
 
 export const DIRECTIONS = ['top', 'right', 'bottom', 'left'] as const
 
@@ -48,6 +49,7 @@ const DirectionalNumericCSSPropertyEditor = ({
     left: '0px',
   })
   const { top, right, bottom, left } = values
+  const [isMultiMode, setIsMultiMode] = useState(false)
   const [, setValue] = useState(`${top} ${right} ${bottom} ${left}`)
 
   const handleChange = ({
@@ -57,7 +59,9 @@ const DirectionalNumericCSSPropertyEditor = ({
     type: Direction
     value: string
   }) => {
-    const nextValues = { ...values, [type]: value }
+    const nextValues = type === 'all'
+        ? { top: value, left: value, right: value, bottom: value }
+        : { ...values, [type]: value }
     setValues(nextValues)
 
     const { top, right, bottom, left } = nextValues
@@ -87,14 +91,24 @@ const DirectionalNumericCSSPropertyEditor = ({
       )}
     >
       <Flex column overflow="visible" padding="12px">
-        {DIRECTIONS.map((type, index) => (
-          <DirectionEditor
-            key={`${title}-${type}`}
-            zIndex={DIRECTIONS.length - index}
-            type={type}
-            onChange={handleChange}
-          />
-        ))}
+        <BinaryModeIndicator
+          margin="0 0 12px 0"
+          modes={[`all ${title.toLowerCase()}s`, `each ${title.toLowerCase()}`]}
+          onChange={mode => setIsMultiMode(mode === `each ${title.toLowerCase()}`)
+          }
+        />
+        {isMultiMode ? (
+          DIRECTIONS.map((type, index) => (
+            <DirectionEditor
+              key={`${title}-${type}`}
+              zIndex={DIRECTIONS.length - index}
+              type={type}
+              onChange={handleChange}
+            />
+          ))
+        ) : (
+          <DirectionEditor type="all" onChange={handleChange} />
+        )}
       </Flex>
     </Expandable>
   )
