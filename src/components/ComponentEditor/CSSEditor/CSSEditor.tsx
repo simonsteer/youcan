@@ -16,7 +16,11 @@ import DimensionEditor, {
 import BackgroundEditor, {
   BackgroundProperties,
 } from './CSSPropertyEditors/BackgroundEditor/BackgroundEditor'
+import BoxShadowEditor, {
+  BoxShadowProperties,
+} from './CSSPropertyEditors/BoxShadowEditor'
 import Flex, { FlexProps } from '../../Flex/Flex'
+import { createNestedStyle } from '../../Flex/utils';
 
 export interface CSSProperties
   extends MarginProperties,
@@ -30,6 +34,7 @@ export type CSSPropertyChanges = | MarginProperties
   | BorderProperties
   | DimensionsProperties
   | BackgroundProperties
+  | BoxShadowProperties
 
 export interface CSSEditorProps extends FlexProps {
   onChange: (properties: CSSPropertyChanges) => void
@@ -41,20 +46,22 @@ const CSS_EDITORS = [
   BorderEditor,
   PaddingEditor,
   MarginEditor,
+  BoxShadowEditor,
 ]
 
 const CSSEditor = ({ onChange, ...flexProps }: CSSEditorProps) => (
   <SideBar column as="aside" {...flexProps}>
     {CSS_EDITORS.map((Editor, index) => (
-      <Editor
-        key={`css-editor-${index}`}
-        zIndex={CSS_EDITORS.length - index}
-        onChange={onChange}
-        transition="background-color 0.2s"
-        hover={`background: ${COLORS.lightGrey};`}
-        borderBottom={`1px solid ${COLORS.black}`}
-      />
-    ))}
+        <Editor
+          key={`css-editor-${index}`}
+          zIndex={CSS_EDITORS.length - index}
+          onChange={onChange}
+          transition="background-color 0.2s"
+          hover={{ background: `${COLORS.lightGrey}` }}
+          borderBottom={`1px solid ${COLORS.black}`}
+        />
+      )
+    )}
   </SideBar>
 )
 

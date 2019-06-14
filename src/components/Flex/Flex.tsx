@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { MouseEventHandler, FocusEventHandler } from 'react'
-import { getStyle, BoxShadowConfig } from './utils'
+import pick from 'lodash/pick'
+import { getStyle, createStyle } from './utils'
+import { FLEX_ATTRIBUTE_PROPS } from './constants'
 
 // use these props in styled-component template string
 interface FlexTemplateProps {
@@ -28,8 +30,7 @@ interface FlexTemplateProps {
   overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
   position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky'
   pointerEvents?: 'none' | 'auto'
-  shadow?: BoxShadowConfig
-  hover?: string
+  hover?: { [property: string]: string }
 }
 
 // use these props in attrs
@@ -50,6 +51,10 @@ interface FlexAttributeProps {
   transition?: string
   tabIndex?: number
   borderRadius?: string
+  borderColor?: string
+  borderStyle?: string
+  borderWidth?: string
+  boxShadow?: string
 }
 
 // handlers
@@ -64,48 +69,19 @@ interface FlexHandlerProps {
   onBlur?: FocusEventHandler
 }
 
+interface OtherFlexProps extends FlexHandlerProps {
+  ignoreAttrs?: boolean
+}
+
 export interface FlexProps
   extends FlexTemplateProps,
     FlexAttributeProps,
-    FlexHandlerProps {}
+    OtherFlexProps {}
 
 const Flex = styled.div.attrs<FlexProps>(
-  ({
+  ({ ignoreAttrs, tabIndex, ...restProps }: FlexProps) => ({
     tabIndex,
-    background,
-    height,
-    width,
-    minHeight,
-    minWidth,
-    padding,
-    margin,
-    zIndex,
-    transition,
-    borderRadius,
-    border,
-    borderTop,
-    borderRight,
-    borderBottom,
-    borderLeft,
-  }: FlexProps) => ({
-    tabIndex,
-    style: {
-      background,
-      height,
-      width,
-      minHeight,
-      minWidth,
-      padding,
-      margin,
-      zIndex,
-      transition,
-      borderRadius,
-      border,
-      borderTop,
-      borderRight,
-      borderBottom,
-      borderLeft,
-    },
+    style: ignoreAttrs ? {} : pick(restProps, FLEX_ATTRIBUTE_PROPS),
   })
 )`
   ${getStyle}
