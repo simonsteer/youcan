@@ -22,7 +22,13 @@ export const Toggle = ({
   }
 
   return (
-    <Container onClick={handleClick} isToggled={isToggled} {...flexProps}>
+    <Container
+      as="button"
+      tabIndex={0}
+      onClick={handleClick}
+      isToggled={isToggled}
+      {...flexProps}
+    >
       <Switch />
     </Container>
   )

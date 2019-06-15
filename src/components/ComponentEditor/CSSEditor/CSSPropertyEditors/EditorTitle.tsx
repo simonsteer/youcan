@@ -1,38 +1,41 @@
 import React from 'react'
-import styled from 'styled-components'
 import { COLORS } from '../../../constants'
 import { Title, TitleProps, Paragraph } from '../../../Text'
+import Flex from '../../../Flex'
+import { FlexProps } from '../../../Flex/Flex'
 
 const TITLE_HEIGHTS = { sm: 28, md: 40, lg: 52 } as const
 
-interface EditorTitleBaseProps {
-  size?: 'sm' | 'md' | 'lg'
-}
-
-const EditorTitleBase = styled(Title)<EditorTitleBaseProps>`
-  height: ${({ size = 'md' }) => TITLE_HEIGHTS[size]}px;
-`
-
-export interface EditorTitleProps extends TitleProps {
+export interface EditorTitleProps extends FlexProps {
   shortcut?: React.ReactNode
+  size?: TitleProps['size']
+  children: string
 }
 
-const EditorTitle = ({ children, shortcut, ...props }: EditorTitleProps) => (
-  <EditorTitleBase
+const EditorTitle = ({
+  children,
+  shortcut,
+  size = 'md',
+  ...flexProps
+}: EditorTitleProps) => (
+  <Flex
+    as="button"
     cursor="pointer"
     padding="0px 12px"
     justify="between"
     align="center"
     color={COLORS.black}
-    {...props}
+    height={`${TITLE_HEIGHTS[size]}px`}
+    tabIndex={0}
+    {...flexProps}
   >
-    {children}
+    <Title size={size}>{children}</Title>
     {!!shortcut && (
       <Paragraph size="lg" color={COLORS.black}>
         {shortcut}
       </Paragraph>
     )}
-  </EditorTitleBase>
+  </Flex>
 )
 
 export default EditorTitle

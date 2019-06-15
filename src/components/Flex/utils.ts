@@ -5,8 +5,8 @@ import { FLEX_ATTRIBUTE_PROPS } from './constants'
 
 export const getStyle = (props: FlexProps) => `
   ${getFlexStyle(props)}
-  ${getOtherStyle(props)}
   ${getAttributeStyle(props)}
+  ${getOtherStyle(props)}
 `
 
 const getOtherStyle = ({
@@ -25,7 +25,12 @@ const getOtherStyle = ({
   ${createNestedStyle({ hover })}
 `
 
-const getAttributeStyle = ({ ignoreAttrs, ...restProps }: FlexProps) => (ignoreAttrs ? `${createStyle(pick(restProps, FLEX_ATTRIBUTE_PROPS))}` : '')
+const getAttributeStyle = ({ mergeStyleProps, ...restProps }: FlexProps) => {
+  const attributeStyle = mergeStyleProps
+    ? createStyle(pick(restProps, FLEX_ATTRIBUTE_PROPS))
+    : ''
+  return attributeStyle
+}
 
 const getFlexStyle = ({ flex, ...props }: FlexProps) => {
   const flexFlow = getFlow(props)

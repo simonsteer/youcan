@@ -5,14 +5,13 @@ import Flex from '../Flex'
 const ComponentEditor = () => {
   const [componentStyle, setComponentStyle] = useState({})
 
-  console.log(componentStyle)
   return (
     <Flex center flex={1} height="100vh" overflow="scroll">
       <CSSEditor
         onChange={nextStyle => setComponentStyle({ ...componentStyle, ...nextStyle })
         }
       />
-      <Flex {...componentStyle} />
+      <Flex mergeStyleProps={false} {...componentStyle} />
     </Flex>
   )
 }

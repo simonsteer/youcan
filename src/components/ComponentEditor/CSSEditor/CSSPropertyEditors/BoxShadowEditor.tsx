@@ -31,7 +31,6 @@ const BoxShadowEditor = ({ onChange, ...flexProps }: BoxShadowEditorProps) => {
     setBoxShadow(nextBoxShadow)
 
     const style = { boxShadow: createBoxShadowStyle(nextBoxShadow) }
-    console.log({ style })
     onChange(style)
   }
 

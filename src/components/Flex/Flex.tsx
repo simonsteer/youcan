@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { MouseEventHandler, FocusEventHandler } from 'react'
 import pick from 'lodash/pick'
-import { getStyle, createStyle } from './utils'
+import { getStyle } from './utils'
 import { FLEX_ATTRIBUTE_PROPS } from './constants'
 
 // use these props in styled-component template string
@@ -36,24 +36,32 @@ interface FlexTemplateProps {
 // use these props in attrs
 interface FlexAttributeProps {
   background?: string
+  borderColor?: string
+  borderStyle?: string
+  borderWidth?: string
+  border?: string
   borderTop?: string
   borderRight?: string
   borderBottom?: string
   borderLeft?: string
-  border?: string
-  height?: string
+  borderRadius?: string
   width?: string
-  minHeight?: string
+  height?: string
   minWidth?: string
+  minHeight?: string
   padding?: string
+  paddingTop?: string
+  paddingRight?: string
+  paddingBottom?: string
+  paddingLeft?: string
   margin?: string
+  marginTop?: string
+  marginRight?: string
+  marginBottom?: string
+  marginLeft?: string
   zIndex?: number
   transition?: string
   tabIndex?: number
-  borderRadius?: string
-  borderColor?: string
-  borderStyle?: string
-  borderWidth?: string
   boxShadow?: string
 }
 
@@ -70,7 +78,7 @@ interface FlexHandlerProps {
 }
 
 interface OtherFlexProps extends FlexHandlerProps {
-  ignoreAttrs?: boolean
+  mergeStyleProps?: boolean
 }
 
 export interface FlexProps
@@ -79,12 +87,16 @@ export interface FlexProps
     OtherFlexProps {}
 
 const Flex = styled.div.attrs<FlexProps>(
-  ({ ignoreAttrs, tabIndex, ...restProps }: FlexProps) => ({
+  ({ mergeStyleProps, tabIndex, ...restProps }: FlexProps) => ({
     tabIndex,
-    style: ignoreAttrs ? {} : pick(restProps, FLEX_ATTRIBUTE_PROPS),
+    style: mergeStyleProps ? undefined : pick(restProps, FLEX_ATTRIBUTE_PROPS),
   })
 )`
   ${getStyle}
 `
+
+Flex.defaultProps = {
+  mergeStyleProps: true,
+}
 
 export default Flex

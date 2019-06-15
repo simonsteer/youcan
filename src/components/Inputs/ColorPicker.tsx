@@ -45,6 +45,7 @@ export const ColorPicker = ({
         flex={1}
         title={({ toggleIsOpen }) => (
           <ColorPreview
+            mergeStyleProps={false}
             width="100%"
             height="100%"
             background={displayValue || value}
