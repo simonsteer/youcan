@@ -19,6 +19,7 @@
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
+    "redux-react-hook": "^3.3.2",
     "redux-saga": "^1.0.2",
     "reselect": "^4.0.0",
     "styled-components": "^4.2.0",

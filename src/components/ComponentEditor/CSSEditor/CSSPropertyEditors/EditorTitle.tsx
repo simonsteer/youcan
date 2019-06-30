@@ -4,7 +4,7 @@ import { Title, TitleProps, Paragraph } from '../../../Text'
 import Flex from '../../../Flex'
 import { FlexProps } from '../../../Flex/Flex'
 
-const TITLE_HEIGHTS = { sm: 28, md: 40, lg: 52 } as const
+const TITLE_HEIGHTS = { sm: '28px', md: '40px', lg: '52px' } as const
 
 export interface EditorTitleProps extends FlexProps {
   shortcut?: React.ReactNode
@@ -25,7 +25,7 @@ const EditorTitle = ({
     justify="between"
     align="center"
     color={COLORS.black}
-    height={`${TITLE_HEIGHTS[size]}px`}
+    height={TITLE_HEIGHTS[size]}
     tabIndex={0}
     {...flexProps}
   >

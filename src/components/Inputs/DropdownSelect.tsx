@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import sortBy from 'lodash/sortBy'
 import Flex, { FlexProps } from '../Flex/Flex'
@@ -42,34 +42,51 @@ export const DropdownSelect = <F extends (n: string) => any>({
         closeOnBlur
         title={({ isOpen, setIsOpen }) => (
           <DropdownItem
+            as="button"
+            tabIndex={0}
             isOpen={isOpen}
             cursor="pointer"
+            onKeyDown={e => {
+              switch (e.keyCode) {
+                case 38: {
+                  console.log('up')
+                  break
+                }
+                case 40: {
+                  console.log('down')
+                  break
+                }
+              }
+            }}
             onClick={() => {
               handleChange(isOpen, firstItem.value)
               setIsOpen(!isOpen)
             }}
-          >
+            >
             <Arrow isOpen={isOpen} size={6} position={{ top: 6, right: 5 }} />
             <Paragraph
               size="sm"
               height="20px"
               align="center"
               padding="0 0 0 5px"
-            >
+              >
               {firstItem.label}
             </Paragraph>
           </DropdownItem>
         )}
-      >
+        >
         {({ setIsOpen, isOpen }) => restItems.map(({ value, label }, index) => (
           <DropdownItem
-            isOpen={isOpen}
-            key={`dropdown-item-${index + 1}`}
-            cursor="pointer"
-            onClick={() => {
-                handleChange(isOpen, value)
-                setIsOpen(!isOpen)
-              }}
+          as="button"
+          zIndex={restItems.length - index}
+          tabIndex={0}
+          isOpen={isOpen}
+          key={`dropdown-item-${index + 1}`}
+          cursor="pointer"
+          onClick={() => {
+            handleChange(isOpen, value)
+            setIsOpen(!isOpen)
+          }}
           >
             <Paragraph
               size="sm"
@@ -125,7 +142,8 @@ const DropdownItem = styled(Flex)<{ isOpen: boolean }>`
   ${({ isOpen }) => `
     background: ${isOpen ? COLORS.grey : 'transparent'};
     transition: background-color 0.2s, color 0.2s;
-    &:hover {
+    &:hover, &:focus {
+      outline: none;
       background: ${isOpen ? COLORS.black : COLORS.white};
       color: ${isOpen ? COLORS.white : COLORS.black};
       ${Arrow} {

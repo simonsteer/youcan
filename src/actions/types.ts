@@ -9,4 +9,8 @@ const allActions = {
   ...entitiesActions,
 } as const
 
-export type Action = ReturnType<ValueInObject<typeof allActions>>
+export type AllActionCreators = typeof allActions
+
+export type ActionCreator = ValueInObject<AllActionCreators>
+
+export type Action = ReturnType<ActionCreator>

@@ -78,6 +78,7 @@ const BorderRadiusEditor = ({
           (Object.keys(BORDER_RADIUS_DIRECTIONS) as RadiusDirection[]).map(
             (direction, index, d) => (
               <NumericDropdownCSSPropertyEditor
+                key={`border-radius-editor-${index}`}
                 zIndex={d.length - index}
                 onChange={borderRadius => handleChange(direction, { borderRadius })
                 }

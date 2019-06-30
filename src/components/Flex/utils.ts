@@ -1,5 +1,6 @@
 import kebabCase from 'lodash/kebabCase'
 import pick from 'lodash/pick'
+import isEqual from 'lodash/isEqual'
 import { FlexProps } from './Flex'
 import { FLEX_ATTRIBUTE_PROPS } from './constants'
 
@@ -15,6 +16,9 @@ const getOtherStyle = ({
   position,
   pointerEvents,
   hover,
+  focus,
+  after,
+  before,
 }: FlexProps) => `
   ${createStyle({
     cursor,
@@ -22,14 +26,41 @@ const getOtherStyle = ({
     position,
     pointerEvents,
   })}
-  ${createNestedStyle({ hover })}
+  ${createNestedStyle({
+    hover,
+    focus,
+  })}
+  ${
+    before
+      ? `&::before {
+        content: '';
+    ${createStyle(before)}
+  }`
+      : ''
+  }
+  ${
+    after
+      ? `&::after {
+        content: '';
+    ${createStyle(after)}
+  }`
+      : ''
+  }
 `
 
-const getAttributeStyle = ({ mergeStyleProps, ...restProps }: FlexProps) => {
-  const attributeStyle = mergeStyleProps
-    ? createStyle(pick(restProps, FLEX_ATTRIBUTE_PROPS))
-    : ''
-  return attributeStyle
+const getAttributeStyle = ({ mergeStyleProps, ...flexProps }: FlexProps) => {
+  let cachedProps = {}
+  let cachedResult = ''
+
+  const attributeProps = pick(flexProps, FLEX_ATTRIBUTE_PROPS)
+
+  if (isEqual(cachedProps, attributeProps)) {
+    return cachedResult
+  }
+    const attributeStyle = mergeStyleProps ? createStyle(attributeProps) : ''
+    cachedProps = attributeProps
+    cachedResult = attributeStyle
+    return attributeStyle
 }
 
 const getFlexStyle = ({ flex, ...props }: FlexProps) => {
@@ -105,19 +136,23 @@ export interface BoxShadowConfig {
   spread: string
   color: string
 }
+
 export const createBoxShadowStyle = (shadow: BoxShadowConfig) => (shadow && shadow.color !== 'transparent'
     ? `${shadow.offset.x} ${shadow.offset.y} ${shadow.blur} ${shadow.spread} ${shadow.color}`
     : '')
 
-export const createStyle = (props: CreateStyleObject) => Object.keys(props)
-    .map(createTransformStyle(props))
+export const createStyle = (
+  props: CreateStyleObject,
+  transform = createStyleTransform(props)
+) => Object.keys(props)
+    .map(transform)
     .join('\n')
 
 export const createNestedStyle = (props: {
   [property: string]: { [property: string]: string }
 }) => Object.keys(props)
     .map(
-      createTransformStyle(
+      createStyleTransform(
         props,
         ({ props, key }) => `&:${key} {
           ${createStyle(props[key])}
@@ -126,7 +161,7 @@ export const createNestedStyle = (props: {
     )
     .join('\n')
 
-const createTransformStyle = <P extends CreateStyleObject, K extends keyof P>(
+const createStyleTransform = <P extends CreateStyleObject, K extends keyof P>(
   props: P,
   transform = (params: { props: P; key: K }) => `${kebabCase(params.key as string)}: ${params.props[params.key]};`
 ) => (key: K) => (key && props[key]
@@ -137,5 +172,5 @@ const createTransformStyle = <P extends CreateStyleObject, K extends keyof P>(
     : '')
 
 interface CreateStyleObject {
-  [property: string]: string | number | { [property: string]: string }
+  [property: string]: string | number | CreateStyleObject
 }

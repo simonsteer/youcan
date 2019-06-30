@@ -27,3 +27,14 @@ export const FLEX_ATTRIBUTE_PROPS = [
   'borderLeft',
   'boxShadow',
 ] as const
+
+export const FLEX_HANDLER_PROPS = [
+  'onClick',
+  'onHover',
+  'onMouseOut',
+  'onMouseOver',
+  'onMouseDown',
+  'onMouseUp',
+  'onFocus',
+  'onBlur',
+]

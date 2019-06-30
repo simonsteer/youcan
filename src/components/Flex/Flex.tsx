@@ -5,7 +5,7 @@ import { getStyle } from './utils'
 import { FLEX_ATTRIBUTE_PROPS } from './constants'
 
 // use these props in styled-component template string
-interface FlexTemplateProps {
+interface FlexFlexProps {
   flex?: number
   column?: boolean
   reverse?: boolean
@@ -13,6 +13,8 @@ interface FlexTemplateProps {
   justify?: 'start' | 'center' | 'end' | 'around' | 'between' | 'even'
   align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
   center?: boolean
+}
+interface FlexTemplateProps {
   cursor?:
     | 'pointer'
     | 'crosshair'
@@ -30,7 +32,33 @@ interface FlexTemplateProps {
   overflow?: 'hidden' | 'auto' | 'scroll' | 'visible'
   position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky'
   pointerEvents?: 'none' | 'auto'
+  mixBlendMode?:
+    | 'normal'
+    | 'multiply'
+    | 'screen'
+    | 'overlay'
+    | 'darken'
+    | 'lighten'
+    | 'color'
+    | 'color'
+    | 'hard'
+    | 'soft'
+    | 'difference'
+    | 'exclusion'
+    | 'hue'
+    | 'saturation'
+    | 'color'
+    | 'luminosity'
   hover?: { [property: string]: string }
+  focus?: { [property: string]: string }
+  after?: Omit<
+    FlexTemplateProps & FlexAttributeProps,
+    'after' | 'before' | 'hover' | 'focus'
+  >
+  before?: Omit<
+    FlexTemplateProps & FlexAttributeProps,
+    'after' | 'before' | 'hover' | 'focus'
+  >
 }
 
 // use these props in attrs
@@ -82,7 +110,8 @@ interface OtherFlexProps extends FlexHandlerProps {
 }
 
 export interface FlexProps
-  extends FlexTemplateProps,
+  extends FlexFlexProps,
+    FlexTemplateProps,
     FlexAttributeProps,
     OtherFlexProps {}
 

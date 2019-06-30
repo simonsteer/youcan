@@ -183,6 +183,7 @@ textarea {
   line-height: 1.15;
   /* 1 */
   margin: 0;
+  padding: 0;
   /* 2 */
 }
 
@@ -387,7 +388,9 @@ template {
   min-width: 100vw;
 }
 
-* {
+*,
+::before,
+::after {
   box-sizing: border-box;
 }
 
